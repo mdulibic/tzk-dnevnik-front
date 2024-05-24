@@ -3,7 +3,7 @@ import {Link, NavLink, useLocation} from "react-router-dom";
 import { cn } from "@/lib/utils.ts";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.tsx";
 import { Icons } from "@/components/icons.tsx";
-import { appConfig } from "@/config/app";
+import { appConfig } from "@/config/app.ts";
 import { Button } from "@/components/ui/button.tsx";
 import {
     DropdownMenu,
@@ -14,13 +14,13 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar.tsx";
-import { mainMenu } from "@/config/menu";
+import { adminMenu } from "@/config/menu.ts";
 import { ChevronDownIcon, ViewVerticalIcon } from "@radix-ui/react-icons";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Logo } from "../logo";
+import { Logo } from "../../logo.tsx";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion.tsx";
 
-export function Header() {
+export function AdminHeader() {
     const [open, setOpen] = useState(false)
     const location = useLocation();
     const userString = localStorage.getItem('user');
@@ -37,7 +37,7 @@ export function Header() {
                         <Logo />
                     </NavLink>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
-                        {mainMenu.map((menu, index) =>
+                        {adminMenu.map((menu, index) =>
                             menu.items !== undefined ? (
                                 <DropdownMenu key={index}>
                                     <DropdownMenuTrigger className={cn(
@@ -103,9 +103,9 @@ export function Header() {
                         </NavLink>
                         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-8 pl-8">
                             <Accordion type="single" collapsible className="w-full"
-                                defaultValue={"item-" + mainMenu.findIndex(item => item.items !== undefined ? item.items.filter(subitem => subitem.to !== undefined).map(subitem => subitem.to).includes(location.pathname) : false)}>
+                                defaultValue={"item-" + adminMenu.findIndex(item => item.items !== undefined ? item.items.filter(subitem => subitem.to !== undefined).map(subitem => subitem.to).includes(location.pathname) : false)}>
                                 <div className="flex flex-col space-y-3">
-                                    {mainMenu.map((menu, index) =>
+                                    {adminMenu.map((menu, index) =>
                                         menu.items !== undefined ? (
                                             <AccordionItem key={index} value={`item-${index}`} className="border-b-0 pr-6">
                                                 <AccordionTrigger className={cn(

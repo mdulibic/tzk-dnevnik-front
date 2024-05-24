@@ -1,7 +1,7 @@
-import {PageHeader, PageHeaderHeading} from "@/components/page-header";
-import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {PageHeader, PageHeaderHeading} from "@/components/page-header.tsx";
+import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 
-export default function TeacherDashboard() {
+export default function TeachersDashboard() {
     return (
         <>
             <PageHeader>

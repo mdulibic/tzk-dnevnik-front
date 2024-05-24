@@ -29,4 +29,19 @@ export const mainMenu: NavItemWithChildren[] = [
     },
 ]
 
+export const adminMenu: NavItemWithChildren[] = [
+    {
+        title: 'Registracija',
+        to: '/admin',
+    },
+    {
+        title: 'Učenici',
+        to: '/admin/students',
+    },
+    {
+        title: 'Nastavnici',
+        to: '/admin/teachers',
+    },
+]
+
 export const sideMenu: NavItemWithChildren[] = []

@@ -1,6 +1,6 @@
 import { appConfig } from "@/config/app";
 import { useTheme } from "@/hooks/useTheme";
-import {Icons } from "@/components/icons";
+import { Icons } from "@/components/icons";
 
 export function Logo() {
     const { theme } = useTheme();
