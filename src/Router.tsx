@@ -12,6 +12,7 @@ import {RegistrationDashboard} from "@/pages/admin/RegistrationDashboard.tsx";
 import StudentsDashboard from "@/pages/admin/students/StudentsDashboard.tsx";
 import {Adminlayout} from "@/components/layouts/admin/AdminLayout.tsx";
 import {ProtectedRoute} from "@/ProtectedRoute.tsx";
+import {ImportCsvDashboard} from "@/pages/admin/ImportCsvDashboard.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
             {
                 path: "teachers",
                 element: <ProtectedRoute><TeachersDashboard /></ProtectedRoute>,
+            },
+            {
+                path: "import",
+                element: <ProtectedRoute><ImportCsvDashboard></ImportCsvDashboard></ProtectedRoute>,
             },
         ],
     },

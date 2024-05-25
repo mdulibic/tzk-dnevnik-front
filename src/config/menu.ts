@@ -42,6 +42,10 @@ export const adminMenu: NavItemWithChildren[] = [
         title: 'Nastavnici',
         to: '/admin/teachers',
     },
+    {
+        title: 'Uvoz podataka',
+        to: '/admin/import',
+    },
 ]
 
 export const sideMenu: NavItemWithChildren[] = []
