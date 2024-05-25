@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster"
 
 export function Adminlayout() {
     return (
-        <>
+        <div className="flex flex-col min-h-screen">
             <AdminHeader/>
             <div className="flex-grow flex flex-col">
                 <div className="container px-4 md:px-8 flex-grow flex flex-col pt-8">
@@ -18,6 +18,6 @@ export function Adminlayout() {
                     <Footer/>
                 </div>
             </div>
-        </>
+        </div>
     )
 }

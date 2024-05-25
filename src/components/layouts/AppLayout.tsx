@@ -4,7 +4,7 @@ import {Footer} from "./Footer.tsx";
 
 export function Applayout() {
     return (
-        <>
+        <div className="flex flex-col min-h-screen">
             <Header/>
             <div className="flex-grow flex flex-col">
                 <div className="container px-4 md:px-8 flex-grow flex flex-col">
@@ -16,6 +16,6 @@ export function Applayout() {
                     <Footer/>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
