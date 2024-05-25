@@ -25,9 +25,13 @@ export function Header() {
     const location = useLocation();
     const userString = localStorage.getItem('user');
     const user = userString ? JSON.parse(userString) : null;
-    const name = user.name;
-    const surname = user.surname;
-    const email = user.email;
+    const name = user?.name;
+    const surname = user?.surname;
+    const email = user?.email;
+
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+    };
 
     return (
         <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur">
@@ -176,7 +180,7 @@ export function Header() {
                                     variant='ghost'
                                     className='relative h-8 w-8 rounded-full'>
                                     <Avatar className='h-8 w-8'>
-                                        <AvatarFallback>{name.charAt(0)}{surname.charAt(0)}</AvatarFallback>
+                                        <AvatarFallback>{name?.charAt(0)}{surname?.charAt(0)}</AvatarFallback>
                                     </Avatar>
                                 </Button>
                             </DropdownMenuTrigger>
@@ -190,7 +194,7 @@ export function Header() {
                                     </div>
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem >
+                                <DropdownMenuItem onClick={handleLogout}>
                                     <Link to="/login"> Odjava</Link>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>

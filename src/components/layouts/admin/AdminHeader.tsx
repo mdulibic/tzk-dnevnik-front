@@ -29,11 +29,15 @@ export function AdminHeader() {
     const surname = user.surname;
     const email = user.email;
 
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+    };
+
     return (
         <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur">
             <div className="container md:px-8 flex h-14 items-center">
                 <div className="mr-4 hidden md:flex">
-                    <NavLink to="/" className="mr-6 flex items-center space-x-2">
+                    <NavLink to="/admin" className="mr-6 flex items-center space-x-2">
                         <Logo />
                     </NavLink>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -96,7 +100,7 @@ export function AdminHeader() {
                     </SheetTrigger>
                     <SheetContent side="left" className="pr-0 sm:max-w-xs">
                         <NavLink
-                            to="/"
+                            to="/admin"
                             onClick={() => setOpen(false)}
                             className="flex items-center space-x-2">
                             <Logo />
@@ -160,7 +164,7 @@ export function AdminHeader() {
                         </ScrollArea>
                     </SheetContent>
                 </Sheet>
-                <a href="/" className="mr-6 flex items-center space-x-2 md:hidden">
+                <a href="/admin" className="mr-6 flex items-center space-x-2 md:hidden">
                     <Icons.logoLight className="h-6 w-6" />
                     <span className="font-bold inline-block">{appConfig.appName}</span>
                 </a>
@@ -190,7 +194,7 @@ export function AdminHeader() {
                                     </div>
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem >
+                                <DropdownMenuItem onClick={handleLogout}>
                                     <Link to="/login"> Odjava</Link>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>

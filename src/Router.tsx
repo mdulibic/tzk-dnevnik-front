@@ -11,12 +11,9 @@ import TeachersDashboard from "@/pages/admin/teachers/TeachersDashboard.tsx";
 import {RegistrationDashboard} from "@/pages/admin/RegistrationDashboard.tsx";
 import StudentsDashboard from "@/pages/admin/students/StudentsDashboard.tsx";
 import {Adminlayout} from "@/components/layouts/admin/AdminLayout.tsx";
+import {ProtectedRoute} from "@/ProtectedRoute.tsx";
 
 export const router = createBrowserRouter([
-    {
-        path: "/admin",
-        element: <TeachersDashboard />,
-    },
     {
         path: "/login",
         element: <Login />,
@@ -27,15 +24,15 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <Planer />,
+                element: <ProtectedRoute><Planer /></ProtectedRoute>,
             },
             {
                 path: "students",
-                element: <Students />,
+                element: <ProtectedRoute><Students /></ProtectedRoute>,
             },
             {
                 path: "profile",
-                element: <MyProfile />,
+                element: <ProtectedRoute><MyProfile /></ProtectedRoute>,
             },
         ],
     },
@@ -45,15 +42,15 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <RegistrationDashboard />,
+                element: <ProtectedRoute><RegistrationDashboard /></ProtectedRoute>,
             },
             {
                 path: "students",
-                element: <StudentsDashboard />,
+                element: <ProtectedRoute><StudentsDashboard /></ProtectedRoute>,
             },
             {
                 path: "teachers",
-                element: <TeachersDashboard />,
+                element: <ProtectedRoute><TeachersDashboard /></ProtectedRoute>,
             },
         ],
     },
