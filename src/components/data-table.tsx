@@ -58,7 +58,6 @@ export function DataTable<TData, TValue>({
         { key: 'email', value: 'Email' },
         { key: 'name', value: 'Ime' },
         { key: 'surname', value: 'Prezime' },
-        { key: 'class', value: 'Razred' }
     ];
 
     const handleFilter = (checkboxes: string[]) => {
