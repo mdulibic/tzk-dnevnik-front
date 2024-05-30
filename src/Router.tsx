@@ -1,18 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import { Applayout } from "./components/layouts/AppLayout";
+import { Applayout } from "@/components/shared/layouts/AppLayout";
 
-import Planer from "./pages/Planer";
-import Students from "./pages/students/Students";
-import MyProfile from "./pages/MyProfile";
+import Planer from "@/pages/teacher/planer/Planer.tsx";
+import Students from "@/pages/teacher/students/Students";
+import MyProfile from "./pages/teacher/profile/MyProfile.tsx";
 import NoMatch from "@/pages/NoMatch.tsx";
-import Login from "@/pages/Login.tsx";
+import Login from "@/pages/login/Login.tsx";
 import TeachersDashboard from "@/pages/admin/teachers/TeachersDashboard.tsx";
-import {RegistrationDashboard} from "@/pages/admin/RegistrationDashboard.tsx";
+import {RegistrationDashboard} from "@/pages/admin/registration/RegistrationDashboard.tsx";
 import StudentsDashboard from "@/pages/admin/students/StudentsDashboard.tsx";
-import {Adminlayout} from "@/components/layouts/admin/AdminLayout.tsx";
-import {ProtectedRoute} from "@/ProtectedRoute.tsx";
-import {ImportCsvDashboard} from "@/pages/admin/ImportCsvDashboard.tsx";
+import {Adminlayout} from "@/components/shared/layouts/AdminLayout.tsx";
+import {ProtectedRoute} from "@/components/core/ProtectedRoute.tsx";
+import {ImportUsersDashboard} from "@/pages/admin/import-users/ImportUsersDashboard.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -55,7 +55,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "import",
-                element: <ProtectedRoute><ImportCsvDashboard></ImportCsvDashboard></ProtectedRoute>,
+                element: <ProtectedRoute><ImportUsersDashboard></ImportUsersDashboard></ProtectedRoute>,
             },
         ],
     },

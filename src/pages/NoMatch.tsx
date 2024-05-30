@@ -1,7 +1,7 @@
 
 import {NavLink} from "react-router-dom";
 import {appConfig} from "@/config/app.ts";
-import {Icons} from "@/components/icons.tsx";
+import {Icons} from "@/components/shared/icons/icons.tsx";
 
 export default function NoMatch() {
     return (

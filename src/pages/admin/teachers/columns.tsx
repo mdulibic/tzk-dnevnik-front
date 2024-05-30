@@ -16,7 +16,7 @@ import authHeader from "@/auth-header.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import {SchoolClass} from "@/pages/admin/students/columns.tsx";
-import TeacherUpdateDialog from "@/pages/admin/teachers/TeacherUpdateDialog.tsx";
+import TeacherUpdateDialog from "@/components/features/admin/TeacherUpdateDialog.tsx";
 
 export type Teacher = {
     id: number;

@@ -11,7 +11,7 @@ import {
     Dialog,
     DialogTrigger
 } from "@/components/ui/dialog.tsx";
-import StudentDialog from "@/pages/admin/students/StudentUpdateDialog.tsx";
+import StudentUpdateDialog from "@/components/features/admin/StudentUpdateDialog.tsx";
 import {BASE_API_URL} from "@/constants.tsx";
 import authHeader from "@/auth-header.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
@@ -156,7 +156,7 @@ export const columns: ColumnDef<Student>[] = [
                             </DialogTrigger>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <StudentDialog student={student} />
+                    <StudentUpdateDialog student={student} />
                 </Dialog>
             )
         },

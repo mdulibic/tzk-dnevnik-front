@@ -1,6 +1,6 @@
-import {DataTable} from "@/components/data-table.tsx";
+import {DataTable} from "@/components/shared/table/data-table.tsx";
 import {columns, Student} from "@/pages/admin/students/columns.tsx";
-import {PageHeader, PageHeaderHeading} from "@/components/page-header.tsx";
+import {PageHeader, PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {BASE_API_URL} from "@/constants.tsx";
 import authHeader from "@/auth-header.tsx";
 import {useEffect, useState} from "react";
