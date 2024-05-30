@@ -1,5 +1,5 @@
 import {useState, MouseEvent} from "react"
-import {Box, Divider} from "@mui/material"
+import {Divider} from "@mui/material"
 import {Card, CardContent} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
@@ -9,7 +9,7 @@ import format from "date-fns/format"
 import parse from "date-fns/parse"
 import startOfWeek from "date-fns/startOfWeek"
 import getDay from "date-fns/getDay"
-import enUS from "date-fns/locale/en-US"
+import hr from 'date-fns/locale/hr';
 
 import "react-big-calendar/lib/css/react-big-calendar.css"
 
@@ -19,9 +19,10 @@ import EventInfoDialog from "@/components/features/planer/dialog/EventInfoDialog
 import {AddTagDialog} from "@/components/features/planer/dialog/AddTagDialog.tsx"
 import AddDatePickerEventDialog from "@/components/features/planer/dialog/AddDatePickerEventDialog.tsx"
 
+
 const locales = {
-    "en-US": enUS,
-}
+    'hr': hr,
+};
 
 const localizer = dateFnsLocalizer({
     format,
@@ -90,6 +91,21 @@ const initialDatePickerEventFormData: DatePickerEventFormData = {
     start: undefined,
     end: undefined,
 }
+
+const messages = {
+    allDay: "Cijeli dan",
+    previous: "Prethodni",
+    next: "Sljedeći",
+    today: "Danas",
+    month: "Mjesec",
+    week: "Tjedan",
+    day: "Dan",
+    agenda: "Agenda",
+    date: "Datum",
+    time: "Vrijeme",
+    event: "Razredni sat",
+    noEventsInRange:"Nema dostupnih razrednih satova.",
+};
 
 const EventCalendar = () => {
     const [openSlot, setOpenSlot] = useState(false)
@@ -237,6 +253,8 @@ const EventCalendar = () => {
                     setTags={setTags}
                 />
                 <Calendar
+                    messages={messages}
+                    culture="hr"
                     localizer={localizer}
                     events={events}
                     onSelectEvent={handleSelectEvent}

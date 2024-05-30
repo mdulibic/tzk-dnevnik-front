@@ -1,23 +1,23 @@
-import { useState, Dispatch, SetStateAction } from "react"
+import {useState, Dispatch, SetStateAction} from "react"
 import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
     Box,
-    Button,
-    Divider,
     IconButton,
     List,
     ListItem,
     ListItemText,
-    TextField,
 } from "@mui/material"
+import {
+    Dialog, DialogClose,
+    DialogContent, DialogFooter, DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog.tsx";
+import {Button} from "../../../ui/button.tsx";
 import DeleteIcon from "@mui/icons-material/Delete"
 
-import { HexColorPicker } from "react-colorful"
-import { Tag, generateId } from "../EventCalendar.tsx"
+import {HexColorPicker} from "react-colorful"
+import {Tag, generateId} from "../EventCalendar.tsx"
+import {Label} from "@/components/ui/label.tsx";
+import {Input} from "@/components/ui/input.tsx";
 
 interface IProps {
     open: boolean
@@ -26,7 +26,7 @@ interface IProps {
     setTags: Dispatch<SetStateAction<Tag[]>>
 }
 
-export const AddTagDialog = ({ open, handleClose, tags, setTags }: IProps) => {
+export const AddTagDialog = ({open, handleClose, tags, setTags}: IProps) => {
     const [color, setColor] = useState("#b32aa9")
     const [title, setTitle] = useState("")
 
@@ -40,76 +40,55 @@ export const AddTagDialog = ({ open, handleClose, tags, setTags }: IProps) => {
                 title,
             },
         ])
+        onClose()
     }
-
-    const onDeleteTag = (_id: string) => setTags(tags.filter((todo) => todo.id !== _id))
 
     const onClose = () => handleClose()
 
     return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>Add todo</DialogTitle>
+        <Dialog open={open}>
             <DialogContent>
-                <DialogContentText>Create todos to add to your Calendar.</DialogContentText>
-                <Box>
-                    <TextField
-                        name="title"
-                        autoFocus
-                        margin="dense"
-                        id="title"
-                        label="Title"
-                        type="text"
-                        fullWidth
-                        sx={{ mb: 6 }}
-                        required
-                        variant="outlined"
-                        onChange={(e) => {
-                            setTitle(e.target.value)
-                        }}
-                        value={title}
-                    />
-                    <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-                        <HexColorPicker color={color} onChange={setColor} />
-                        <Box sx={{ height: 80, width: 80, borderRadius: 1 }} className="value" style={{ backgroundColor: color }}></Box>
+                <DialogHeader>
+                    <DialogTitle>Dodaj labelu</DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="title" className="text-right">
+                            Naslov
+                        </Label>
+                        <Input
+                            id="title"
+                            className="col-span-3"
+                            onChange={(e) => {
+                                setTitle(e.target.value)
+                            }}
+                            value={title}
+                        />
+                    </div>
+                    <Box display="flex" alignItems="center" gap={2}>
+                        <Label htmlFor="title" className="text-right gap-4 px-4">
+                            Boje labele
+                        </Label>
+                        <HexColorPicker color={color} onChange={setColor}/>
+                        <Box
+                            sx={{height: 80, width: 80, borderRadius: 4}}
+                            className="value"
+                            style={{backgroundColor: color}}>
+                        </Box>
                     </Box>
-                    <Box>
-                        <List sx={{ marginTop: 3 }}>
-                            {tags.map((todo) => (
-                                <ListItem
-                                    key={todo.title}
-                                    secondaryAction={
-                                        <IconButton onClick={() => onDeleteTag(todo.id)} color="error" edge="end">
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    }
-                                >
-                                    <Box
-                                        sx={{ height: 40, width: 40, borderRadius: 1, marginRight: 1 }}
-                                        className="value"
-                                        style={{ backgroundColor: todo.color }}
-                                    ></Box>
-                                    <ListItemText primary={todo.title} />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Box>
-                </Box>
+                </div>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <div className="flex w-full justify-between">
+                            <Button type="submit" variant="destructive" onClick={onClose}>Odustani</Button>
+                            <Button
+                                type="submit"
+                                onClick={() => onAddTag()}
+                                disabled={title === "" || color === ""}>Spremi</Button>
+                        </div>
+                    </DialogClose>
+                </DialogFooter>
             </DialogContent>
-            <Divider />
-            <DialogActions sx={{ marginTop: 2 }}>
-                <Button sx={{ marginRight: 2 }} variant="contained" color="error" onClick={onClose}>
-                    Cancel
-                </Button>
-                <Button
-                    onClick={() => onAddTag()}
-                    disabled={title === "" || color === ""}
-                    sx={{ marginRight: 2 }}
-                    variant="contained"
-                    color="success"
-                >
-                    Add
-                </Button>
-            </DialogActions>
         </Dialog>
     )
 }

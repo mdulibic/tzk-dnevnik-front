@@ -36,8 +36,8 @@ const SchoolClassSelect: React.FC<SchoolClassSelectProps> = ({selectedClass, onC
     }, []);
 
     return (
-        <div className="rounded-md border border-input">
-            <FormControl sx={{minWidth: 120}} size="small">
+        <div className="rounded-md border border-input w-full px-2">
+            <FormControl size="small" className=" w-full px-2">
                 <Select
                     labelId="school-class-select-label"
                     value={selectedClass}

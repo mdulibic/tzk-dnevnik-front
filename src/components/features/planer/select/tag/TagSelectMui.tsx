@@ -9,11 +9,11 @@ interface TagSelectProps {
     onChange: (value: string) => void;
 }
 
-const TagSelect: React.FC<TagSelectProps> = ({tags, onChange}) => {
+const TagSelectMui: React.FC<TagSelectProps> = ({tags, onChange}) => {
 
     return (
-        <div className="rounded-md border border-input">
-            <FormControl sx={{minWidth: 120}} size="small">
+        <div className="rounded-md border border-input w-full px-2">
+            <FormControl size="small" className=" w-full px-2">
                 <Select
                     onChange={(event) => onChange(String(event.target.value))}
                     placeholder="Odaberite razred"
@@ -27,7 +27,7 @@ const TagSelect: React.FC<TagSelectProps> = ({tags, onChange}) => {
                         }
                     }}
                     IconComponent={() => (
-                        <div className="px-2">
+                        <div className="">
                             <ChevronUpIcon className={cn(
                                 "py-0.5 cursor-default",
                             )}/>
@@ -41,7 +41,7 @@ const TagSelect: React.FC<TagSelectProps> = ({tags, onChange}) => {
                         tags.map((tag) => (
                             <MenuItem
                                 className={cn(
-                                    "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+                                    "select-none items-center rounded-sm text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                                 )}
                                 key={tag.id}
                                 value={tag.id.toString()}
@@ -58,4 +58,4 @@ const TagSelect: React.FC<TagSelectProps> = ({tags, onChange}) => {
     );
 };
 
-export default TagSelect;
+export default TagSelectMui;

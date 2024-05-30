@@ -14,8 +14,8 @@ import {Label} from "@/components/ui/label.tsx";
 import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "../../../ui/button.tsx";
-import TagSelect from "@/components/features/planer/select/TagSelect.tsx";
 import ActivitySelect from "@/components/features/planer/select/ActivitySelect.tsx";
+import TagSelect from "@/components/features/planer/select/tag/TagSelect.tsx";
 
 interface IProps {
     open: boolean
@@ -27,7 +27,7 @@ interface IProps {
 }
 
 const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onAddEvent, todos}: IProps) => {
-    const {classId, activityId} = eventFormData
+    const {classId, activityId, description, title} = eventFormData
     const onClose = () => handleClose()
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +57,13 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
             ...prevState,
             activityId: id,
         }))
+    }
+
+    const isDisabled = () => {
+        if (description === "" || classId === "" || activityId === "" || title === "") {
+            return true
+        }
+        return false
     }
 
     return (
@@ -119,7 +126,7 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
                     <DialogClose asChild>
                         <div className="flex w-full justify-between">
                             <Button type="submit" variant="destructive" onClick={onClose}>Odustani</Button>
-                            <Button type="submit" onClick={onAddEvent}>Spremi</Button>
+                            <Button type="submit" onClick={onAddEvent} disabled={isDisabled()}>Spremi</Button>
                         </div>
                     </DialogClose>
                 </DialogFooter>

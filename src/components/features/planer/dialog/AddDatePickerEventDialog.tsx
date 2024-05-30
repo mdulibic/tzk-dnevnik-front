@@ -12,7 +12,7 @@ import {DatePickerEventFormData, Tag} from "../EventCalendar.tsx"
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import ActivitySelect from "@/components/features/planer/select/ActivitySelect.tsx";
-import TagSelect from "@/components/features/planer/select/TagSelect.tsx";
+import TagSelectMui from "@/components/features/planer/select/tag/TagSelectMui.tsx";
 import {CheckedState} from "@radix-ui/react-checkbox";
 import {DialogFooter, DialogHeader} from "@/components/ui/dialog.tsx";
 import {Cross2Icon} from "@radix-ui/react-icons";
@@ -35,7 +35,7 @@ const AddDatePickerEventDialog = ({
                                      onAddEvent,
                                      todos,
                                  }: IProps) => {
-    const {classId, description, allDay, start, end} = datePickerEventFormData
+    const {classId, description, allDay, start, end, activityId} = datePickerEventFormData
 
     const onClose = () => {
         handleClose()
@@ -76,17 +76,17 @@ const AddDatePickerEventDialog = ({
         }))
     }
 
-    // const isDisabled = () => {
-    //     const checkend = () => {
-    //         if (!allDay && end === null) {
-    //             return true
-    //         }
-    //     }
-    //     if (description === "" || start === null || checkend()) {
-    //         return true
-    //     }
-    //     return false
-    // }
+    const isDisabled = () => {
+        const checkend = () => {
+            if (!allDay && end === null) {
+                return true
+            }
+        }
+        if (description === "" || start === null || checkend()) {
+            return true
+        }
+        return false
+    }
 
     return (
         <Dialog open={open}>
@@ -122,7 +122,10 @@ const AddDatePickerEventDialog = ({
                         <Label htmlFor="activityId" className="text-right">
                             Aktivnost
                         </Label>
-                        <ActivitySelect onChange={handleActivityChange}></ActivitySelect>
+                        <ActivitySelect
+                            selectedActivity={activityId}
+                            onChange={handleActivityChange}
+                        ></ActivitySelect>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="school-class" className="text-right">
@@ -207,13 +210,13 @@ const AddDatePickerEventDialog = ({
                         <Label htmlFor="todo" className="text-right">
                             Labela
                         </Label>
-                        <TagSelect tags={todos} onChange={handleTagChange}/>
+                        <TagSelectMui tags={todos} onChange={handleTagChange}/>
                     </div>
                 </div>
                 <DialogFooter>
                     <div className="flex w-full justify-between">
                         <Button type="submit" variant="destructive" onClick={onClose}>Odustani</Button>
-                        <Button type="submit" onClick={onAddEvent}>Spremi</Button>
+                        <Button type="submit" onClick={onAddEvent} disabled={isDisabled()}>Spremi</Button>
                     </div>
                 </DialogFooter>
             </DialogContent>
