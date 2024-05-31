@@ -69,21 +69,19 @@ export interface DatePickerEventFormData {
     end?: Date
 }
 
-export const generateId = () => (Math.floor(Math.random() * 10000) + 1).toString()
-
 const initialEventFormState: EventFormData = {
     title: "",
-    activityId: "",
-    subActivityId: "",
+    activityId: "1",
+    subActivityId: "1",
     description: "",
-    classId: "",
+    classId: "1",
     tagId: undefined,
 }
 
 const initialDatePickerEventFormData: DatePickerEventFormData = {
     title: "",
-    activityId: "",
-    subActivityId: "",
+    activityId: "1",
+    subActivityId: "1",
     description: "",
     classId: "1",
     tagId: undefined,
@@ -104,7 +102,7 @@ const messages = {
     date: "Datum",
     time: "Vrijeme",
     event: "Razredni sat",
-    noEventsInRange:"Nema dostupnih razrednih satova.",
+    noEventsInRange: "Nema dostupnih razrednih satova.",
 };
 
 const EventCalendar = () => {
@@ -148,7 +146,7 @@ const EventCalendar = () => {
 
         const data: IEventInfo = {
             ...eventFormData,
-            id: generateId(),
+            id: "",
             start: currentEvent?.start,
             end: currentEvent?.end,
         }
@@ -179,7 +177,7 @@ const EventCalendar = () => {
 
         const data: IEventInfo = {
             ...datePickerEventFormData,
-            id: generateId(),
+            id: "",
             start: setMinToZero(datePickerEventFormData.start),
             end: datePickerEventFormData.allDay
                 ? addHours(datePickerEventFormData.start, 12)

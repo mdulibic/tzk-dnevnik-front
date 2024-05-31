@@ -14,8 +14,8 @@ import {Label} from "@/components/ui/label.tsx";
 import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "../../../ui/button.tsx";
-import ActivitySelect from "@/components/features/planer/select/ActivitySelect.tsx";
 import TagSelect from "@/components/features/planer/select/tag/TagSelect.tsx";
+import ActivitySelect from "../select/activity/ActivitySelect.tsx";
 
 interface IProps {
     open: boolean
@@ -27,7 +27,7 @@ interface IProps {
 }
 
 const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onAddEvent, todos}: IProps) => {
-    const {classId, activityId, description, title} = eventFormData
+    const {classId, activityId, title} = eventFormData
     const onClose = () => handleClose()
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -59,8 +59,15 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
         }))
     }
 
+    const handleSubActivityChange = (id: string) => {
+        setEventFormData((prevState) => ({
+            ...prevState,
+            subActivityId: id,
+        }))
+    }
+
     const isDisabled = () => {
-        if (description === "" || classId === "" || activityId === "" || title === "") {
+        if (classId === "" || activityId === "" || title === "") {
             return true
         }
         return false
@@ -88,19 +95,24 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
                         <Label htmlFor="school-class" className="text-right">
                             Aktivnost
                         </Label>
-                        <ActivitySelect
-                            selectedActivity={activityId}
-                            onChange={handleActivityChange}
-                        ></ActivitySelect>
+                        <div className="col-span-3">
+                            <ActivitySelect
+                                selectedActivity={activityId}
+                                onActivityChange={handleActivityChange}
+                                onSubActivityChange={handleSubActivityChange}
+                            ></ActivitySelect>
+                        </div>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="school-class" className="text-right">
                             Razred
                         </Label>
-                        <SchoolClassSelect
-                            selectedClass={classId}
-                            onChange={handleClassChange}
-                        />
+                        <div className="col-span-3">
+                            <SchoolClassSelect
+                                selectedClass={classId}
+                                onChange={handleClassChange}
+                            />
+                        </div>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="description" className="text-right">
@@ -132,7 +144,8 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
                 </DialogFooter>
             </DialogContent>
         </Dialog>
-    );
+    )
+        ;
 }
 
 export default AddEventDialog

@@ -1,10 +1,6 @@
 import {useState, Dispatch, SetStateAction} from "react"
 import {
     Box,
-    IconButton,
-    List,
-    ListItem,
-    ListItemText,
 } from "@mui/material"
 import {
     Dialog, DialogClose,
@@ -12,10 +8,9 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog.tsx";
 import {Button} from "../../../ui/button.tsx";
-import DeleteIcon from "@mui/icons-material/Delete"
 
 import {HexColorPicker} from "react-colorful"
-import {Tag, generateId} from "../EventCalendar.tsx"
+import {Tag} from "../EventCalendar.tsx"
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 
@@ -35,7 +30,7 @@ export const AddTagDialog = ({open, handleClose, tags, setTags}: IProps) => {
         setTags([
             ...tags,
             {
-                id: generateId(),
+                id: "",
                 color,
                 title,
             },

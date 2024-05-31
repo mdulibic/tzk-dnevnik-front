@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import authHeader from '@/auth-header.tsx';
-import {BASE_API_URL} from "@/constants.tsx";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue
+} from "@/components/ui/select.tsx";
 import {Tag} from "@/components/features/planer/EventCalendar.tsx";
-import {FormControl, MenuItem} from "@mui/material";
-import {ChevronDownIcon, ChevronUpIcon} from "@radix-ui/react-icons";
-import {cn} from "@/utils.ts";
 
 interface TagSelectProps {
     tags: Tag[],

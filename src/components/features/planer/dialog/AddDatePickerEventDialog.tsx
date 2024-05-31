@@ -11,7 +11,7 @@ import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns"
 import {DatePickerEventFormData, Tag} from "../EventCalendar.tsx"
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import ActivitySelect from "@/components/features/planer/select/ActivitySelect.tsx";
+import ActivitySelectMui from "@/components/features/planer/select/activity/ActivitySelectMui.tsx";
 import TagSelectMui from "@/components/features/planer/select/tag/TagSelectMui.tsx";
 import {CheckedState} from "@radix-ui/react-checkbox";
 import {DialogFooter, DialogHeader} from "@/components/ui/dialog.tsx";
@@ -28,23 +28,30 @@ interface IProps {
 }
 
 const AddDatePickerEventDialog = ({
-                                     open,
-                                     handleClose,
-                                     datePickerEventFormData,
-                                     setDatePickerEventFormData,
-                                     onAddEvent,
-                                     todos,
-                                 }: IProps) => {
-    const {classId, description, allDay, start, end, activityId} = datePickerEventFormData
+                                      open,
+                                      handleClose,
+                                      datePickerEventFormData,
+                                      setDatePickerEventFormData,
+                                      onAddEvent,
+                                      todos,
+                                  }: IProps) => {
+    const {classId, description, allDay, start, end, activityId, title} = datePickerEventFormData
 
     const onClose = () => {
         handleClose()
     }
 
-    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setDatePickerEventFormData((prevState) => ({
             ...prevState,
-            [event.target.name]: event.target.value,
+            title: event.target.value,
+        }))
+    }
+
+    const handleDescriptionChange= (event: ChangeEvent<HTMLInputElement>) => {
+        setDatePickerEventFormData((prevState) => ({
+            ...prevState,
+            description: event.target.value,
         }))
     }
 
@@ -76,13 +83,15 @@ const AddDatePickerEventDialog = ({
         }))
     }
 
+    const handleSubActivityChange = (id: string) => {
+        setDatePickerEventFormData((prevState) => ({
+            ...prevState,
+            subActivityId: id,
+        }))
+    }
+
     const isDisabled = () => {
-        const checkend = () => {
-            if (!allDay && end === null) {
-                return true
-            }
-        }
-        if (description === "" || start === null || checkend()) {
+        if (classId === "" || activityId === "" || title === "" || (!allDay && start === null && end === null)) {
             return true
         }
         return false
@@ -115,26 +124,31 @@ const AddDatePickerEventDialog = ({
                             id="title"
                             defaultValue={description}
                             className="col-span-3"
-                            onChange={onChange}
+                            onChange={handleTitleChange}
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="activityId" className="text-right">
                             Aktivnost
                         </Label>
-                        <ActivitySelect
-                            selectedActivity={activityId}
-                            onChange={handleActivityChange}
-                        ></ActivitySelect>
+                        <div className="col-span-3">
+                            <ActivitySelectMui
+                                selectedActivity={activityId}
+                                onActivityChange={handleActivityChange}
+                                onSubActivityChange={handleSubActivityChange}
+                            ></ActivitySelectMui>
+                        </div>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="school-class" className="text-right">
                             Razred
                         </Label>
-                        <SchoolClassSelect
-                            selectedClass={classId.toString()}
-                            onChange={handleClassChange}
-                        />
+                        <div className="col-span-3">
+                            <SchoolClassSelect
+                                selectedClass={classId.toString()}
+                                onChange={handleClassChange}
+                            />
+                        </div>
                     </div>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <div className="grid grid-cols-4 items-center gap-4">
@@ -201,7 +215,7 @@ const AddDatePickerEventDialog = ({
                             id="description"
                             multiline
                             rows={3}
-                            onChange={onChange}
+                            onChange={handleDescriptionChange}
                             className="col-span-3"
                             variant="outlined"
                         />
@@ -210,7 +224,9 @@ const AddDatePickerEventDialog = ({
                         <Label htmlFor="todo" className="text-right">
                             Labela
                         </Label>
-                        <TagSelectMui tags={todos} onChange={handleTagChange}/>
+                        <div className="col-span-3">
+                            <TagSelectMui tags={todos} onChange={handleTagChange}/>
+                        </div>
                     </div>
                 </div>
                 <DialogFooter>
