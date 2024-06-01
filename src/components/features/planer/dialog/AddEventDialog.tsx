@@ -77,8 +77,8 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
         <Dialog open={open}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Dodaj razredni sat</DialogTitle>
-                    <DialogDescription>Dodaj novi razredni sat u planer.</DialogDescription>
+                    <DialogTitle>Dodaj nastavni sat</DialogTitle>
+                    <DialogDescription>Dodaj nastavni razredni sat u planer.</DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">

@@ -1,4 +1,4 @@
-import {useState, MouseEvent} from "react"
+import {useState, MouseEvent, useEffect} from "react"
 import {Divider} from "@mui/material"
 import {Card, CardContent} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
@@ -15,9 +15,12 @@ import "react-big-calendar/lib/css/react-big-calendar.css"
 
 import EventInfo from "./EventInfo.tsx"
 import AddEventDialog from "@/components/features/planer/dialog/AddEventDialog.tsx"
-import EventInfoDialog from "@/components/features/planer/dialog/EventInfoDialog.tsx"
 import {AddTagDialog} from "@/components/features/planer/dialog/AddTagDialog.tsx"
 import AddDatePickerEventDialog from "@/components/features/planer/dialog/AddDatePickerEventDialog.tsx"
+import {BASE_API_URL} from "@/constants.tsx";
+import authHeader from "@/auth-header.tsx";
+import {getUserId} from "@/utils.ts";
+import {toast} from "@/components/ui/use-toast.ts";
 
 
 const locales = {
@@ -32,20 +35,67 @@ const localizer = dateFnsLocalizer({
     locales,
 })
 
+export interface IActivity {
+    id: number;
+    name: string;
+    subactivities: ISubActivity[];
+}
+
+export interface ISubActivity {
+    id: number;
+    name: string;
+    parentActivity: IActivity;
+}
+
+export interface ISchoolClass {
+    id: number;
+    year: number;
+    division: string;
+    teacher: ITeacher;
+}
+
+export interface ITag {
+    id: number;
+    title: string;
+    color: string;
+}
+
+export interface ITeacher {
+    id: number;
+    name: string;
+    surname: string;
+    username: string;
+    email: string;
+    role: string;
+}
+
+export interface IEvent extends Event {
+    id: number;
+    title: string;
+    description: string;
+    startTimestamp: string;
+    endTimestamp: string;
+    allDay: boolean;
+    activity: IActivity;
+    subActivity?: ISubActivity;
+    schoolClass: ISchoolClass;
+    tag?: ITag;
+    teacher: ITeacher;
+}
+
 export interface Tag {
-    id: string
     title: string
     color?: string
 }
 
 export interface IEventInfo extends Event {
-    id: string
     title: string
     description: string
     activityId: string
     subActivityId?: string
     classId: string
     tagId?: string
+    teacherId: number
 }
 
 export interface EventFormData {
@@ -101,34 +151,111 @@ const messages = {
     agenda: "Agenda",
     date: "Datum",
     time: "Vrijeme",
-    event: "Razredni sat",
-    noEventsInRange: "Nema dostupnih razrednih satova.",
+    event: "Nastavni sat",
+    noEventsInRange: "Nema dostupnih nastavnih satova.",
 };
+
+async function fetchEvents(): Promise<IEvent[]> {
+    const teacherId = getUserId();
+    const response = await fetch(
+        `${BASE_API_URL}/api/events/teacher/${teacherId}`,
+        {
+            method: 'GET',
+            headers: {
+                Origin: origin,
+                Authorization: authHeader(),
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data as IEvent[];
+}
+
+async function fetchTags(): Promise<ITag[]> {
+    const response = await fetch(
+        `${BASE_API_URL}/api/events/tags`,
+        {
+            method: 'GET',
+            headers: {
+                Origin: origin,
+                Authorization: authHeader(),
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data as ITag[];
+}
+
+async function addEvent(eventDto: IEventInfo): Promise<IEvent[]> {
+    const response = await fetch(`${BASE_API_URL}/api/events/add`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Origin: origin,
+            Authorization: authHeader(),
+        },
+        body: JSON.stringify(eventDto),
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data as IEvent[];
+}
+
 
 const EventCalendar = () => {
     const [openSlot, setOpenSlot] = useState(false)
     const [openDatepickerModal, setOpenDatepickerModal] = useState(false)
     const [openTodoModal, setOpenTodoModal] = useState(false)
-    const [currentEvent, setCurrentEvent] = useState<IEventInfo | null>(null)
+    const [currentEvent, setCurrentEvent] = useState<IEvent | null>(null)
 
-    const [eventInfoModal, setEventInfoModal] = useState(false)
-
-    const [events, setEvents] = useState<IEventInfo[]>([])
-    const [tags, setTags] = useState<Tag[]>([])
+    const [events, setEvents] = useState<IEvent[]>([])
+    const [tags, setTags] = useState<ITag[]>([])
 
     const [eventFormData, setEventFormData] = useState<EventFormData>(initialEventFormState)
 
     const [datePickerEventFormData, setDatePickerEventFormData] =
         useState<DatePickerEventFormData>(initialDatePickerEventFormData)
 
+    useEffect(() => {
+        const getEvents = async () => {
+            try {
+                const eventsData = await fetchEvents();
+                const tagsData = await fetchTags();
+                setTags(tagsData);
+                setEvents(eventsData);
+            } catch (error) {
+            }
+        };
+
+        getEvents();
+    }, []);
+
     const handleSelectSlot = (event: Event) => {
         setOpenSlot(true)
-        //setCurrentEvent(event)
+        setEventFormData((prevState) => ({
+            ...prevState,
+            start: event.start,
+            end: event.end,
+            allDay: event.allDay
+        }))
     }
 
-    const handleSelectEvent = (event: IEventInfo) => {
+    const handleSelectEvent = (event: IEvent) => {
         setCurrentEvent(event)
-        setEventInfoModal(true)
     }
 
     const handleClose = () => {
@@ -141,65 +268,77 @@ const EventCalendar = () => {
         setOpenDatepickerModal(false)
     }
 
-    const onAddEvent = (e: MouseEvent<HTMLButtonElement>) => {
+    const onAddEvent = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
+
+        const teacherId = getUserId();
 
         const data: IEventInfo = {
             ...eventFormData,
-            id: "",
-            start: currentEvent?.start,
-            end: currentEvent?.end,
+            teacherId: teacherId,
         }
 
-        const newEvents = [...events, data]
+        try {
+            const newEvents = await addEvent(data);
+            toast({
+                title: "Dodavanje nastavnog sata uspješno!",
+                description: "Novi nastavni je dodan u sustav.",
+            })
+            setEvents(newEvents);
+        } catch (error) {
+            console.error('Error adding event:', error);
+            toast({
+                duration: 2000,
+                variant: "destructive",
+                title: "Dodavanje sata neuspješno!",
+                description: "Provjerite vezu i pokušajte ponovno.",
+            })
+        }
 
-        const dataString = JSON.stringify(data, null, 2);
-
-// Display the JSON string in an alert
-        alert(dataString);
-
-        setEvents(newEvents)
         handleClose()
     }
 
-    const onAddEventFromDatePicker = (e: MouseEvent<HTMLButtonElement>) => {
+    const onAddEventFromDatePicker = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
 
         const addHours = (date: Date | undefined, hours: number) => {
             return date ? date.setHours(date.getHours() + hours) : undefined
         }
-
         const setMinToZero = (date: any) => {
             date.setSeconds(0)
 
             return date
         }
+        const teacherId = getUserId();
 
         const data: IEventInfo = {
             ...datePickerEventFormData,
-            id: "",
+            teacherId: teacherId,
             start: setMinToZero(datePickerEventFormData.start),
             end: datePickerEventFormData.allDay
                 ? addHours(datePickerEventFormData.start, 12)
                 : setMinToZero(datePickerEventFormData.end),
         }
 
-        const dataString = JSON.stringify(data, null, 2);
+        try {
+            const newEvents = await addEvent(data);
+            setEvents(newEvents);
+            toast({
+                title: "Dodavanje nastavnog sata uspješno!",
+                description: "Novi nastavni je dodan u sustav.",
+            })
+        } catch (error) {
+            console.error('Error adding event:', error);
+            toast({
+                duration: 2000,
+                variant: "destructive",
+                title: "Dodavanje sata neuspješno!",
+                description: "Provjerite vezu i pokušajte ponovno.",
+            })
+        }
 
-// Display the JSON string in an alert
-        alert(dataString);
-
-        const newEvents = [...events, data]
-
-        setEvents(newEvents)
         setDatePickerEventFormData(initialDatePickerEventFormData)
-
         handleDatePickerClose()
-    }
-
-    const onDeleteEvent = () => {
-        setEvents(() => [...events].filter((e) => e.id !== (currentEvent as IEventInfo).id!))
-        setEventInfoModal(false)
     }
 
     return (
@@ -211,7 +350,7 @@ const EventCalendar = () => {
                         className="ml-2 py-2 px-4 bg-blue-600 text-white rounded shadow-md hover:bg-blue-700 focus:bg-blue-700"
                         onClick={() => setOpenDatepickerModal(true)}
                     >
-                        Dodaj razredni sat
+                        Dodaj nastavni sat
                     </Button>
                     <Button
                         type="submit"
@@ -238,17 +377,9 @@ const EventCalendar = () => {
                     onAddEvent={onAddEventFromDatePicker}
                     todos={tags}
                 />
-                <EventInfoDialog
-                    open={eventInfoModal}
-                    handleClose={() => setEventInfoModal(false)}
-                    onDeleteEvent={onDeleteEvent}
-                    currentEvent={currentEvent as IEventInfo}
-                />
                 <AddTagDialog
                     open={openTodoModal}
                     handleClose={() => setOpenTodoModal(false)}
-                    tags={tags}
-                    setTags={setTags}
                 />
                 <Calendar
                     messages={messages}
@@ -258,16 +389,20 @@ const EventCalendar = () => {
                     onSelectEvent={handleSelectEvent}
                     onSelectSlot={handleSelectSlot}
                     selectable
-                    startAccessor="start"
-                    endAccessor="end"
+                    startAccessor={(event) => {
+                        return new Date(event.startTimestamp)
+                    }}
+                    endAccessor={(event) => {
+                        return new Date(event.endTimestamp)
+                    }}
                     defaultView="week"
                     components={{event: EventInfo}}
                     eventPropGetter={(event) => {
-                        const hasTodo = tags.find((tag) => tag.id === event.tagId);
+                        const tag = tags.find((tag) => tag.id === event.tag?.id);
                         return {
                             style: {
-                                backgroundColor: hasTodo ? hasTodo.color : "#2563EB",
-                                borderColor: hasTodo ? hasTodo.color : "#2563EB",
+                                backgroundColor: tag ? tag.color : "#2563EB",
+                                borderColor: tag ? tag.color : "#2563EB",
                             },
                         };
                     }}

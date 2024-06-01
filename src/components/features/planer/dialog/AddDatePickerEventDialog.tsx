@@ -103,11 +103,11 @@ const AddDatePickerEventDialog = ({
                 <DialogHeader>
                     <div
                         className={"text-lg font-semibold leading-none tracking-tight"}>
-                        Dodaj razredni sat
+                        Dodaj nastavni sat
                     </div>
                     <div
                         className={"text-sm text-muted-foreground"}>
-                        Dodaj novi razredni sat u planer
+                        Dodaj novi nastavni sat u planer
                     </div>
                     <div onClick={onClose}
                          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
