@@ -1,4 +1,4 @@
-import {Tag} from "@/components/features/planer/EventCalendar.tsx";
+import {Tag} from "@/components/features/teacher/schedule/EventCalendar.tsx";
 import {FormControl, MenuItem, Select} from "@mui/material";
 import {ChevronDownIcon, ChevronUpIcon} from "@radix-ui/react-icons";
 import {cn} from "@/utils.ts";

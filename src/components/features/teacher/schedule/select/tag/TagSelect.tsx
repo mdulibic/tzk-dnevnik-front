@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select.tsx";
-import {Tag} from "@/components/features/planer/EventCalendar.tsx";
+import {Tag} from "@/components/features/teacher/schedule/EventCalendar.tsx";
 
 interface TagSelectProps {
     tags: Tag[],

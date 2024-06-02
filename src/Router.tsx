@@ -2,9 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 
 import { Applayout } from "@/components/shared/layouts/AppLayout";
 
-import Planer from "@/pages/teacher/planer/Planer.tsx";
+import Schedule from "@/pages/teacher/schedule/Schedule.tsx";
 import Students from "@/pages/teacher/students/Students";
-import MyProfile from "./pages/teacher/profile/MyProfile.tsx";
+import Settings from "@/pages/teacher/settings/Settings.tsx";
 import NoMatch from "@/pages/NoMatch.tsx";
 import Login from "@/pages/login/Login.tsx";
 import TeachersDashboard from "@/pages/admin/teachers/TeachersDashboard.tsx";
@@ -25,15 +25,15 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <ProtectedRoute><Planer /></ProtectedRoute>,
+                element: <ProtectedRoute><Schedule /></ProtectedRoute>,
             },
             {
                 path: "students",
                 element: <ProtectedRoute><Students /></ProtectedRoute>,
             },
             {
-                path: "profile",
-                element: <ProtectedRoute><MyProfile /></ProtectedRoute>,
+                path: "settings",
+                element: <ProtectedRoute><Settings /></ProtectedRoute>,
             },
         ],
     },

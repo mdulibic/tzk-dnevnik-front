@@ -4,19 +4,19 @@ import {
     Dialog,
     DialogContent,
 } from "@mui/material"
-import {Button} from "../../../ui/button.tsx";
-import {Checkbox} from "../../../ui/checkbox.tsx";
+import {Button} from "../../../../ui/button.tsx";
+import {Checkbox} from "../../../../ui/checkbox.tsx";
 import {LocalizationProvider, DateTimePicker} from "@mui/x-date-pickers"
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns"
 import {DatePickerEventFormData, Tag} from "../EventCalendar.tsx"
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import ActivitySelectMui from "@/components/features/planer/select/activity/ActivitySelectMui.tsx";
-import TagSelectMui from "@/components/features/planer/select/tag/TagSelectMui.tsx";
+import ActivitySelectMui from "@/components/features/teacher/schedule/select/activity/ActivitySelectMui.tsx";
+import TagSelectMui from "@/components/features/teacher/schedule/select/tag/TagSelectMui.tsx";
 import {CheckedState} from "@radix-ui/react-checkbox";
 import {DialogFooter, DialogHeader} from "@/components/ui/dialog.tsx";
 import {Cross2Icon} from "@radix-ui/react-icons";
-import SchoolClassSelect from "@/components/features/planer/select/SchoolClassSelect.tsx";
+import SchoolClassSelect from "@/components/features/teacher/schedule/select/SchoolClassSelect.tsx";
 
 interface IProps {
     open: boolean

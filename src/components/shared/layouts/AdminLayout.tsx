@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster.tsx"
 
 export function Adminlayout() {
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen bg-muted/30">
             <AdminHeader/>
             <div className="flex-grow flex flex-col">
                 <div className="container px-4 md:px-8 flex-grow flex flex-col pt-8">

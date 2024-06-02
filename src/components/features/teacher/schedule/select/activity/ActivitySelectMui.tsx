@@ -33,7 +33,7 @@ const ActivitySelectMui: React.FC<SchoolActivitySelectProps> = ({
 
     useEffect(() => {
         fetch(
-            BASE_API_URL + '/api/activity/all',
+            BASE_API_URL + '/api/activities/all',
             {
                 method: "GET",
                 headers: {

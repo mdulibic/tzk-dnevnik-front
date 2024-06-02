@@ -1,0 +1,81 @@
+import {PageHeader, PageHeaderHeading} from "@/components/core/PageHeader.tsx";
+import EventCalendar, {IEvent} from "@/components/features/teacher/schedule/EventCalendar.tsx";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {useEffect, useState} from "react";
+import {getUserId} from "@/utils.ts";
+import {fetchTeacherById} from "@/components/features/teacher/settings/General.tsx";
+import {ArrowRight} from "lucide-react";
+
+function formatDateTime(dateString: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    };
+
+    const date = new Date(dateString);
+    const formattedDate = new Intl.DateTimeFormat('de-DE', options).format(date);
+    const [datePart, timePart] = formattedDate.split(', ');
+
+    const timePartWithH = timePart.replace(':', ':') + 'h';
+
+    return `${datePart}, ${timePartWithH}`;
+}
+
+
+export default function Schedule() {
+    const [nextEvent, setNextEvent] = useState<IEvent | null>(null);
+    const teacherId = getUserId();
+
+    useEffect(() => {
+        const getTeacher = async () => {
+            try {
+                const data = await fetchTeacherById(teacherId);
+
+                const now = new Date();
+                const upcomingEvents = data.events.filter(event => new Date(event.startTimestamp) > now);
+                const nextEvent = upcomingEvents.sort((a, b) => new Date(a.startTimestamp).getTime() - new Date(b.startTimestamp).getTime())[0];
+                setNextEvent(nextEvent);
+            } catch (error) {
+                console.error('Error fetching teacher data:', error);
+            }
+        };
+
+        getTeacher();
+    }, [teacherId]);
+    return (
+        <div>
+            <PageHeader>
+                <PageHeaderHeading>Raspored nastave</PageHeaderHeading>
+                {nextEvent && (
+                    <Card
+                        className="cursor-pointer hover:shadow-lg transition-shadow duration-300"
+                        onClick={() => {/* Handle card click, e.g., navigate to event details */
+                        }}
+                    >
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <div className="flex items-center justify-between">
+                                <CardTitle className="text-lg">
+                                    Nadolazeći nastavni sat
+                                </CardTitle>
+                                <ArrowRight className="ml-2 w-4 h-4"/>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="text-md font-semibold text-blue-800">{nextEvent.title}</div>
+                            <p className="text-s text-muted-foreground">
+                                {nextEvent.description}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                                {formatDateTime(nextEvent.startTimestamp)} - {formatDateTime(nextEvent.endTimestamp)}
+                            </p>
+                        </CardContent>
+                    </Card>
+                )}
+            </PageHeader>
+            <EventCalendar/>
+        </div>
+    )
+}

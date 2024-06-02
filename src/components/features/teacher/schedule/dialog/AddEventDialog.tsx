@@ -13,8 +13,8 @@ import {EventFormData, Tag} from "../EventCalendar.tsx"
 import {Label} from "@/components/ui/label.tsx";
 import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import {Button} from "../../../ui/button.tsx";
-import TagSelect from "@/components/features/planer/select/tag/TagSelect.tsx";
+import {Button} from "../../../../ui/button.tsx";
+import TagSelect from "@/components/features/teacher/schedule/select/tag/TagSelect.tsx";
 import ActivitySelect from "../select/activity/ActivitySelect.tsx";
 
 interface IProps {

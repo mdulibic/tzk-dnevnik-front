@@ -27,18 +27,17 @@ interface SchoolActivitySelectProps {
     onSubActivityChange: (id: string) => void;
 }
 
-const ActivitySelectMui: React.FC<SchoolActivitySelectProps> = ({
+const ActivitySelect: React.FC<SchoolActivitySelectProps> = ({
                                                                     selectedActivity,
                                                                     onActivityChange,
-                                                                    onSubActivityChange
-                                                                }) => {
+                                                                    onSubActivityChange}) => {
     const [schoolActivities, setSchoolActivities] = useState<SchoolActivity[]>([]);
     const [subActivities, setSubActivities] = useState<SchoolSubActivity[]>([]);
     const [selectedSubActivity, setSelectedSubActivity] = useState<string>("");
 
     useEffect(() => {
         fetch(
-            BASE_API_URL + '/api/activity/all',
+            BASE_API_URL + '/api/activities/all',
             {
                 method: "GET",
                 headers: {
@@ -122,4 +121,4 @@ const ActivitySelectMui: React.FC<SchoolActivitySelectProps> = ({
     );
 };
 
-export default ActivitySelectMui;
+export default ActivitySelect;

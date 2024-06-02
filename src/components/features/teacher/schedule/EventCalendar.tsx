@@ -14,9 +14,9 @@ import hr from 'date-fns/locale/hr';
 import "react-big-calendar/lib/css/react-big-calendar.css"
 
 import EventInfo from "./EventInfo.tsx"
-import AddEventDialog from "@/components/features/planer/dialog/AddEventDialog.tsx"
-import {AddTagDialog} from "@/components/features/planer/dialog/AddTagDialog.tsx"
-import AddDatePickerEventDialog from "@/components/features/planer/dialog/AddDatePickerEventDialog.tsx"
+import AddEventDialog from "@/components/features/teacher/schedule/dialog/AddEventDialog.tsx"
+import {AddTagDialog} from "@/components/features/teacher/schedule/dialog/AddTagDialog.tsx"
+import AddDatePickerEventDialog from "@/components/features/teacher/schedule/dialog/AddDatePickerEventDialog.tsx"
 import {BASE_API_URL} from "@/constants.tsx";
 import authHeader from "@/auth-header.tsx";
 import {getUserId} from "@/utils.ts";
@@ -282,7 +282,7 @@ const EventCalendar = () => {
             const newEvents = await addEvent(data);
             toast({
                 title: "Dodavanje nastavnog sata uspješno!",
-                description: "Novi nastavni je dodan u sustav.",
+                description: "Novi nastavni sat je dodan u sustav.",
             })
             setEvents(newEvents);
         } catch (error) {
@@ -357,7 +357,7 @@ const EventCalendar = () => {
                         className="ml-2 py-2 px-4 bg-black text-white rounded shadow-md hover:bg-gray-800 focus:bg-gray-800"
                         onClick={() => setOpenTodoModal(true)}
                     >
-                        Kreiraj labelu
+                        Dodaj labelu
                     </Button>
                 </div>
                 <Divider sx={{my: 2}}/>

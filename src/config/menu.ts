@@ -16,7 +16,7 @@ interface NavItemWithChildren extends NavItem {
 
 export const mainMenu: NavItemWithChildren[] = [
     {
-        title: 'Planer',
+        title: 'Raspored',
         to: '',
     },
     {
@@ -24,8 +24,8 @@ export const mainMenu: NavItemWithChildren[] = [
         to: '/students',
     },
     {
-        title: 'Moj Profil',
-        to: '/profile',
+        title: 'Postavke',
+        to: '/settings',
     },
 ]
 

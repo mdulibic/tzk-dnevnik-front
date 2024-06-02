@@ -7,7 +7,7 @@ import {
     DialogContent, DialogFooter, DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "../../../ui/button.tsx";
+import {Button} from "../../../../ui/button.tsx";
 
 import {HexColorPicker} from "react-colorful"
 import {Label} from "@/components/ui/label.tsx";
