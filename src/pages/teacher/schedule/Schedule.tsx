@@ -63,8 +63,11 @@ export default function Schedule() {
                                 <ArrowRight className="ml-2 w-4 h-4"/>
                             </div>
                         </CardHeader>
-                        <CardContent className="space-y-4">
+                        <CardContent className="space-y-2">
                             <div className="text-md font-semibold text-blue-600">{nextEvent.title}</div>
+                            <p className="text-xs text-muted-foreground">
+                                Aktivnost: {nextEvent.activity.name} {nextEvent?.subActivity && `(${nextEvent.subActivity.name})`}
+                            </p>
                             <p className="text-xs text-muted-foreground">
                                 Razred: {nextEvent.schoolClass.year}.{nextEvent.schoolClass.division}
                             </p>
