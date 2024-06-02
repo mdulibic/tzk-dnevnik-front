@@ -43,7 +43,7 @@ export const adminMenu: NavItemWithChildren[] = [
         to: '/admin/teachers',
     },
     {
-        title: 'Uvoz podataka',
+        title: 'Uvoz korisnika',
         to: '/admin/import',
     },
 ]

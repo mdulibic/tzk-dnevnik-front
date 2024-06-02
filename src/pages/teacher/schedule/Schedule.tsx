@@ -64,12 +64,12 @@ export default function Schedule() {
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <div className="text-md font-semibold text-blue-800">{nextEvent.title}</div>
-                            <p className="text-s text-muted-foreground">
-                                {nextEvent.description}
+                            <div className="text-md font-semibold text-blue-600">{nextEvent.title}</div>
+                            <p className="text-xs text-muted-foreground">
+                                Razred: {nextEvent.schoolClass.year}.{nextEvent.schoolClass.division}
                             </p>
                             <p className="text-xs text-muted-foreground">
-                                {formatDateTime(nextEvent.startTimestamp)} - {formatDateTime(nextEvent.endTimestamp)}
+                                Vrijeme: {formatDateTime(nextEvent.startTimestamp)} - {formatDateTime(nextEvent.endTimestamp)}
                             </p>
                         </CardContent>
                     </Card>

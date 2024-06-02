@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
@@ -8,7 +8,7 @@ import {BASE_API_URL} from "@/constants.tsx";
 import authHeader from "@/auth-header.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
 
-interface CsvRow {
+export interface CsvRow {
     [key: string]: string;
 }
 
@@ -34,7 +34,7 @@ export function ImportUsersDashboard() {
             const obj: CsvRow = csvHeader.reduce((object, header, index) => {
                 object[header] = values[index];
                 return object;
-            }, {} as CsvRow); // Specify the type of object as CsvRow
+            }, {} as CsvRow);
             return obj;
         });
 
@@ -105,10 +105,21 @@ export function ImportUsersDashboard() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-xl">Uvoz podataka</CardTitle>
+                <CardTitle className="text-xl">Uvoz korisnika</CardTitle>
+                <CardDescription>Odaberite datoteku s korisničkim podacima i definirajte rolu za korisnike koji će biti
+                    dodani u sustav.</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="grid gap-4">
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                        <Label htmlFor="picture">Datoteka</Label>
+                        <Input
+                            id="picture"
+                            onChange={handleOnChange}
+                            type="file"
+                            accept=".csv"
+                        />
+                    </div>
                     <div className="grid gap-2">
                         <Label htmlFor="role">Rola</Label>
                         <Select value={role} onValueChange={(value) => {
@@ -125,27 +136,14 @@ export function ImportUsersDashboard() {
                             </SelectContent>
                         </Select>
                     </div>
-                    <form className="flex flex-col items-center mb-4" onSubmit={handleOnSubmit}>
-                        <Input
-                            type="file"
-                            id="csvFileInput"
-                            accept=".csv"
-                            onChange={handleOnChange}
-                            className="hidden"
-                        />
+                    <form className="flex flex-col items-center" onSubmit={handleOnSubmit}>
                         <div className="flex w-full justify-between">
                             <div className="flex">
-                                <Label
-                                    htmlFor="csvFileInput"
-                                    className="flex items-center justify-center py-2 px-4 bg-blue-600 text-white rounded shadow-md cursor-pointer hover:bg-blue-700"
-                                >
-                                    Odabir CSV datoteke
-                                </Label>
                                 <Button
                                     type="submit"
-                                    className="ml-2 py-2 px-4 bg-black text-white rounded shadow-md hover:bg-gray-800 focus:bg-gray-800"
+                                    className="py-2 bg-blue-600 text-white rounded shadow-md hover:bg-blue-500 focus:bg-blue-500"
                                 >
-                                    Uvezi CSV
+                                    Uvoz korisnika
                                 </Button>
                             </div>
                             <Button
