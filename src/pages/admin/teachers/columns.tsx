@@ -32,10 +32,6 @@ export type Teacher = {
 
 export const columns: ColumnDef<Teacher>[] = [
     {
-        accessorKey: "id",
-        header: "Id",
-    },
-    {
         accessorKey: "name",
         header: ({ column }) => {
             return (
