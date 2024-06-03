@@ -27,7 +27,7 @@ interface IProps {
 }
 
 const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onAddEvent, todos}: IProps) => {
-    const {classId, activityId, title} = eventFormData
+    const {schoolClassId, activityId, title} = eventFormData
     const onClose = () => handleClose()
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
     const handleClassChange = (id: string) => {
         setEventFormData((prevState) => ({
             ...prevState,
-            classId: id,
+            schoolClassId: id,
         }))
     }
 
@@ -67,10 +67,7 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
     }
 
     const isDisabled = () => {
-        if (classId === "" || activityId === "" || title === "") {
-            return true
-        }
-        return false
+        return schoolClassId === "" || activityId === "" || title === "";
     }
 
     return (
@@ -109,7 +106,7 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
                         </Label>
                         <div className="col-span-3">
                             <SchoolClassSelect
-                                selectedClass={classId}
+                                selectedClass={schoolClassId}
                                 onChange={handleClassChange}
                             />
                         </div>

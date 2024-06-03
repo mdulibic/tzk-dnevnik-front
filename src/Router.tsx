@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import { Applayout } from "@/components/shared/layouts/AppLayout";
+import { TeacherLayout } from "@/components/shared/layouts/TeacherLayout.tsx";
 
 import Schedule from "@/pages/teacher/schedule/Schedule.tsx";
 import Students from "@/pages/teacher/students/Students";
@@ -11,7 +11,7 @@ import TeachersDashboard from "@/pages/admin/teachers/TeachersDashboard.tsx";
 import {RegistrationDashboard} from "@/pages/admin/registration/RegistrationDashboard.tsx";
 import StudentsDashboard from "@/pages/admin/students/StudentsDashboard.tsx";
 import {Adminlayout} from "@/components/shared/layouts/AdminLayout.tsx";
-import {ProtectedRoute} from "@/components/core/ProtectedRoute.tsx";
+import {AdminRoute, TeacherRoute} from "@/components/core/ProtectedRoute.tsx";
 import {ImportUsersDashboard} from "@/pages/admin/import-users/ImportUsersDashboard.tsx";
 
 export const router = createBrowserRouter([
@@ -21,19 +21,19 @@ export const router = createBrowserRouter([
     },
     {
         path: "/",
-        element: <Applayout />,
+        element: <TeacherLayout />,
         children: [
             {
                 path: "",
-                element: <ProtectedRoute><Schedule /></ProtectedRoute>,
+                element: <TeacherRoute><Schedule /></TeacherRoute>,
             },
             {
                 path: "students",
-                element: <ProtectedRoute><Students /></ProtectedRoute>,
+                element: <TeacherRoute><Students /></TeacherRoute>,
             },
             {
                 path: "settings",
-                element: <ProtectedRoute><Settings /></ProtectedRoute>,
+                element: <TeacherRoute><Settings /></TeacherRoute>,
             },
         ],
     },
@@ -43,19 +43,19 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <ProtectedRoute><RegistrationDashboard /></ProtectedRoute>,
+                element: <AdminRoute><RegistrationDashboard /></AdminRoute>,
             },
             {
                 path: "students",
-                element: <ProtectedRoute><StudentsDashboard /></ProtectedRoute>,
+                element: <AdminRoute><StudentsDashboard /></AdminRoute>,
             },
             {
                 path: "teachers",
-                element: <ProtectedRoute><TeachersDashboard /></ProtectedRoute>,
+                element: <AdminRoute><TeachersDashboard /></AdminRoute>,
             },
             {
                 path: "import",
-                element: <ProtectedRoute><ImportUsersDashboard></ImportUsersDashboard></ProtectedRoute>,
+                element: <AdminRoute><ImportUsersDashboard></ImportUsersDashboard></AdminRoute>,
             },
         ],
     },

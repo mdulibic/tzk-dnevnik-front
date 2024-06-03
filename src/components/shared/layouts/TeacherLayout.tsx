@@ -3,7 +3,7 @@ import {Header} from "./Header.tsx";
 import {Footer} from "./Footer.tsx";
 import {Toaster} from "@/components/ui/toaster.tsx";
 
-export function Applayout() {
+export function TeacherLayout() {
     return (
         <div className="flex flex-col min-h-screen bg-muted/30">
             <Header/>

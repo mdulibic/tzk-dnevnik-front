@@ -93,7 +93,7 @@ export interface IEventInfo extends Event {
     description: string
     activityId: string
     subActivityId?: string
-    classId: string
+    schoolClassId: string
     tagId?: string
     teacherId: number
 }
@@ -102,7 +102,7 @@ export interface EventFormData {
     title: string
     activityId: string
     subActivityId?: string
-    classId: string
+    schoolClassId: string
     description: string
     tagId?: string
 }
@@ -111,7 +111,7 @@ export interface DatePickerEventFormData {
     title: string
     activityId: string
     subActivityId?: string
-    classId: string
+    schoolClassId: string
     description: string
     tagId?: string
     allDay: boolean
@@ -124,7 +124,7 @@ const initialEventFormState: EventFormData = {
     activityId: "1",
     subActivityId: "1",
     description: "",
-    classId: "1",
+    schoolClassId: "1",
     tagId: undefined,
 }
 
@@ -133,7 +133,7 @@ const initialDatePickerEventFormData: DatePickerEventFormData = {
     activityId: "1",
     subActivityId: "1",
     description: "",
-    classId: "1",
+    schoolClassId: "1",
     tagId: undefined,
     allDay: false,
     start: undefined,

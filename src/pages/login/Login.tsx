@@ -8,8 +8,10 @@ import {Link} from 'react-router-dom';
 import {useState} from 'react';
 import {BASE_API_URL} from "@/constants.tsx";
 import {PasswordInput} from "@/components/shared/input/password-input.tsx";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [invalidCredentials, setInvalidCredentials] = useState(false);
@@ -33,7 +35,7 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(data));
             setInvalidCredentials(false);
 
-            window.location.href = '/';
+            navigate('/');
         } catch (error) {
             console.error('Error logging in:', error);
             setInvalidCredentials(true);

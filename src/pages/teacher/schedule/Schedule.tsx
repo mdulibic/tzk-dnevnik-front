@@ -69,7 +69,7 @@ export default function Schedule() {
                                 Aktivnost: {nextEvent.activity.name} {nextEvent?.subActivity && `(${nextEvent.subActivity.name})`}
                             </p>
                             <p className="text-xs text-muted-foreground">
-                                Razred: {nextEvent.schoolClass.year}.{nextEvent.schoolClass.division}
+                                {nextEvent?.schoolClass && `Razred: ${nextEvent.schoolClass.year}.${nextEvent.schoolClass.division}`}
                             </p>
                             <p className="text-xs text-muted-foreground">
                                 Vrijeme: {formatDateTime(nextEvent.startTimestamp)} - {formatDateTime(nextEvent.endTimestamp)}

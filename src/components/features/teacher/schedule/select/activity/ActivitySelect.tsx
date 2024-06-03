@@ -62,10 +62,12 @@ const ActivitySelect: React.FC<SchoolActivitySelectProps> = ({
             } else {
                 setSubActivities([]);
                 setSelectedSubActivity("");
+                onSubActivityChange("");
             }
         } else {
             setSubActivities([]);
             setSelectedSubActivity("");
+            onSubActivityChange("");
         }
     }, [selectedActivity, schoolActivities]);
 

@@ -35,7 +35,7 @@ const AddDatePickerEventDialog = ({
                                       onAddEvent,
                                       todos,
                                   }: IProps) => {
-    const {classId, description, allDay, start, end, activityId, title} = datePickerEventFormData
+    const {schoolClassId, description, allDay, start, end, activityId, title} = datePickerEventFormData
 
     const onClose = () => {
         handleClose()
@@ -72,7 +72,7 @@ const AddDatePickerEventDialog = ({
     const handleClassChange = (id: string) => {
         setDatePickerEventFormData((prevState) => ({
             ...prevState,
-            classId: id,
+            schoolClassId: id,
         }))
     }
 
@@ -91,10 +91,7 @@ const AddDatePickerEventDialog = ({
     }
 
     const isDisabled = () => {
-        if (classId === "" || activityId === "" || title === "" || (!allDay && start === null && end === null)) {
-            return true
-        }
-        return false
+        return schoolClassId === "" || activityId === "" || title === "" || (!allDay && start === null && end === null);
     }
 
     return (
@@ -145,7 +142,7 @@ const AddDatePickerEventDialog = ({
                         </Label>
                         <div className="col-span-3">
                             <SchoolClassSelect
-                                selectedClass={classId.toString()}
+                                selectedClass={schoolClassId.toString()}
                                 onChange={handleClassChange}
                             />
                         </div>
