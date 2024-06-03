@@ -10,7 +10,7 @@ import Login from "@/pages/login/Login.tsx";
 import TeachersDashboard from "@/pages/admin/teachers/TeachersDashboard.tsx";
 import {RegistrationDashboard} from "@/pages/admin/registration/RegistrationDashboard.tsx";
 import StudentsDashboard from "@/pages/admin/students/StudentsDashboard.tsx";
-import {Adminlayout} from "@/components/shared/layouts/AdminLayout.tsx";
+import {AdminLayout} from "@/components/shared/layouts/AdminLayout.tsx";
 import {AdminRoute, TeacherRoute} from "@/components/core/ProtectedRoute.tsx";
 import {ImportUsersDashboard} from "@/pages/admin/import-users/ImportUsersDashboard.tsx";
 
@@ -39,7 +39,7 @@ export const router = createBrowserRouter([
     },
     {
         path: "/admin",
-        element: <Adminlayout />,
+        element: <AdminLayout />,
         children: [
             {
                 path: "",

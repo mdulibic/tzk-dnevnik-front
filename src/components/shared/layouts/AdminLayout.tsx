@@ -3,7 +3,7 @@ import {AdminHeader} from "./AdminHeader.tsx";
 import {Footer} from "./Footer.tsx";
 import { Toaster } from "@/components/ui/toaster.tsx"
 
-export function Adminlayout() {
+export function AdminLayout() {
     return (
         <div className="flex flex-col min-h-screen bg-muted/30">
             <AdminHeader/>

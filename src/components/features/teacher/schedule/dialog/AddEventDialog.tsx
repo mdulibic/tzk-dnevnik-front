@@ -14,8 +14,8 @@ import {Label} from "@/components/ui/label.tsx";
 import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "../../../../ui/button.tsx";
-import TagSelect from "@/components/features/teacher/schedule/select/tag/TagSelect.tsx";
-import ActivitySelect from "../select/activity/ActivitySelect.tsx";
+import TagSelect from "@/components/features/teacher/schedule/select/TagSelect.tsx";
+import ActivitySelect from "../../../../shared/select/ActivitySelect.tsx";
 
 interface IProps {
     open: boolean

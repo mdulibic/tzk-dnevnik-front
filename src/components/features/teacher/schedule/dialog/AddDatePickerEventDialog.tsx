@@ -11,12 +11,13 @@ import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns"
 import {DatePickerEventFormData, Tag} from "../EventCalendar.tsx"
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import ActivitySelectMui from "@/components/features/teacher/schedule/select/activity/ActivitySelectMui.tsx";
-import TagSelectMui from "@/components/features/teacher/schedule/select/tag/TagSelectMui.tsx";
+import ActivitySelectMui from "@/components/shared/select/ActivitySelectMui.tsx";
+import TagSelectMui from "@/components/features/teacher/schedule/select/TagSelectMui.tsx";
 import {CheckedState} from "@radix-ui/react-checkbox";
 import {DialogFooter, DialogHeader} from "@/components/ui/dialog.tsx";
 import {Cross2Icon} from "@radix-ui/react-icons";
-import SchoolClassSelect from "@/components/features/teacher/schedule/select/SchoolClassSelect.tsx";
+import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
+import SchoolClassSelectMui from "@/components/features/teacher/schedule/select/SchoolClassSelectMui.tsx";
 
 interface IProps {
     open: boolean
@@ -141,7 +142,7 @@ const AddDatePickerEventDialog = ({
                             Razred
                         </Label>
                         <div className="col-span-3">
-                            <SchoolClassSelect
+                            <SchoolClassSelectMui
                                 selectedClass={schoolClassId.toString()}
                                 onChange={handleClassChange}
                             />

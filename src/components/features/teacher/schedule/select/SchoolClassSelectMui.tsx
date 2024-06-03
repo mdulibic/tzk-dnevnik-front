@@ -16,7 +16,7 @@ interface SchoolClass {
     division: string;
 }
 
-const SchoolClassSelect: React.FC<SchoolClassSelectProps> = ({selectedClass, onChange}) => {
+const SchoolClassSelectMui: React.FC<SchoolClassSelectProps> = ({selectedClass, onChange}) => {
     const [classes, setClasses] = useState<SchoolClass[]>([]);
 
     useEffect(() => {
@@ -80,4 +80,4 @@ const SchoolClassSelect: React.FC<SchoolClassSelectProps> = ({selectedClass, onC
     );
 };
 
-export default SchoolClassSelect;
+export default SchoolClassSelectMui;

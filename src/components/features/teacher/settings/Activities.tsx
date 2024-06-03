@@ -2,7 +2,7 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
-import ActivitySelect from "@/components/features/teacher/schedule/select/activity/ActivitySelect.tsx";
+import ActivitySelect from "@/components/shared/select/ActivitySelect.tsx";
 import {useState} from "react";
 import {Label} from "@/components/ui/label.tsx";
 import {BASE_API_URL} from "@/constants.tsx";
