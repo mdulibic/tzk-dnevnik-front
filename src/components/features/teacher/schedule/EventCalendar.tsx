@@ -13,14 +13,14 @@ import hr from 'date-fns/locale/hr';
 
 import "react-big-calendar/lib/css/react-big-calendar.css"
 
-import EventInfo from "./EventInfo.tsx"
+import EventCard from "./EventCard.tsx"
 import AddEventDialog from "@/components/features/teacher/schedule/dialog/AddEventDialog.tsx"
 import {AddTagDialog} from "@/components/features/teacher/schedule/dialog/AddTagDialog.tsx"
 import AddDatePickerEventDialog from "@/components/features/teacher/schedule/dialog/AddDatePickerEventDialog.tsx"
-import {BASE_API_URL} from "@/constants.tsx";
-import authHeader from "@/auth-header.tsx";
 import {getUserId} from "@/utils.ts";
 import {toast} from "@/components/ui/use-toast.ts";
+import {SchoolEvent, Tag} from "@/model/SchoolEvent.ts";
+import {addEvent, fetchEvents, fetchTags} from "@/api/schedule.tsx";
 
 
 const locales = {
@@ -35,60 +35,7 @@ const localizer = dateFnsLocalizer({
     locales,
 })
 
-export interface IActivity {
-    id: number;
-    name: string;
-    subactivities: ISubActivity[];
-}
-
-export interface ISubActivity {
-    id: number;
-    name: string;
-    parentActivity: IActivity;
-}
-
-export interface ISchoolClass {
-    id: number;
-    year: number;
-    division: string;
-    teacher: ITeacher;
-}
-
-export interface ITag {
-    id: number;
-    title: string;
-    color: string;
-}
-
-export interface ITeacher {
-    id: number;
-    name: string;
-    surname: string;
-    username: string;
-    email: string;
-    role: string;
-}
-
-export interface IEvent extends Event {
-    id: number;
-    title: string;
-    description: string;
-    startTimestamp: string;
-    endTimestamp: string;
-    allDay: boolean;
-    activity: IActivity;
-    subActivity?: ISubActivity;
-    schoolClass: ISchoolClass;
-    tag?: ITag;
-    teacher: ITeacher;
-}
-
-export interface Tag {
-    title: string
-    color?: string
-}
-
-export interface IEventInfo extends Event {
+export interface EventInfo extends Event {
     title: string
     description: string
     activityId: string
@@ -155,75 +102,14 @@ const messages = {
     noEventsInRange: "Nema dostupnih nastavnih satova.",
 };
 
-async function fetchEvents(): Promise<IEvent[]> {
-    const teacherId = getUserId();
-    const response = await fetch(
-        `${BASE_API_URL}/api/events/teacher/${teacherId}`,
-        {
-            method: 'GET',
-            headers: {
-                Origin: origin,
-                Authorization: authHeader(),
-            },
-        }
-    );
-
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
-    return data as IEvent[];
-}
-
-async function fetchTags(): Promise<ITag[]> {
-    const response = await fetch(
-        `${BASE_API_URL}/api/events/tags`,
-        {
-            method: 'GET',
-            headers: {
-                Origin: origin,
-                Authorization: authHeader(),
-            },
-        }
-    );
-
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
-    return data as ITag[];
-}
-
-async function addEvent(eventDto: IEventInfo): Promise<IEvent[]> {
-    const response = await fetch(`${BASE_API_URL}/api/events/add`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Origin: origin,
-            Authorization: authHeader(),
-        },
-        body: JSON.stringify(eventDto),
-    });
-
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
-    return data as IEvent[];
-}
-
-
 const EventCalendar = () => {
     const [openSlot, setOpenSlot] = useState(false)
     const [openDatepickerModal, setOpenDatepickerModal] = useState(false)
     const [openTodoModal, setOpenTodoModal] = useState(false)
-    const [currentEvent, setCurrentEvent] = useState<IEvent | null>(null)
+    const [currentEvent, setCurrentEvent] = useState<SchoolEvent | null>(null)
 
-    const [events, setEvents] = useState<IEvent[]>([])
-    const [tags, setTags] = useState<ITag[]>([])
+    const [events, setEvents] = useState<SchoolEvent[]>([])
+    const [tags, setTags] = useState<Tag[]>([])
 
     const [eventFormData, setEventFormData] = useState<EventFormData>(initialEventFormState)
 
@@ -254,7 +140,7 @@ const EventCalendar = () => {
         }))
     }
 
-    const handleSelectEvent = (event: IEvent) => {
+    const handleSelectEvent = (event: SchoolEvent) => {
         setCurrentEvent(event)
     }
 
@@ -273,7 +159,7 @@ const EventCalendar = () => {
 
         const teacherId = getUserId();
 
-        const data: IEventInfo = {
+        const data: EventInfo = {
             ...eventFormData,
             teacherId: teacherId,
         }
@@ -311,7 +197,7 @@ const EventCalendar = () => {
         }
         const teacherId = getUserId();
 
-        const data: IEventInfo = {
+        const data: EventInfo = {
             ...datePickerEventFormData,
             teacherId: teacherId,
             start: setMinToZero(datePickerEventFormData.start),
@@ -367,7 +253,7 @@ const EventCalendar = () => {
                     eventFormData={eventFormData}
                     setEventFormData={setEventFormData}
                     onAddEvent={onAddEvent}
-                    todos={tags}
+                    tags={tags}
                 />
                 <AddDatePickerEventDialog
                     open={openDatepickerModal}
@@ -375,7 +261,7 @@ const EventCalendar = () => {
                     datePickerEventFormData={datePickerEventFormData}
                     setDatePickerEventFormData={setDatePickerEventFormData}
                     onAddEvent={onAddEventFromDatePicker}
-                    todos={tags}
+                    tags={tags}
                 />
                 <AddTagDialog
                     open={openTodoModal}
@@ -396,7 +282,7 @@ const EventCalendar = () => {
                         return new Date(event.endTimestamp)
                     }}
                     defaultView="week"
-                    components={{event: EventInfo}}
+                    components={{event: EventCard}}
                     eventPropGetter={(event) => {
                         const tag = tags.find((tag) => tag.id === event.tag?.id);
                         return {

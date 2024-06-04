@@ -16,24 +16,8 @@ import {BASE_API_URL} from "@/constants.tsx";
 import authHeader from "@/auth-header.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-
-export type SchoolClass = {
-    id: number;
-    year: number;
-    division: string;
-};
-
-export type Student = {
-    id: number;
-    name: string;
-    surname: string;
-    username: string;
-    password: string;
-    email: string;
-    role: string;
-    schoolClass: SchoolClass;
-};
-
+import {Student} from "@/model/Student.ts";
+import {SchoolClass} from "@/model/SchoolClass.ts";
 
 export const columns: ColumnDef<Student>[] = [
     {

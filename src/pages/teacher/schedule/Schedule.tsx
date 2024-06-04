@@ -1,10 +1,11 @@
 import {PageHeader, PageHeaderHeading} from "@/components/core/PageHeader.tsx";
-import EventCalendar, {IEvent} from "@/components/features/teacher/schedule/EventCalendar.tsx";
+import EventCalendar from "@/components/features/teacher/schedule/EventCalendar.tsx";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {useEffect, useState} from "react";
 import {getUserId} from "@/utils.ts";
-import {fetchTeacherById} from "@/components/features/teacher/settings/General.tsx";
 import {ArrowRight} from "lucide-react";
+import {SchoolEvent} from "@/model/SchoolEvent.ts";
+import {fetchTeacherById} from "@/api/users.tsx";
 
 function formatDateTime(dateString: string): string {
     const options: Intl.DateTimeFormatOptions = {
@@ -26,7 +27,7 @@ function formatDateTime(dateString: string): string {
 
 
 export default function Schedule() {
-    const [nextEvent, setNextEvent] = useState<IEvent | null>(null);
+    const [nextEvent, setNextEvent] = useState<SchoolEvent | null>(null);
     const teacherId = getUserId();
 
     useEffect(() => {

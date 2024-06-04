@@ -11,15 +11,15 @@ import {
     Dialog,
     DialogTrigger
 } from "@/components/ui/dialog.tsx";
+import StudentUpdateDialog from "@/components/features/admin/StudentUpdateDialog.tsx";
 import {BASE_API_URL} from "@/constants.tsx";
 import authHeader from "@/auth-header.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
 import {ArrowUpDown, MoreHorizontal} from "lucide-react"
-import TeacherUpdateDialog from "@/components/features/admin/TeacherUpdateDialog.tsx";
 import {SchoolClass} from "@/model/SchoolClass.ts";
-import {Teacher} from "@/model/Teacher.ts";
+import {Student} from "@/model/Student.ts";
 
-export const columns: ColumnDef<Teacher>[] = [
+export const columns: ColumnDef<Student>[] = [
     {
         accessorKey: "name",
         header: ({column}) => {
@@ -67,21 +67,21 @@ export const columns: ColumnDef<Teacher>[] = [
         },
     },
     {
-        accessorKey: "classesTeaching",
-        header: "Razredi",
+        accessorKey: "schoolClass",
+        header: "Razred",
         cell: (info) => {
-            const schoolClasses = info.getValue() as SchoolClass[];
-            return schoolClasses.map(schoolClass => `${schoolClass.year}.${schoolClass.division}`).join(", ");
+            const schoolClass = info.getValue() as SchoolClass;
+            return `${schoolClass.year}.${schoolClass.division}`;
         }
     },
     {
         id: "actions",
         cell: ({row}) => {
-            const teacher = row.original
+            const student = row.original
 
             const handleDelete = async (id: number) => {
                 try {
-                    const response = await fetch(`${BASE_API_URL}/api/teachers/delete/${id}`, {
+                    const response = await fetch(`${BASE_API_URL}/api/students/delete/${id}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
@@ -95,15 +95,15 @@ export const columns: ColumnDef<Teacher>[] = [
 
                     // Optionally, refresh the student list or handle the UI update
                     toast({
-                        title: "Nastavnik izbrisan!",
-                        description: "Podaci o nastavniku uspješno izbrisani!",
+                        title: "Učenik izbrisan!",
+                        description: "Podaci o učeniku uspješno izbrisani!",
                     })
-                    console.log(`Teachert with id ${id} deleted successfully.`);
+                    console.log(`Student with id ${id} deleted successfully.`);
                     setTimeout(() => {
                         window.location.reload();
                     }, 1000);
                 } catch (error) {
-                    console.error('Error deleting teacher:', error);
+                    console.error('Error deleting student:', error);
 
                     toast({
                         duration: 2000,
@@ -125,9 +125,9 @@ export const columns: ColumnDef<Teacher>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-red-100"
-                                              onClick={() => handleDelete(teacher.id)}
+                                              onClick={() => handleDelete(student.id)}
                             >
-                                Izbriši
+                                Izbriši korisnika
                             </DropdownMenuItem>
                             <DialogTrigger asChild>
                                 <DropdownMenuItem className="text-blue-600 focus:text-blue-600 focus:bg-blue-100">
@@ -136,7 +136,7 @@ export const columns: ColumnDef<Teacher>[] = [
                             </DialogTrigger>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <TeacherUpdateDialog teacher={teacher}/>
+                    <StudentUpdateDialog student={student}/>
                 </Dialog>
             )
         },

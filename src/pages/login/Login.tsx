@@ -6,9 +6,12 @@ import {Player} from '@lottiefiles/react-lottie-player';
 
 import {Link} from 'react-router-dom';
 import {useState} from 'react';
-import {BASE_API_URL} from "@/constants.tsx";
 import {PasswordInput} from "@/components/shared/input/password-input.tsx";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import {toast} from "@/components/ui/use-toast.ts";
+import {loginUser} from "@/api/auth.tsx";
+import {UserRole} from "@/model/UserRole.ts";
+import {getUserRole} from "@/utils.ts";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -18,27 +21,42 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch(BASE_API_URL + '/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({username, password})
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            // Parse the response and save user details to local storage
+            const data = await loginUser(username, password);
             localStorage.setItem('user', JSON.stringify(data));
             setInvalidCredentials(false);
 
-            navigate('/');
+            toast({
+                title: "Prijava uspješna!",
+                description: "Dobrodošli natrag.",
+            });
+
+            const role = getUserRole();
+
+            switch (role) {
+                case UserRole.STUDENT:
+                    navigate('/student')
+                    break;
+                case UserRole.TEACHER:
+                    navigate('/teacher')
+                    break;
+                case UserRole.ADMIN:
+                    navigate('/admin')
+                    break;
+                default:
+                    navigate('/login')
+                    break;
+            }
+
         } catch (error) {
             console.error('Error logging in:', error);
             setInvalidCredentials(true);
+
+            toast({
+                duration: 2000,
+                variant: "destructive",
+                title: "Prijava neuspješna!",
+                description: "Provjerite svoje korisničko ime i lozinku i pokušajte ponovno.",
+            });
         }
     };
 

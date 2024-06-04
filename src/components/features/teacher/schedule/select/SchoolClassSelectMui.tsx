@@ -1,38 +1,35 @@
 import React, {useEffect, useState} from 'react';
 import {Select, MenuItem, FormControl} from '@mui/material';
-import authHeader from '@/auth-header.tsx';
-import {BASE_API_URL} from '@/constants.tsx';
-import {cn} from "@/utils.ts";
+import {cn, getUserId, isTeacher} from "@/utils.ts";
 import {ChevronDownIcon, ChevronUpIcon} from '@radix-ui/react-icons';
+import { getClasses } from '@/api/school.tsx';
+import {SchoolClass} from "@/model/SchoolClass.ts";
+import {getClassesById} from "@/api/users.tsx";
 
 interface SchoolClassSelectProps {
     selectedClass: string;
     onChange: (value: string) => void;
 }
 
-interface SchoolClass {
-    id: number;
-    year: number;
-    division: string;
-}
-
 const SchoolClassSelectMui: React.FC<SchoolClassSelectProps> = ({selectedClass, onChange}) => {
     const [classes, setClasses] = useState<SchoolClass[]>([]);
 
     useEffect(() => {
-        fetch(
-            `${BASE_API_URL}/api/school/classes`,
-            {
-                method: "GET",
-                headers: {
-                    Origin: window.location.origin,
-                    Authorization: authHeader(),
+        const fetchClasses = async () => {
+            try {
+                let data;
+                if (isTeacher()) {
+                    const userId = getUserId();
+                    data = await getClassesById(userId);
+                } else {
+                    data = await getClasses();
                 }
+                setClasses(data);
+            } catch (error) {
             }
-        )
-            .then((response) => response.json())
-            .then((data) => setClasses(data))
-            .catch((error) => console.error('Error fetching classes:', error));
+        };
+
+        fetchClasses();
     }, []);
 
     return (

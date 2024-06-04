@@ -12,13 +12,17 @@ import {Button} from "../../../../ui/button.tsx";
 import {HexColorPicker} from "react-colorful"
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import {BASE_API_URL} from "@/constants.tsx";
-import authHeader from "@/auth-header.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
+import {addTag} from "@/api/schedule.tsx";
 
 interface IProps {
     open: boolean
     handleClose: Dispatch<SetStateAction<void>>
+}
+
+export interface TagInfo {
+    title: string;
+    color: string;
 }
 
 export const AddTagDialog = ({open, handleClose}: IProps) => {
@@ -26,51 +30,28 @@ export const AddTagDialog = ({open, handleClose}: IProps) => {
     const [title, setTitle] = useState("")
 
     const onAddTag = async () => {
-
-        const newTag = {
-            color,
-            title,
-        };
-
         try {
-            const response = await fetch(`${BASE_API_URL}/api/events/tags/add`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: authHeader(),
-                },
-                body: JSON.stringify(newTag),
+            const newTag = {title, color};
+            await addTag(newTag);
+
+            setTitle("");
+            setColor("");
+            toast({
+                title: "Dodana labela!",
+                description: "Novi labela je dodana u sustav.",
             });
 
-            if (response.ok) {
-                setTitle("");
-                setColor("");
-                toast({
-                    title: "Dodana labela!",
-                    description: "Novi labela je dodana u sustav.",
-                })
-
-                onClose();
-            } else {
-                console.error('Failed to add tag');
-                toast({
-                    duration: 2000,
-                    variant: "destructive",
-                    title: "Dodavanje labele neuspješno!",
-                    description: "Provjerite vezu i pokušajte ponovno.",
-                })
-            }
+            onClose();
         } catch (error) {
             console.error('Failed to add tag', error);
+            onClose();
             toast({
                 duration: 2000,
                 variant: "destructive",
                 title: "Dodavanje labele neuspješno!",
                 description: "Provjerite vezu i pokušajte ponovno.",
-            })
+            });
         }
-        setTitle("")
-        onClose()
     }
 
     const onClose = () => handleClose()

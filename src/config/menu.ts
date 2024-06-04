@@ -14,7 +14,7 @@ interface NavItemWithChildren extends NavItem {
     items?: NavItemWithChildren[]
 }
 
-export const mainMenu: NavItemWithChildren[] = [
+export const teacherMenu: NavItemWithChildren[] = [
     {
         title: 'Raspored',
         to: '',
@@ -45,6 +45,17 @@ export const adminMenu: NavItemWithChildren[] = [
     {
         title: 'Uvoz korisnika',
         to: '/admin/import',
+    },
+]
+
+export const studentMenu: NavItemWithChildren[] = [
+    {
+        title: 'Raspored',
+        to: '/student',
+    },
+    {
+        title: 'Profil',
+        to: '/student/profile',
     },
 ]
 

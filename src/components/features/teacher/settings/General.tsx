@@ -1,42 +1,13 @@
 import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {Card, CardContent} from "@/components/ui/card.tsx";
-import {BASE_API_URL} from "@/constants.tsx";
-import authHeader from "@/auth-header.tsx";
-import {IEvent, ISchoolClass} from "@/components/features/teacher/schedule/EventCalendar.tsx";
 import {useEffect, useState} from "react";
 import {getUserId} from "@/utils.ts";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
-
-interface ITeacher {
-    id: number;
-    name: string;
-    surname: string;
-    username: string;
-    email: string;
-    role: string;
-    classesTeaching: ISchoolClass[];
-    events: IEvent[];
-}
-
-export async function fetchTeacherById(teacherId: number): Promise<ITeacher> {
-    const response = await fetch(`${BASE_API_URL}/api/teachers/${teacherId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: authHeader(),
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
-    return data as ITeacher;
-}
+import {Teacher} from "@/model/Teacher.ts";
+import {fetchTeacherById} from "@/api/users.tsx";
 
 const General = () => {
-    const [teacher, setTeacher] = useState<ITeacher | null>(null);
+    const [teacher, setTeacher] = useState<Teacher | null>(null);
     const teacherId = getUserId();
 
     useEffect(() => {

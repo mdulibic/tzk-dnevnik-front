@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {BASE_API_URL} from "@/constants.tsx";
-import authHeader from "@/auth-header.tsx";
 import {FormControl, MenuItem, Select} from "@mui/material";
 import {ChevronDownIcon, ChevronUpIcon} from "@radix-ui/react-icons";
 import {cn} from "@/utils.ts";
+import {toast} from "@/components/ui/use-toast.ts";
+import {getActivities} from "@/api/activity.tsx";
 
 interface SchoolActivity {
     id: number;
@@ -32,19 +32,22 @@ const ActivitySelectMui: React.FC<SchoolActivitySelectProps> = ({
     const [selectedSubActivity, setSelectedSubActivity] = useState<string>("");
 
     useEffect(() => {
-        fetch(
-            BASE_API_URL + '/api/activities/all',
-            {
-                method: "GET",
-                headers: {
-                    Origin: origin,
-                    Authorization: authHeader(),
-                }
+        const fetchActivities = async () => {
+            try {
+                const data = await getActivities();
+                setSchoolActivities(data);
+            } catch (error) {
+                console.error('Error fetching activities:', error);
+                toast({
+                    duration: 2000,
+                    variant: "destructive",
+                    title: "Greška pri dohvaćanju aktivnosti",
+                    description: "Pokušajte ponovno kasnije.",
+                });
             }
-        )
-            .then((response) => response.json())
-            .then((data) => setSchoolActivities(data))
-            .catch((error) => console.error('Error fetching activities:', error));
+        };
+
+        fetchActivities();
     }, []);
 
     useEffect(() => {

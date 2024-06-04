@@ -10,13 +10,12 @@ import {
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
-import {Student} from "@/pages/admin/students/columns.tsx";
 import {PasswordInput} from "@/components/shared/input/password-input.tsx";
 import {BASE_API_URL} from "@/constants.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
 import authHeader from "@/auth-header.tsx";
 import {useNavigate} from "react-router-dom";
-
+import {Student} from "@/model/Student.ts";
 
 interface StudentDialogProps {
     student: Student;

@@ -14,20 +14,20 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar.tsx";
-import { adminMenu } from "@/config/menu.ts";
+import { teacherMenu } from "@/config/menu.ts";
 import { ChevronDownIcon, ViewVerticalIcon } from "@radix-ui/react-icons";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Logo } from "../icons/logo.tsx";
+import { Logo } from "../../icons/logo.tsx";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion.tsx";
 
-export function AdminHeader() {
+export function TeacherHeader() {
     const [open, setOpen] = useState(false)
     const location = useLocation();
     const userString = localStorage.getItem('user');
     const user = userString ? JSON.parse(userString) : null;
-    const name = user.name;
-    const surname = user.surname;
-    const email = user.email;
+    const name = user?.name;
+    const surname = user?.surname;
+    const email = user?.email;
 
     const handleLogout = () => {
         localStorage.removeItem("user");
@@ -37,11 +37,11 @@ export function AdminHeader() {
         <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur">
             <div className="container md:px-8 flex h-14 items-center">
                 <div className="mr-4 hidden md:flex">
-                    <NavLink to="/admin" className="mr-6 flex items-center space-x-2">
+                    <NavLink to="/teacher" className="mr-6 flex items-center space-x-2">
                         <Logo />
                     </NavLink>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
-                        {adminMenu.map((menu, index) =>
+                        {teacherMenu.map((menu, index) =>
                             menu.items !== undefined ? (
                                 <DropdownMenu key={index}>
                                     <DropdownMenuTrigger className={cn(
@@ -100,16 +100,16 @@ export function AdminHeader() {
                     </SheetTrigger>
                     <SheetContent side="left" className="pr-0 sm:max-w-xs">
                         <NavLink
-                            to="/admin"
+                            to="/teacher"
                             onClick={() => setOpen(false)}
                             className="flex items-center space-x-2">
                             <Logo />
                         </NavLink>
                         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-8 pl-8">
                             <Accordion type="single" collapsible className="w-full"
-                                defaultValue={"item-" + adminMenu.findIndex(item => item.items !== undefined ? item.items.filter(subitem => subitem.to !== undefined).map(subitem => subitem.to).includes(location.pathname) : false)}>
+                                defaultValue={"item-" + teacherMenu.findIndex(item => item.items !== undefined ? item.items.filter(subitem => subitem.to !== undefined).map(subitem => subitem.to).includes(location.pathname) : false)}>
                                 <div className="flex flex-col space-y-3">
-                                    {adminMenu.map((menu, index) =>
+                                    {teacherMenu.map((menu, index) =>
                                         menu.items !== undefined ? (
                                             <AccordionItem key={index} value={`item-${index}`} className="border-b-0 pr-6">
                                                 <AccordionTrigger className={cn(
@@ -134,9 +134,7 @@ export function AdminHeader() {
                                                                     {submenu.title}
                                                                 </NavLink>
                                                             ) : (
-                                                                submenu.label !== '' ? (
-                                                                    null
-                                                                ) : (
+                                                                submenu.label !== '' ? null : (
                                                                     <div className="px-3">
                                                                         {/* <Separator /> */}
                                                                     </div>
@@ -164,7 +162,7 @@ export function AdminHeader() {
                         </ScrollArea>
                     </SheetContent>
                 </Sheet>
-                <a href="/admin" className="mr-6 flex items-center space-x-2 md:hidden">
+                <a href="/teacher" className="mr-6 flex items-center space-x-2 md:hidden">
                     <Icons.logoLight className="h-6 w-6" />
                     <span className="font-bold inline-block">{appConfig.appName}</span>
                 </a>
@@ -180,7 +178,7 @@ export function AdminHeader() {
                                     variant='ghost'
                                     className='relative h-8 w-8 rounded-full'>
                                     <Avatar className='h-8 w-8'>
-                                        <AvatarFallback>{name.charAt(0)}{surname.charAt(0)}</AvatarFallback>
+                                        <AvatarFallback>{name?.charAt(0)}{surname?.charAt(0)}</AvatarFallback>
                                     </Avatar>
                                 </Button>
                             </DropdownMenuTrigger>

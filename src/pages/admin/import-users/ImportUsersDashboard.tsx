@@ -4,9 +4,8 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {BASE_API_URL} from "@/constants.tsx";
-import authHeader from "@/auth-header.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
+import {importUsers} from "@/api/users.tsx";
 
 export interface CsvRow {
     [key: string]: string;
@@ -31,11 +30,10 @@ export function ImportUsersDashboard() {
 
         const array = csvRows.map((i) => {
             const values = i.split(",");
-            const obj: CsvRow = csvHeader.reduce((object, header, index) => {
+            return csvHeader.reduce((object, header, index) => {
                 object[header] = values[index];
                 return object;
             }, {} as CsvRow);
-            return obj;
         });
 
         setArray(array);
@@ -69,28 +67,14 @@ export function ImportUsersDashboard() {
         }
 
         try {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('role', role);
-
-            const response = await fetch(`${BASE_API_URL}/api/school/enroll/csv`, {
-                method: 'POST',
-                headers: {
-                    Authorization: authHeader(),
-                },
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            await importUsers(file, role);
 
             toast({
                 title: "Uvoz podataka uspješan!",
                 description: "Podaci dodani u sustav.",
             });
         } catch (error) {
-            console.error('Error logging in:', error);
+            console.error('Error importing data:', error);
 
             toast({
                 duration: 2000,

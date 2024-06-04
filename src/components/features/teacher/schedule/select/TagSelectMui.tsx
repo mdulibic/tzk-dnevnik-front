@@ -1,8 +1,8 @@
-import {Tag} from "@/components/features/teacher/schedule/EventCalendar.tsx";
 import {FormControl, MenuItem, Select} from "@mui/material";
 import {ChevronDownIcon, ChevronUpIcon} from "@radix-ui/react-icons";
 import {cn} from "@/utils.ts";
 import React from "react";
+import {Tag} from "@/model/SchoolEvent.ts";
 
 interface TagSelectProps {
     tags: Tag[],

@@ -8,7 +8,7 @@ import {Button} from "../../../../ui/button.tsx";
 import {Checkbox} from "../../../../ui/checkbox.tsx";
 import {LocalizationProvider, DateTimePicker} from "@mui/x-date-pickers"
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns"
-import {DatePickerEventFormData, Tag} from "../EventCalendar.tsx"
+import {DatePickerEventFormData} from "../EventCalendar.tsx"
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import ActivitySelectMui from "@/components/shared/select/ActivitySelectMui.tsx";
@@ -16,8 +16,8 @@ import TagSelectMui from "@/components/features/teacher/schedule/select/TagSelec
 import {CheckedState} from "@radix-ui/react-checkbox";
 import {DialogFooter, DialogHeader} from "@/components/ui/dialog.tsx";
 import {Cross2Icon} from "@radix-ui/react-icons";
-import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
 import SchoolClassSelectMui from "@/components/features/teacher/schedule/select/SchoolClassSelectMui.tsx";
+import {Tag} from "@/model/SchoolEvent.ts";
 
 interface IProps {
     open: boolean
@@ -25,7 +25,7 @@ interface IProps {
     datePickerEventFormData: DatePickerEventFormData
     setDatePickerEventFormData: Dispatch<SetStateAction<DatePickerEventFormData>>
     onAddEvent: (e: MouseEvent<HTMLButtonElement>) => void
-    todos: Tag[]
+    tags: Tag[]
 }
 
 const AddDatePickerEventDialog = ({
@@ -34,7 +34,7 @@ const AddDatePickerEventDialog = ({
                                       datePickerEventFormData,
                                       setDatePickerEventFormData,
                                       onAddEvent,
-                                      todos,
+                                      tags,
                                   }: IProps) => {
     const {schoolClassId, description, allDay, start, end, activityId, title} = datePickerEventFormData
 
@@ -223,7 +223,7 @@ const AddDatePickerEventDialog = ({
                             Labela
                         </Label>
                         <div className="col-span-3">
-                            <TagSelectMui tags={todos} onChange={handleTagChange}/>
+                            <TagSelectMui tags={tags} onChange={handleTagChange}/>
                         </div>
                     </div>
                 </div>

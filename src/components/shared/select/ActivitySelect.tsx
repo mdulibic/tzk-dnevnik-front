@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {BASE_API_URL} from "@/constants.tsx";
-import authHeader from "@/auth-header.tsx";
 import {
     Select,
     SelectContent,
@@ -9,6 +7,8 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select.tsx";
+import {toast} from "@/components/ui/use-toast.ts";
+import {getActivities} from "@/api/activity.tsx";
 
 interface SchoolActivity {
     id: number;
@@ -28,27 +28,31 @@ interface SchoolActivitySelectProps {
 }
 
 const ActivitySelect: React.FC<SchoolActivitySelectProps> = ({
-                                                                    selectedActivity,
-                                                                    onActivityChange,
-                                                                    onSubActivityChange}) => {
+                                                                 selectedActivity,
+                                                                 onActivityChange,
+                                                                 onSubActivityChange
+                                                             }) => {
     const [schoolActivities, setSchoolActivities] = useState<SchoolActivity[]>([]);
     const [subActivities, setSubActivities] = useState<SchoolSubActivity[]>([]);
     const [selectedSubActivity, setSelectedSubActivity] = useState<string>("");
 
     useEffect(() => {
-        fetch(
-            BASE_API_URL + '/api/activities/all',
-            {
-                method: "GET",
-                headers: {
-                    Origin: origin,
-                    Authorization: authHeader(),
-                }
+        const fetchActivities = async () => {
+            try {
+                const data = await getActivities();
+                setSchoolActivities(data);
+            } catch (error) {
+                console.error('Error fetching activities:', error);
+                toast({
+                    duration: 2000,
+                    variant: "destructive",
+                    title: "Greška pri dohvaćanju aktivnosti",
+                    description: "Pokušajte ponovno kasnije.",
+                });
             }
-        )
-            .then((response) => response.json())
-            .then((data) => setSchoolActivities(data))
-            .catch((error) => console.error('Error fetching activities:', error));
+        };
+
+        fetchActivities();
     }, []);
 
     useEffect(() => {

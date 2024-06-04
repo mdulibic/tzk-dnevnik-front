@@ -1,11 +1,11 @@
-import {IEvent} from "./EventCalendar.tsx"
+import { SchoolEvent } from "@/model/SchoolEvent";
 import {Typography} from "@mui/material";
 
 interface IProps {
-    event: IEvent
+    event: SchoolEvent
 }
 
-const EventInfo = ({event}: IProps) => {
+const EventCard = ({event}: IProps) => {
     return (
         <>
             <Typography>{event.title} </Typography>
@@ -13,4 +13,4 @@ const EventInfo = ({event}: IProps) => {
     )
 }
 
-export default EventInfo
+export default EventCard

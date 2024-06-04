@@ -5,65 +5,7 @@ import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import ActivitySelect from "@/components/shared/select/ActivitySelect.tsx";
 import {useState} from "react";
 import {Label} from "@/components/ui/label.tsx";
-import {BASE_API_URL} from "@/constants.tsx";
-import authHeader from "@/auth-header.tsx";
-import {toast} from "@/components/ui/use-toast.ts";
-
-const handleAddActivity = async (name: string) => {
-    try {
-        const response = await fetch(`${BASE_API_URL}/api/activities/add`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: authHeader(),
-            },
-            body: name
-        });
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        toast({
-            title: "Dodavanje aktivnosti uspješno!",
-            description: "Nova aktivnost je dodana u nastavni kurikulum.",
-        })
-    } catch (error) {
-        console.error('Error adding activity:', error);
-        toast({
-            duration: 2000,
-            variant: "destructive",
-            title: "Dodavanje akitvnosti neuspješno!",
-            description: "Provjerite vezu i pokušajte ponovno.",
-        })
-    }
-}
-
-const handleAddSubActivity = async (name: string, activityId: string) => {
-    try {
-        const response = await fetch(`${BASE_API_URL}/api/activities/add/subactivity/${activityId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: authHeader(),
-            },
-            body: name
-        });
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        toast({
-            title: "Dodavanje podaktivnosti uspješno!",
-            description: "Nova podaktivnost je dodana u sustav.",
-        })
-    } catch (error) {
-        console.error('Error adding subactivity:', error);
-        toast({
-            duration: 2000,
-            variant: "destructive",
-            title: "Dodavanje podakitvnosti neuspješno!",
-            description: "Provjerite vezu i pokušajte ponovno.",
-        })
-    }
-}
+import {addActivity, addSubActivity} from "@/api/activity.tsx";
 
 export default function Activities() {
     const [selectedActivity, setSelectedActivity] = useState<string>("1");
@@ -93,7 +35,7 @@ export default function Activities() {
                     />
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4">
-                    <Button onClick={() => handleAddActivity(activityName)}>Spremi</Button>
+                    <Button onClick={() => addActivity(activityName)}>Spremi</Button>
                 </CardFooter>
             </Card>
             <Card x-chunk="dashboard-04-chunk-2">
@@ -123,7 +65,7 @@ export default function Activities() {
                     </div>
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4">
-                    <Button onClick={() => handleAddSubActivity(subActivityName, selectedActivity)}>Spremi</Button>
+                    <Button onClick={() => addSubActivity(subActivityName, selectedActivity)}>Spremi</Button>
                 </CardFooter>
             </Card>
         </div>

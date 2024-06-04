@@ -1,40 +1,35 @@
 import {useEffect, useState} from 'react';
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import authHeader from '@/auth-header.tsx';
-import {BASE_API_URL} from "@/constants.tsx";
+import {getUserId, isTeacher} from "@/utils.ts";
+import {getClasses} from "@/api/school.tsx";
+import {SchoolClass} from "@/model/SchoolClass.ts";
+import {getClassesById} from "@/api/users.tsx";
 
 interface SchoolClassSelectProps {
     selectedClass: string;
     onChange: (value: string) => void;
 }
 
-interface SchoolClass {
-    id: number;
-    year: number;
-    division: string;
-}
-
 const SchoolClassSelect: React.FC<SchoolClassSelectProps> = ({selectedClass, onChange}) => {
     const [classes, setClasses] = useState<SchoolClass[]>([]);
 
     useEffect(() => {
-            fetch(
-                BASE_API_URL + '/api/school/classes',
-                {
-                    method: "GET",
-                    headers: {
-                        Origin: origin,
-                        Authorization: authHeader(),
-                    }
+        const fetchClasses = async () => {
+            try {
+                let data;
+                if (isTeacher()) {
+                    const userId = getUserId();
+                    data = await getClassesById(userId);
+                } else {
+                    data = await getClasses();
                 }
-            )
-                .then((response) => response.json())
-                .then((data) => setClasses(data))
-                .catch((error) => console.error('Error fetching classes:', error));
-        },
-        []
-    )
-    ;
+                setClasses(data);
+            } catch (error) {
+            }
+        };
+
+        fetchClasses();
+    }, []);
 
     return (
         <Select onValueChange={onChange} value={selectedClass}>

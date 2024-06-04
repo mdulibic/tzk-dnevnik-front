@@ -17,7 +17,8 @@ import {
 } from "@/components/ui/select.tsx"
 import {useState} from "react";
 import {useToast} from "@/components/ui/use-toast.ts";
-import {BASE_API_URL} from "@/constants.tsx";
+import {registerUser} from "@/api/auth.tsx";
+import {User} from "@/model/User.ts";
 
 export function RegistrationDashboard() {
     const [name, setName] = useState('');
@@ -31,17 +32,9 @@ export function RegistrationDashboard() {
 
     const handleRegistration = async () => {
         try {
-            const response = await fetch(BASE_API_URL + '/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({name, surname, username, email, role, password})
-            });
+            const userData: User = { name, surname, username, email, role, password };
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            await registerUser(userData);
 
             setName("");
             setSurname("");
@@ -53,9 +46,9 @@ export function RegistrationDashboard() {
             toast({
                 title: "Registracija uspješna!",
                 description: "Novi korisnik dodan u sustav.",
-            })
+            });
         } catch (error) {
-            console.error('Error logging in:', error);
+            console.error('Error registering user:', error);
 
             setName("");
             setSurname("");
@@ -69,7 +62,7 @@ export function RegistrationDashboard() {
                 variant: "destructive",
                 title: "Registracija neuspješna!",
                 description: "Provjerite podatke i pokušajte ponovno.",
-            })
+            });
         }
     };
 

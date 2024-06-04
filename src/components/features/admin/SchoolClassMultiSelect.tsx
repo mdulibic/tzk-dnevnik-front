@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Select, Space} from 'antd';
-import {BASE_API_URL} from "@/constants.tsx";
-import authHeader from "@/auth-header.tsx";
-import {SchoolClass} from "@/pages/admin/students/columns.tsx";
+import {getClasses} from "@/api/school.tsx";
+import {toast} from "@/components/ui/use-toast.ts";
+import {SchoolClass} from "@/model/SchoolClass.ts";
 
 interface SchoolClassesSelectProps {
     selectedClassIds: string[];
@@ -10,31 +10,26 @@ interface SchoolClassesSelectProps {
 }
 
 const SchoolClassMultiSelect: React.FC<SchoolClassesSelectProps> = ({selectedClassIds, onChange}) => {
-    const [classOptions, setClassOptions] = useState<{ label: string; value: string }[]>([]);
+    const [classOptions, setClassOptions] = useState<SchoolClass[]>([]);
 
     useEffect(() => {
-            fetch(
-                BASE_API_URL + '/api/school/classes',
-                {
-                    method: "GET",
-                    headers: {
-                        Origin: origin,
-                        Authorization: authHeader(),
-                    }
-                }
-            )
-                .then((response) => response.json())
-                .then((data: SchoolClass[]) => {
-                    setClassOptions(data.map((schoolClass) => ({
-                        label: `${schoolClass.year}.${schoolClass.division}`,
-                        value: schoolClass.id.toString(),
-                    })));
+        const fetchClasses = async () => {
+            try {
+
+                const data = await getClasses();
+                setClassOptions(data);
+            } catch (error) {
+                toast({
+                    duration: 2000,
+                    variant: "destructive",
+                    title: "Došlo je do pogreške!",
+                    description: "Provjerite podatke i pokušajte ponovno.",
                 })
-                .catch((error) => console.error('Error fetching classes:', error));
-        },
-        []
-    )
-    ;
+            }
+        };
+
+        fetchClasses();
+    }, []);
 
     const handleChange = (value: string[]) => {
         onChange(value);

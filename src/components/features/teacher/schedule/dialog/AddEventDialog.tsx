@@ -9,13 +9,14 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog.tsx";
 
-import {EventFormData, Tag} from "../EventCalendar.tsx"
+import {EventFormData} from "../EventCalendar.tsx"
 import {Label} from "@/components/ui/label.tsx";
 import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "../../../../ui/button.tsx";
 import TagSelect from "@/components/features/teacher/schedule/select/TagSelect.tsx";
 import ActivitySelect from "../../../../shared/select/ActivitySelect.tsx";
+import {Tag} from "@/model/SchoolEvent.ts";
 
 interface IProps {
     open: boolean
@@ -23,10 +24,10 @@ interface IProps {
     eventFormData: EventFormData
     setEventFormData: Dispatch<SetStateAction<EventFormData>>
     onAddEvent: (e: MouseEvent<HTMLButtonElement>) => void
-    todos: Tag[]
+    tags: Tag[]
 }
 
-const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onAddEvent, todos}: IProps) => {
+const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onAddEvent, tags}: IProps) => {
     const {schoolClassId, activityId, title} = eventFormData
     const onClose = () => handleClose()
 
@@ -128,7 +129,7 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
                         <Label htmlFor="todo" className="text-right">
                             Labela
                         </Label>
-                        <TagSelect tags={todos} onChange={handleTagChange}/>
+                        <TagSelect tags={tags} onChange={handleTagChange}/>
                     </div>
                 </div>
                 <DialogFooter>

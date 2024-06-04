@@ -1,35 +1,15 @@
 import {DataTable} from "@/components/shared/table/data-table.tsx";
-import {columns, Student} from "@/pages/admin/students/columns.tsx";
+import {columns} from "@/pages/admin/students/columns.tsx";
 import {PageHeader, PageHeaderHeading} from "@/components/core/PageHeader.tsx";
-import {BASE_API_URL} from "@/constants.tsx";
-import authHeader from "@/auth-header.tsx";
 import {useEffect, useState} from "react";
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {getStudents} from "@/api/users.tsx";
+import {Student} from "@/model/Student";
 
 export type FilterPair = {
     key: string,
     value: string,
 };
-
-async function getStudents(): Promise<Student[]> {
-    const response = await fetch(
-        `${BASE_API_URL}/api/students/all`,
-        {
-            method: 'GET',
-            headers: {
-                Origin: origin,
-                Authorization: authHeader(),
-            },
-        }
-    );
-
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
-    return data as Student[];
-}
 
 
 export default function StudentsDashboard() {

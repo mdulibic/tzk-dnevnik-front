@@ -14,9 +14,8 @@ import {BASE_API_URL} from "@/constants.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
 import authHeader from "@/auth-header.tsx";
 import {useNavigate} from "react-router-dom";
-import {Teacher} from "@/pages/admin/teachers/columns.tsx";
 import SchoolClassMultiSelect from "@/components/features/admin/SchoolClassMultiSelect.tsx";
-
+import {Teacher} from "@/model/Teacher.ts";
 
 interface TeacherUpdateProps {
     teacher: Teacher;

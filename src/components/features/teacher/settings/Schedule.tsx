@@ -1,16 +1,13 @@
 import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {Checkbox} from "@/components/ui/checkbox.tsx";
 import React, {ChangeEvent, useState} from "react";
 import {toast} from "@/components/ui/use-toast.ts";
-import {BASE_API_URL} from "@/constants.tsx";
-import authHeader from "@/auth-header.tsx";
 import {Label} from "@/components/ui/label.tsx";
-import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {CsvRow} from "@/pages/admin/import-users/ImportUsersDashboard.tsx";
 import {getUserId} from "@/utils.ts";
+import {importSchedule} from "@/api/schedule.tsx";
 
 export default function Schedule() {
     const [file, setFile] = useState<File | null>(null);
@@ -30,11 +27,10 @@ export default function Schedule() {
 
         const array = csvRows.map((i) => {
             const values = i.split(",");
-            const obj: CsvRow = csvHeader.reduce((object, header, index) => {
+            return csvHeader.reduce((object, header, index) => {
                 object[header] = values[index];
                 return object;
             }, {} as CsvRow);
-            return obj;
         });
 
         setArray(array);
@@ -68,29 +64,15 @@ export default function Schedule() {
         }
 
         try {
-            const formData = new FormData();
-            formData.append('file', file);
-
             const teacherId = getUserId();
-
-            const response = await fetch(`${BASE_API_URL}/api/events/import/${teacherId}`, {
-                method: 'POST',
-                headers: {
-                    Authorization: authHeader(),
-                },
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            await importSchedule(file, teacherId);
 
             toast({
                 title: "Uvoz podataka uspješan!",
                 description: "Podaci dodani u sustav.",
             });
         } catch (error) {
-            console.error('Error logging in:', error);
+            console.error('Error importing data:', error);
 
             toast({
                 duration: 2000,
