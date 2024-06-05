@@ -4,20 +4,61 @@ import {Label} from "@/components/ui/label.tsx"
 import {Icons} from "@/components/shared/icons/icons.tsx";
 import {Player} from '@lottiefiles/react-lottie-player';
 
-import {Link} from 'react-router-dom';
-import {useState} from 'react';
+import {useLocation} from 'react-router-dom';
+import {useEffect, useState} from 'react';
 import {PasswordInput} from "@/components/shared/input/password-input.tsx";
 import {useNavigate} from 'react-router-dom';
 import {toast} from "@/components/ui/use-toast.ts";
-import {loginUser} from "@/api/auth.tsx";
+import {getGoogleLogin, loginUser} from "@/api/auth.tsx";
 import {UserRole} from "@/model/UserRole.ts";
 import {getUserRole} from "@/utils.ts";
 
 const Login = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [invalidCredentials, setInvalidCredentials] = useState(false);
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const token = searchParams.get('token');
+        const userId = searchParams.get('userId');
+        const role = searchParams.get('role');
+        const name = searchParams.get('name');
+        const surname = searchParams.get('surname');
+        const username = searchParams.get('username');
+        const email = searchParams.get('email');
+
+        if (token && userId && role && name && surname && username && email) {
+            const userObject = {
+                accessToken: token,
+                userId: userId,
+                role: role,
+                name: name,
+                surname: surname,
+                username: username,
+                email: email,
+            };
+
+            localStorage.setItem('user', JSON.stringify(userObject));
+
+            switch (role) {
+                case UserRole.STUDENT:
+                    navigate('/student');
+                    break;
+                case UserRole.TEACHER:
+                    navigate('/teacher');
+                    break;
+                case UserRole.ADMIN:
+                    navigate('/admin');
+                    break;
+                default:
+                    navigate('/login');
+                    break;
+            }
+        }
+    }, [location.search, navigate]);
 
     const handleLogin = async () => {
         try {
@@ -116,11 +157,9 @@ const Login = () => {
                                 Neispravno korisničko ime/lozinka!
                             </p>
                         )}
-                        <Link to="http://localhost:8080/oauth2/authorization/google" className="w-full">
-                            <Button variant="outline" className="w-full">
-                                <Icons.googleLogo className="h-8 w-8"/>Prijava sa Google računom
-                            </Button>
-                        </Link>
+                        <Button variant="outline" className="w-full" onClick={getGoogleLogin}>
+                            <Icons.googleLogo className="h-8 w-8"/>Prijava sa Google računom
+                        </Button>
                     </div>
                 </div>
             </div>

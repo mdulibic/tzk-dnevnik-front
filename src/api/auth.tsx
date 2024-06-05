@@ -1,4 +1,4 @@
-import { BASE_API_URL } from "@/constants";
+import {BASE_API_URL} from "@/constants";
 import {User} from "@/model/User.ts";
 
 export async function registerUser(userData: User) {
@@ -23,7 +23,7 @@ export async function loginUser(username: string, password: string) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({username, password})
     });
 
     if (!response.ok) {
@@ -32,4 +32,9 @@ export async function loginUser(username: string, password: string) {
 
     return response.json();
 }
+
+export const getGoogleLogin = () => {
+    window.location.href = `${BASE_API_URL}/oauth2/authorization/google`;
+};
+
 

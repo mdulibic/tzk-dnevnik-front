@@ -3,6 +3,7 @@ import authHeader from "@/auth-header.tsx";
 import {SchoolClass} from "@/model/SchoolClass.ts";
 import {Teacher} from "@/model/Teacher.ts";
 import {Student} from "@/model/Student.ts";
+import {getUserId} from "@/utils.ts";
 
 export async function importUsers(file: File, role: string) {
     const formData = new FormData();
@@ -119,4 +120,25 @@ export async function getTeachers(): Promise<Teacher[]> {
 
     const data = await response.json();
     return data as Teacher[];
+}
+
+export async function getStudent(): Promise<Student> {
+    const studentId = getUserId();
+    const response = await fetch(
+        `${BASE_API_URL}/api/${studentId}`,
+        {
+            method: 'GET',
+            headers: {
+                Origin: origin,
+                Authorization: authHeader(),
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data as Student;
 }
