@@ -12,6 +12,7 @@ import {AdminRoute, StudentRoute, TeacherRoute} from "@/components/core/Protecte
 import Profile from "./pages/student/StudentProfile.tsx";
 import StudentSchedule from "@/pages/student/StudentSchedule.tsx";
 import AdminSettings from "./pages/admin/settings/AdminSettings";
+import {AddResultsByEvent} from "@/pages/teacher/schedule/AddResultsByEvent.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
             {
                 path: "settings",
                 element: <TeacherRoute><Settings/></TeacherRoute>,
+            },
+            {
+                path: "event/results",
+                element: <TeacherRoute><AddResultsByEvent/></TeacherRoute>,
             },
         ],
     },

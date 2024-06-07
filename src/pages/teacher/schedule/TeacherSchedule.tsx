@@ -6,11 +6,13 @@ import {formatDateTime, getUserId} from "@/utils.ts";
 import {ArrowRight} from "lucide-react";
 import {SchoolEvent} from "@/model/SchoolEvent.ts";
 import {fetchTeacherById} from "@/api/users.tsx";
+import {useNavigate} from 'react-router-dom';
 
 
 export default function TeacherSchedule() {
     const [nextEvent, setNextEvent] = useState<SchoolEvent | null>(null);
     const teacherId = getUserId();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getTeacher = async () => {
@@ -37,7 +39,8 @@ export default function TeacherSchedule() {
                 {nextEvent && (
                     <Card
                         className="cursor-pointer hover:shadow-lg transition-shadow duration-300"
-                        onClick={() => {/* Handle card click, e.g., navigate to event details */
+                        onClick={() => {
+                            navigate('/teacher/event/results',  { state: nextEvent });
                         }}
                     >
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
