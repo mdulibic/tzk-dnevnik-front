@@ -1,6 +1,6 @@
 import {BASE_API_URL} from "@/constants.tsx";
 import authHeader from "@/auth-header.tsx";
-import {EventInfo} from "@/components/features/teacher/schedule/EventCalendar.tsx";
+import {EventInfo} from "@/components/features/teacher/schedule/TeacherEventCalendar.tsx";
 import {getUserId} from "@/utils.ts";
 import {SchoolEvent, Tag} from "@/model/SchoolEvent.ts";
 import {TagInfo} from "@/components/features/teacher/schedule/dialog/AddTagDialog.tsx";
@@ -47,6 +47,26 @@ export async function fetchEvents(): Promise<SchoolEvent[]> {
     const teacherId = getUserId();
     const response = await fetch(
         `${BASE_API_URL}/api/events/teacher/${teacherId}`,
+        {
+            method: 'GET',
+            headers: {
+                Origin: origin,
+                Authorization: authHeader(),
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data as SchoolEvent[];
+}
+
+export async function fetchEventsForStudent(studentId: string): Promise<SchoolEvent[]> {
+    const response = await fetch(
+        `${BASE_API_URL}/api/events/student/${studentId}`,
         {
             method: 'GET',
             headers: {

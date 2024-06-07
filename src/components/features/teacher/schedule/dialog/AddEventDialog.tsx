@@ -9,7 +9,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog.tsx";
 
-import {EventFormData} from "../EventCalendar.tsx"
+import {EventFormData} from "../TeacherEventCalendar.tsx"
 import {Label} from "@/components/ui/label.tsx";
 import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
 import {Input} from "@/components/ui/input.tsx";

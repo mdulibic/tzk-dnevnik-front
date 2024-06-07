@@ -36,7 +36,7 @@ const General = () => {
                                     <AvatarFallback>{teacher.name.charAt(0)}{teacher.surname.charAt(0)}</AvatarFallback>
                                 </Avatar>
                             </div>
-                            <div>
+                            <div className="space-y-2">
                                 <p><strong>Ime i prezime:</strong> {teacher.name} {teacher.surname}</p>
                                 <p><strong>Korisničko ime:</strong> {teacher.username}</p>
                                 <p><strong>Email:</strong> {teacher.email}</p>

@@ -21,6 +21,7 @@ import {getUserId, getUserSchool} from "@/utils.ts";
 import {toast} from "@/components/ui/use-toast.ts";
 import {SchoolEvent, Tag} from "@/model/SchoolEvent.ts";
 import {addEvent, fetchEvents, fetchTags} from "@/api/schedule.tsx";
+import { messages } from "@/constants.tsx";
 
 
 const locales = {
@@ -87,22 +88,7 @@ const initialDatePickerEventFormData: DatePickerEventFormData = {
     end: undefined,
 }
 
-const messages = {
-    allDay: "Cijeli dan",
-    previous: "Prethodni",
-    next: "Sljedeći",
-    today: "Danas",
-    month: "Mjesec",
-    week: "Tjedan",
-    day: "Dan",
-    agenda: "Agenda",
-    date: "Datum",
-    time: "Vrijeme",
-    event: "Nastavni sat",
-    noEventsInRange: "Nema dostupnih nastavnih satova.",
-};
-
-const EventCalendar = () => {
+const TeacherEventCalendar = () => {
     const [openSlot, setOpenSlot] = useState(false)
     const [openDatepickerModal, setOpenDatepickerModal] = useState(false)
     const [openTodoModal, setOpenTodoModal] = useState(false)
@@ -302,4 +288,4 @@ const EventCalendar = () => {
     );
 }
 
-export default EventCalendar
+export default TeacherEventCalendar

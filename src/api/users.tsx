@@ -3,7 +3,6 @@ import authHeader from "@/auth-header.tsx";
 import {SchoolClass} from "@/model/SchoolClass.ts";
 import {Teacher} from "@/model/Teacher.ts";
 import {Student} from "@/model/Student.ts";
-import {getUserId} from "@/utils.ts";
 
 export async function importUsers(file: File, role: string, schoolId: string, classId: string | undefined) {
     const formData = new FormData();
@@ -182,10 +181,9 @@ export async function getTeachersBySchool(schoolId: string): Promise<Teacher[]> 
     return data as Teacher[];
 }
 
-export async function getStudent(): Promise<Student> {
-    const studentId = getUserId();
+export async function getStudent(studentId: string): Promise<Student> {
     const response = await fetch(
-        `${BASE_API_URL}/api/${studentId}`,
+        `${BASE_API_URL}/api/students/${studentId}`,
         {
             method: 'GET',
             headers: {

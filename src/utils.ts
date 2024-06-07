@@ -30,3 +30,21 @@ export function getUserSchool(): School | null {
     const school = schoolString ? JSON.parse(schoolString) : null;
     return school || null;
 }
+
+export function formatDateTime(dateString: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    };
+
+    const date = new Date(dateString);
+    const formattedDate = new Intl.DateTimeFormat('de-DE', options).format(date);
+    const [datePart, timePart] = formattedDate.split(', ');
+
+    const timePartWithH = timePart.replace(':', ':') + 'h';
+
+    return `${datePart}, ${timePartWithH}`;
+}

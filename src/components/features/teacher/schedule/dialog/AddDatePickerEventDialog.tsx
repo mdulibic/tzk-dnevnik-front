@@ -8,7 +8,7 @@ import {Button} from "../../../../ui/button.tsx";
 import {Checkbox} from "../../../../ui/checkbox.tsx";
 import {LocalizationProvider, DateTimePicker} from "@mui/x-date-pickers"
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns"
-import {DatePickerEventFormData} from "../EventCalendar.tsx"
+import {DatePickerEventFormData} from "../TeacherEventCalendar.tsx"
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import ActivitySelectMui from "@/components/shared/select/ActivitySelectMui.tsx";

@@ -1,32 +1,14 @@
 import {PageHeader, PageHeaderHeading} from "@/components/core/PageHeader.tsx";
-import EventCalendar from "@/components/features/teacher/schedule/EventCalendar.tsx";
+import TeacherEventCalendar from "@/components/features/teacher/schedule/TeacherEventCalendar.tsx";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {useEffect, useState} from "react";
-import {getUserId} from "@/utils.ts";
+import {formatDateTime, getUserId} from "@/utils.ts";
 import {ArrowRight} from "lucide-react";
 import {SchoolEvent} from "@/model/SchoolEvent.ts";
 import {fetchTeacherById} from "@/api/users.tsx";
 
-function formatDateTime(dateString: string): string {
-    const options: Intl.DateTimeFormatOptions = {
-        day: 'numeric',
-        month: 'numeric',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-    };
 
-    const date = new Date(dateString);
-    const formattedDate = new Intl.DateTimeFormat('de-DE', options).format(date);
-    const [datePart, timePart] = formattedDate.split(', ');
-
-    const timePartWithH = timePart.replace(':', ':') + 'h';
-
-    return `${datePart}, ${timePartWithH}`;
-}
-
-
-export default function Schedule() {
+export default function TeacherSchedule() {
     const [nextEvent, setNextEvent] = useState<SchoolEvent | null>(null);
     const teacherId = getUserId();
 
@@ -81,7 +63,7 @@ export default function Schedule() {
                     </Card>
                 )}
             </PageHeader>
-            <EventCalendar/>
+            <TeacherEventCalendar/>
         </div>
     )
 }

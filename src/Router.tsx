@@ -1,5 +1,5 @@
 import {createBrowserRouter} from "react-router-dom";
-import Schedule from "@/pages/teacher/schedule/Schedule.tsx";
+import TeacherSchedule from "@/pages/teacher/schedule/TeacherSchedule.tsx";
 import Students from "@/pages/teacher/students/Students";
 import Settings from "@/pages/teacher/settings/Settings.tsx";
 import NoMatch from "@/pages/NoMatch.tsx";
@@ -9,7 +9,7 @@ import {RegistrationDashboard} from "@/pages/admin/registration/RegistrationDash
 import StudentsDashboard from "@/pages/admin/students/StudentsDashboard.tsx";
 import {AppLayout} from "@/components/shared/layouts/AppLayout.tsx";
 import {AdminRoute, StudentRoute, TeacherRoute} from "@/components/core/ProtectedRoute.tsx";
-import Profile from "./pages/student/Profile";
+import Profile from "./pages/student/StudentProfile.tsx";
 import StudentSchedule from "@/pages/student/StudentSchedule.tsx";
 import AdminSettings from "./pages/admin/settings/AdminSettings";
 
@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "schedule",
-                element: <TeacherRoute><Schedule/></TeacherRoute>,
+                element: <TeacherRoute><TeacherSchedule/></TeacherRoute>,
             },
             {
                 path: "students",
