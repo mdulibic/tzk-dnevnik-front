@@ -1,16 +1,16 @@
 import {useEffect, useState} from 'react';
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {getUserId, isTeacher} from "@/utils.ts";
-import {getClasses} from "@/api/school.tsx";
 import {SchoolClass} from "@/model/SchoolClass.ts";
-import {getClassesById} from "@/api/users.tsx";
+import {getClassesForTeacher, getSchoolClasses} from "@/api/users.tsx";
 
 interface SchoolClassSelectProps {
-    selectedClass: string;
+    schoolId: string,
+    selectedClass: string | undefined;
     onChange: (value: string) => void;
 }
 
-const SchoolClassSelect: React.FC<SchoolClassSelectProps> = ({selectedClass, onChange}) => {
+const SchoolClassSelect: React.FC<SchoolClassSelectProps> = ({schoolId, selectedClass, onChange}) => {
     const [classes, setClasses] = useState<SchoolClass[]>([]);
 
     useEffect(() => {
@@ -19,9 +19,9 @@ const SchoolClassSelect: React.FC<SchoolClassSelectProps> = ({selectedClass, onC
                 let data;
                 if (isTeacher()) {
                     const userId = getUserId();
-                    data = await getClassesById(userId);
+                    data = await getClassesForTeacher(userId);
                 } else {
-                    data = await getClasses();
+                    data = await getSchoolClasses(schoolId);
                 }
                 setClasses(data);
             } catch (error) {
@@ -29,7 +29,7 @@ const SchoolClassSelect: React.FC<SchoolClassSelectProps> = ({selectedClass, onC
         };
 
         fetchClasses();
-    }, []);
+    }, [schoolId]);
 
     return (
         <Select onValueChange={onChange} value={selectedClass}>

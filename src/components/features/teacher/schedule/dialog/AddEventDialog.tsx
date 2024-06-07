@@ -19,6 +19,7 @@ import ActivitySelect from "../../../../shared/select/ActivitySelect.tsx";
 import {Tag} from "@/model/SchoolEvent.ts";
 
 interface IProps {
+    schoolId: string,
     open: boolean
     handleClose: Dispatch<SetStateAction<void>>
     eventFormData: EventFormData
@@ -27,7 +28,7 @@ interface IProps {
     tags: Tag[]
 }
 
-const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onAddEvent, tags}: IProps) => {
+const AddEventDialog = ({schoolId, open, handleClose, eventFormData, setEventFormData, onAddEvent, tags}: IProps) => {
     const {schoolClassId, activityId, title} = eventFormData
     const onClose = () => handleClose()
 
@@ -107,6 +108,7 @@ const AddEventDialog = ({open, handleClose, eventFormData, setEventFormData, onA
                         </Label>
                         <div className="col-span-3">
                             <SchoolClassSelect
+                                schoolId={schoolId}
                                 selectedClass={schoolClassId}
                                 onChange={handleClassChange}
                             />

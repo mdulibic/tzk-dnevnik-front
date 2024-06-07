@@ -1,23 +1,33 @@
 import React, {useEffect, useState} from 'react';
-import {Select, Space} from 'antd';
-import {getClasses} from "@/api/school.tsx";
+import {Select} from 'antd';
 import {toast} from "@/components/ui/use-toast.ts";
-import {SchoolClass} from "@/model/SchoolClass.ts";
+import {getSchoolClasses} from "@/api/users.tsx";
 
 interface SchoolClassesSelectProps {
+    schoolId: string,
     selectedClassIds: string[];
     onChange: (value: string[]) => void;
 }
 
-const SchoolClassMultiSelect: React.FC<SchoolClassesSelectProps> = ({selectedClassIds, onChange}) => {
-    const [classOptions, setClassOptions] = useState<SchoolClass[]>([]);
+const SchoolClassMultiSelect: React.FC<SchoolClassesSelectProps> = ({schoolId, selectedClassIds, onChange}) => {
+    const [classOptions, setClassOptions] = useState<{ label: string; value: string }[]>([]);
+
+    const decodeClassId = (encodedId: string) => {
+        const classId = parseInt(encodedId, 10);
+        const adjustedId = (classId - 1) % 8 + 1;
+        return String(adjustedId);
+    };
+
 
     useEffect(() => {
         const fetchClasses = async () => {
             try {
 
-                const data = await getClasses();
-                setClassOptions(data);
+                const data = await getSchoolClasses(schoolId);
+                setClassOptions(data.map((schoolClass) => ({
+                    label: `${schoolClass.year}.${schoolClass.division}`,
+                    value: schoolClass.id.toString(),
+                })));
             } catch (error) {
                 toast({
                     duration: 2000,
@@ -37,17 +47,14 @@ const SchoolClassMultiSelect: React.FC<SchoolClassesSelectProps> = ({selectedCla
 
 
     return (
-        <Space style={{width: '100%'}} direction="vertical">
-            <Select
+        <Select className="w-[280px]"
                 getPopupContainer={triggerNode => triggerNode.parentElement}
                 mode="tags"
-                style={{width: '100%'}}
                 placeholder="Odaberite razrede"
-                defaultValue={selectedClassIds}
+                defaultValue={selectedClassIds.map(decodeClassId)}
                 onChange={handleChange}
                 options={classOptions}
-            />
-        </Space>
+        />
     );
 };
 

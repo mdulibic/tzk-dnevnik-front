@@ -14,6 +14,7 @@ import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
 import {addTag} from "@/api/schedule.tsx";
+import {getUserId} from "@/utils.ts";
 
 interface IProps {
     open: boolean
@@ -23,6 +24,7 @@ interface IProps {
 export interface TagInfo {
     title: string;
     color: string;
+    teacherId: string;
 }
 
 export const AddTagDialog = ({open, handleClose}: IProps) => {
@@ -31,7 +33,8 @@ export const AddTagDialog = ({open, handleClose}: IProps) => {
 
     const onAddTag = async () => {
         try {
-            const newTag = {title, color};
+            const teacherId = getUserId();
+            const newTag = {title, color, teacherId};
             await addTag(newTag);
 
             setTitle("");

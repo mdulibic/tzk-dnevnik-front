@@ -1,5 +1,6 @@
 import {SchoolEvent} from "@/model/SchoolEvent.ts";
 import {SchoolClass} from "@/model/SchoolClass.ts";
+import {School} from "@/model/School.ts";
 
 export interface Teacher {
     id: number;
@@ -10,4 +11,5 @@ export interface Teacher {
     role: string;
     classesTeaching: SchoolClass[];
     events: SchoolEvent[];
+    school: School;
 }

@@ -157,11 +157,12 @@ const TeacherUpdateDialog: React.FC<TeacherUpdateProps> = ({teacher}) => {
                         }}
                     />
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-4 space-x-4">
                     <Label htmlFor="school-class" className="text-right">
                         Razredi
                     </Label>
                     <SchoolClassMultiSelect
+                        schoolId={String(teacher.school.id)}
                         selectedClassIds={classIds}
                         onChange={setClassIds}
                     />

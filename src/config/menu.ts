@@ -32,7 +32,7 @@ export const teacherMenu: NavItemWithChildren[] = [
 export const adminMenu: NavItemWithChildren[] = [
     {
         title: 'Registracija',
-        to: '/admin',
+        to: '/admin/registration',
     },
     {
         title: 'Učenici',
@@ -43,15 +43,15 @@ export const adminMenu: NavItemWithChildren[] = [
         to: '/admin/teachers',
     },
     {
-        title: 'Uvoz korisnika',
-        to: '/admin/import',
+        title: 'Postavke',
+        to: '/admin/settings',
     },
 ]
 
 export const studentMenu: NavItemWithChildren[] = [
     {
         title: 'Raspored',
-        to: '/student',
+        to: '/student/schedule',
     },
     {
         title: 'Profil',

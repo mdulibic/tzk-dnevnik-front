@@ -4,6 +4,7 @@ import {Statistics} from "@/components/features/teacher/students/Statistics.tsx"
 import {Results} from "@/components/features/teacher/students/results/Results.tsx";
 import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
 import {StudentList} from "@/components/features/teacher/students/StudentList.tsx";
+import {getUserSchool} from "@/utils.ts";
 
 export default function Students() {
     const [activeLink, setActiveLink] = useState('Popis učenika');
@@ -32,6 +33,7 @@ export default function Students() {
                 <h1 className="text-3xl font-semibold">Razredi</h1>
                 <div className="space-y-2">
                     <SchoolClassSelect
+                        schoolId={String(getUserSchool()?.id)}
                         selectedClass={classId.toString()}
                         onChange={setClassId}
                     />

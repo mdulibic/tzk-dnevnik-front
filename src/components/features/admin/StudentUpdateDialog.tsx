@@ -162,6 +162,7 @@ const StudentUpdateDialog: React.FC<StudentDialogProps> = ({student}) => {
                         Razred
                     </Label>
                     <SchoolClassSelect
+                        schoolId={String(student.schoolClass.school.id)}
                         selectedClass={classId.toString()}
                         onChange={setClassId}
                     />

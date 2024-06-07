@@ -19,6 +19,9 @@ import {useState} from "react";
 import {useToast} from "@/components/ui/use-toast.ts";
 import {registerUser} from "@/api/auth.tsx";
 import {User} from "@/model/User.ts";
+import SchoolSelect from "@/components/shared/select/SchoolSelect.tsx";
+import SchoolClassMultiSelect from "@/components/features/admin/SchoolClassMultiSelect.tsx";
+import {PasswordInput} from "@/components/shared/input/password-input.tsx";
 
 export function RegistrationDashboard() {
     const [name, setName] = useState('');
@@ -27,12 +30,20 @@ export function RegistrationDashboard() {
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
     const [password, setPassword] = useState('');
+    const [schoolId, setSchoolId] = useState<string>("1");
+    const [classIds, setClassIds] = useState<string[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string>();
 
     const {toast} = useToast()
 
     const handleRegistration = async () => {
         try {
-            const userData: User = { name, surname, username, email, role, password };
+            if (role === 'ROLE_STUDENT' && classIds.length > 1) {
+                setErrorMessage('Učenik može biti upisan samo u jedan razred!')
+                return;
+            }
+
+            const userData: User = {name, surname, username, email, role, password, schoolId, classIds};
 
             await registerUser(userData);
 
@@ -42,6 +53,7 @@ export function RegistrationDashboard() {
             setEmail("");
             setRole("");
             setPassword("");
+            setErrorMessage("")
 
             toast({
                 title: "Registracija uspješna!",
@@ -65,6 +77,10 @@ export function RegistrationDashboard() {
             });
         }
     };
+
+    const isDisabled = () => {
+        return name === "" || surname === "" || username === "" || email === "" || role === "";
+    }
 
     return (
         <Card>
@@ -139,16 +155,41 @@ export function RegistrationDashboard() {
                         </Select>
                     </div>
                     <div className="grid gap-2">
+                        <Label htmlFor="school">Škola</Label>
+                        <SchoolSelect
+                            selectedSchool={schoolId.toString()}
+                            onChange={setSchoolId}
+                        />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="class">Razred</Label>
+                        <SchoolClassMultiSelect
+                            schoolId={schoolId.toString()}
+                            selectedClassIds={classIds}
+                            onChange={(ids) => {
+                                setErrorMessage(undefined)
+                                setClassIds(ids)
+                            }}
+                        />
+                    </div>
+                    {errorMessage && (
+                        <p className="text-sm text-bold text-red-500">
+                            {errorMessage}
+                        </p>
+                    )}
+                    <div className="grid gap-2">
                         <Label htmlFor="password">Password</Label>
-                        <Input
+                        <PasswordInput
                             id="password"
-                            type="password"
                             value={password}
+                            required
                             onChange={(e) => {
                                 setPassword(e.target.value);
-                            }}/>
+                            }}
+                            autoComplete="new-password"
+                        />
                     </div>
-                    <Button type="submit" className="w-full" onClick={handleRegistration}>
+                    <Button type="submit" className="w-full" onClick={handleRegistration} disabled={isDisabled()}>
                         Registracija
                     </Button>
                 </div>

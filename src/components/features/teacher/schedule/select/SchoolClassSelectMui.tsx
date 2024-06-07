@@ -4,7 +4,7 @@ import {cn, getUserId, isTeacher} from "@/utils.ts";
 import {ChevronDownIcon, ChevronUpIcon} from '@radix-ui/react-icons';
 import { getClasses } from '@/api/school.tsx';
 import {SchoolClass} from "@/model/SchoolClass.ts";
-import {getClassesById} from "@/api/users.tsx";
+import {getClassesForTeacher} from "@/api/users.tsx";
 
 interface SchoolClassSelectProps {
     selectedClass: string;
@@ -20,7 +20,7 @@ const SchoolClassSelectMui: React.FC<SchoolClassSelectProps> = ({selectedClass, 
                 let data;
                 if (isTeacher()) {
                     const userId = getUserId();
-                    data = await getClassesById(userId);
+                    data = await getClassesForTeacher(userId);
                 } else {
                     data = await getClasses();
                 }

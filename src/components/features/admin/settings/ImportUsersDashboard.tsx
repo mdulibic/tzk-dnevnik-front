@@ -1,17 +1,26 @@
-import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {Input} from "@/components/ui/input.tsx";
-import {Button} from "@/components/ui/button.tsx";
 import React, {ChangeEvent, useState} from "react";
-import {toast} from "@/components/ui/use-toast.ts";
+import {Button} from "@/components/ui/button.tsx";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Label} from "@/components/ui/label.tsx";
-import {CsvRow} from "@/pages/admin/settings/ImportUsersDashboard.tsx";
-import {getUserId} from "@/utils.ts";
-import {importSchedule} from "@/api/schedule.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+import {toast} from "@/components/ui/use-toast.ts";
+import {importUsers} from "@/api/users.tsx";
+import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
+import SchoolSelect from "@/components/shared/select/SchoolSelect.tsx";
+import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
 
-export default function Schedule() {
+export interface CsvRow {
+    [key: string]: string;
+}
+
+export function ImportUsersDashboard() {
     const [file, setFile] = useState<File | null>(null);
     const [array, setArray] = useState<CsvRow[]>([]);
+    const [role, setRole] = useState('');
+    const [schoolId, setSchoolId] = useState<string>("1");
+    const [classId, setClassId] = useState<string>();
+    const [showClass, setShowClass] = useState<boolean>(false);
 
     const fileReader = new FileReader();
 
@@ -64,8 +73,7 @@ export default function Schedule() {
         }
 
         try {
-            const teacherId = getUserId();
-            await importSchedule(file, teacherId);
+            await importUsers(file, role, schoolId, classId);
 
             toast({
                 title: "Uvoz podataka uspješan!",
@@ -83,41 +91,79 @@ export default function Schedule() {
         }
     };
 
+    const isDisabled = () => {
+        return role === "" || file === null;
+    }
+
 
     return (
         <div className="space-y-4">
-            <PageHeaderHeading>Raspored nastave</PageHeaderHeading>
+            <PageHeaderHeading>Uvoz korisnika</PageHeaderHeading>
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-xl">Uvoz rasporeda nastave</CardTitle>
-                    <CardDescription>Odaberite datoteku s podacima o nastavnim satovima koje želite dodati u
-                        raspored.</CardDescription>
+                    <CardTitle className="text-xl">Dodaj korisnike</CardTitle>
+                    <CardDescription>Odaberite datoteku s korisničkim podacima i definirajte rolu za korisnike koji će
+                        biti
+                        dodani u sustav.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="grid gap-4">
+                        <div className="grid w-full max-w-sm items-center gap-1.5">
+                            <Label htmlFor="picture">Datoteka</Label>
+                            <Input
+                                id="picture"
+                                onChange={handleOnChange}
+                                type="file"
+                                accept=".csv"
+                            />
+                        </div>
                         <div className="grid gap-2">
-                            <div className="grid w-full max-w-sm items-center gap-1.5">
-                                <Label htmlFor="picture">Datoteka</Label>
-                                <Input
-                                    id="picture"
-                                    onChange={handleOnChange}
-                                    type="file"
-                                    accept=".csv"
+                            <Label htmlFor="role">Rola</Label>
+                            <Select value={role} onValueChange={(value) => {
+                                setRole(value);
+                                setShowClass(value === 'ROLE_STUDENT');
+                            }}>
+                                <SelectTrigger className="w-[280px]">
+                                    <SelectValue placeholder="Odaberite rolu"/>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value="ROLE_STUDENT">Učenik</SelectItem>
+                                        <SelectItem value="ROLE_TEACHER">Nastavnik</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="email">Škola</Label>
+                            <SchoolSelect
+                                selectedSchool={schoolId.toString()}
+                                onChange={setSchoolId}
+                            />
+                        </div>
+                        {showClass && (
+                            <div className="grid gap-2">
+                                <Label htmlFor="email">Razred</Label>
+                                <SchoolClassSelect
+                                    schoolId={schoolId}
+                                    selectedClass={classId?.toString()}
+                                    onChange={setClassId}
                                 />
                             </div>
-                        </div>
-                        <form className="flex flex-col items-center mb-4" onSubmit={handleOnSubmit}>
+                        )}
+                        <form className="flex flex-col items-center" onSubmit={handleOnSubmit}>
                             <div className="flex w-full justify-between">
                                 <div className="flex">
                                     <Button
                                         type="submit"
-                                        className="py-2 px-4 bg-blue-600 text-white rounded shadow-md hover:bg-blue-500 focus:bg-blue-500"
+                                        className="py-2 bg-blue-600 text-white rounded shadow-md hover:bg-blue-500 focus:bg-blue-500"
                                     >
-                                        Uvoz rasporeda
+                                        Uvoz korisnika
                                     </Button>
                                 </div>
                                 <Button
                                     onClick={handleImport}
+                                    disabled={isDisabled()}
                                     className="py-2 px-4 bg-black text-white rounded shadow-md hover:bg-gray-800 focus:bg-gray-800"
                                 >
                                     Spremi podatke

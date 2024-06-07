@@ -35,6 +35,8 @@ export default function Schedule() {
             try {
                 const data = await fetchTeacherById(teacherId);
 
+                localStorage.setItem('school', JSON.stringify(data.school));
+
                 const now = new Date();
                 const upcomingEvents = data.events.filter(event => new Date(event.startTimestamp) > now);
                 const nextEvent = upcomingEvents.sort((a, b) => new Date(a.startTimestamp).getTime() - new Date(b.startTimestamp).getTime())[0];

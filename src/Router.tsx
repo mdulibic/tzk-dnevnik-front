@@ -9,9 +9,9 @@ import {RegistrationDashboard} from "@/pages/admin/registration/RegistrationDash
 import StudentsDashboard from "@/pages/admin/students/StudentsDashboard.tsx";
 import {AppLayout} from "@/components/shared/layouts/AppLayout.tsx";
 import {AdminRoute, StudentRoute, TeacherRoute} from "@/components/core/ProtectedRoute.tsx";
-import {ImportUsersDashboard} from "@/pages/admin/import-users/ImportUsersDashboard.tsx";
 import Profile from "./pages/student/Profile";
 import StudentSchedule from "@/pages/student/StudentSchedule.tsx";
+import AdminSettings from "./pages/admin/settings/AdminSettings";
 
 export const router = createBrowserRouter([
     {
@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
         element: <AppLayout/>,
         children: [
             {
-                path: "",
+                path: "schedule",
                 element: <StudentRoute><StudentSchedule/></StudentRoute>,
             },
             {
@@ -55,7 +55,7 @@ export const router = createBrowserRouter([
         element: <AppLayout/>,
         children: [
             {
-                path: "",
+                path: "registration",
                 element: <AdminRoute><RegistrationDashboard/></AdminRoute>,
             },
             {
@@ -67,8 +67,8 @@ export const router = createBrowserRouter([
                 element: <AdminRoute><TeachersDashboard/></AdminRoute>,
             },
             {
-                path: "import",
-                element: <AdminRoute><ImportUsersDashboard></ImportUsersDashboard></AdminRoute>,
+                path: "settings",
+                element: <AdminRoute><AdminSettings/></AdminRoute>,
             },
         ],
     },
