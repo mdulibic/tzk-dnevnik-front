@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import Activities from "@/components/features/teacher/settings/Activities.tsx";
 import { ImportUsersDashboard } from '@/components/features/admin/settings/ImportUsersDashboard';
+import { ImportSchoolsDashboard } from '@/components/features/admin/settings/ImportSchoolsDashboard';
 
 export default function AdminSettings() {
     const [activeLink, setActiveLink] = useState('Nastavne aktivnosti');
@@ -13,8 +14,10 @@ export default function AdminSettings() {
         switch (activeLink) {
             case 'Nastavne aktivnosti':
                 return <Activities/>;
-            case 'Uvoz korisnika':
+            case 'Korisnici':
                 return <ImportUsersDashboard/>;
+            case 'Škole':
+                return <ImportSchoolsDashboard/>;
         }
     };
 
@@ -33,10 +36,16 @@ export default function AdminSettings() {
                         Nastavne aktivnosti
                     </a>
                     <a
-                        className={`${activeLink === 'Uvoz korisnika' ? 'text-primary font-semibold cursor-pointer' : 'text-muted-foreground cursor-pointer'}`}
-                        onClick={() => handleLinkClick('Uvoz korisnika')}
+                        className={`${activeLink === 'Korisnici' ? 'text-primary font-semibold cursor-pointer' : 'text-muted-foreground cursor-pointer'}`}
+                        onClick={() => handleLinkClick('Korisnici')}
                     >
-                        Uvoz korisnika
+                       Korisnici
+                    </a>
+                    <a
+                        className={`${activeLink === 'Škole' ? 'text-primary font-semibold cursor-pointer' : 'text-muted-foreground cursor-pointer'}`}
+                        onClick={() => handleLinkClick('Škole')}
+                    >
+                        Škole
                     </a>
                 </nav>
                 <main className="grid gap-6">

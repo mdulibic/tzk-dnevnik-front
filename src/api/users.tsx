@@ -5,7 +5,7 @@ import {Teacher} from "@/model/Teacher.ts";
 import {Student} from "@/model/Student.ts";
 import {getUserId} from "@/utils.ts";
 
-export async function importUsers(file: File, role: string,  schoolId: string , classId: string | undefined) {
+export async function importUsers(file: File, role: string, schoolId: string, classId: string | undefined) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('role', role);
@@ -16,6 +16,23 @@ export async function importUsers(file: File, role: string,  schoolId: string , 
     }
 
     const response = await fetch(`${BASE_API_URL}/api/school/enroll/${schoolId}`, {
+        method: 'POST',
+        headers: {
+            Authorization: authHeader(),
+        },
+        body: formData
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+}
+
+export async function importSchools(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${BASE_API_URL}/api/school`, {
         method: 'POST',
         headers: {
             Authorization: authHeader(),

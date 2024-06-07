@@ -35,7 +35,7 @@ export default function Activities() {
                     />
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4">
-                    <Button onClick={() => addActivity(activityName)}>Spremi</Button>
+                    <Button disabled={activityName === ""} onClick={() => addActivity(activityName)}>Spremi</Button>
                 </CardFooter>
             </Card>
             <Card x-chunk="dashboard-04-chunk-2">
@@ -65,7 +65,8 @@ export default function Activities() {
                     </div>
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4">
-                    <Button onClick={() => addSubActivity(subActivityName, selectedActivity)}>Spremi</Button>
+                    <Button disabled={subActivityName === ""}
+                            onClick={() => addSubActivity(subActivityName, selectedActivity)}>Spremi</Button>
                 </CardFooter>
             </Card>
         </div>

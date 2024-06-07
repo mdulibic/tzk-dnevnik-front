@@ -1,26 +1,16 @@
 import React, {ChangeEvent, useState} from "react";
-import {Button} from "@/components/ui/button.tsx";
+import {toast} from "@/components/ui/use-toast.ts";
+import {importSchools} from "@/api/users.tsx";
+import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {toast} from "@/components/ui/use-toast.ts";
-import {importUsers} from "@/api/users.tsx";
-import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
-import SchoolSelect from "@/components/shared/select/SchoolSelect.tsx";
-import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {CsvRow} from "@/components/features/admin/settings/ImportUsersDashboard.tsx";
 
-export interface CsvRow {
-    [key: string]: string;
-}
-
-export function ImportUsersDashboard() {
+export function ImportSchoolsDashboard() {
     const [file, setFile] = useState<File | null>(null);
     const [array, setArray] = useState<CsvRow[]>([]);
-    const [role, setRole] = useState('');
-    const [schoolId, setSchoolId] = useState<string>("1");
-    const [classId, setClassId] = useState<string>();
-    const [showClass, setShowClass] = useState<boolean>(false);
 
     const fileReader = new FileReader();
 
@@ -73,7 +63,7 @@ export function ImportUsersDashboard() {
         }
 
         try {
-            await importUsers(file, role, schoolId, classId);
+            await importSchools(file);
 
             toast({
                 title: "Uvoz podataka uspješan!",
@@ -91,18 +81,14 @@ export function ImportUsersDashboard() {
         }
     };
 
-    const isDisabled = () => {
-        return role === "" || file === null;
-    }
-
 
     return (
         <div className="space-y-4">
-            <PageHeaderHeading>Korisnici</PageHeaderHeading>
+            <PageHeaderHeading>Škole</PageHeaderHeading>
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-xl">Dodavanje novih korisnika u sustav</CardTitle>
-                    <CardDescription>Odaberite datoteku s korisničkim podacima i odredite uloge za korisnike koji će biti dodani u sustav.</CardDescription>
+                    <CardTitle className="text-xl">Dodavanje novih škola u sustav</CardTitle>
+                    <CardDescription>Odaberite datoteku s podacima o školama kako biste ih uvezli u e-Tzk dnevnik i dodali u sustav.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="grid gap-4">
@@ -115,40 +101,6 @@ export function ImportUsersDashboard() {
                                 accept=".csv"
                             />
                         </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="role">Rola</Label>
-                            <Select value={role} onValueChange={(value) => {
-                                setRole(value);
-                                setShowClass(value === 'ROLE_STUDENT');
-                            }}>
-                                <SelectTrigger className="w-[280px]">
-                                    <SelectValue placeholder="Odaberite rolu"/>
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectItem value="ROLE_STUDENT">Učenik</SelectItem>
-                                        <SelectItem value="ROLE_TEACHER">Nastavnik</SelectItem>
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Škola</Label>
-                            <SchoolSelect
-                                selectedSchool={schoolId.toString()}
-                                onChange={setSchoolId}
-                            />
-                        </div>
-                        {showClass && (
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Razred</Label>
-                                <SchoolClassSelect
-                                    schoolId={schoolId}
-                                    selectedClass={classId?.toString()}
-                                    onChange={setClassId}
-                                />
-                            </div>
-                        )}
                         <form className="flex flex-col items-center" onSubmit={handleOnSubmit}>
                             <div className="flex w-full justify-between">
                                 <div className="flex">
@@ -161,7 +113,7 @@ export function ImportUsersDashboard() {
                                 </div>
                                 <Button
                                     onClick={handleImport}
-                                    disabled={isDisabled()}
+                                    disabled={file == null}
                                     className="py-2 px-4 bg-black text-white rounded shadow-md hover:bg-gray-800 focus:bg-gray-800"
                                 >
                                     Spremi podatke
