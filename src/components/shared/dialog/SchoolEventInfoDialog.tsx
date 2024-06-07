@@ -7,7 +7,6 @@ import {
     DialogHeader,
     DialogTitle
 } from "@/components/ui/dialog.tsx";
-import {Label} from "@/components/ui/label.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {formatDateTime} from "@/utils";
 
@@ -15,9 +14,10 @@ interface IProps {
     event: SchoolEvent
     open: boolean
     handleClose: Dispatch<SetStateAction<void>>
+    showClass: boolean
 }
 
-export const SchoolEventInfoDialog = ({event, open, handleClose}: IProps) => {
+export const SchoolEventInfoDialog = ({event, open, handleClose, showClass}: IProps) => {
     const onClose = () => handleClose()
 
     return (
@@ -51,6 +51,15 @@ export const SchoolEventInfoDialog = ({event, open, handleClose}: IProps) => {
                             {event.activity.name} {event.subActivity && `(${event.subActivity.name})`}
                         </p>
                     </div>
+                    {showClass && <div className="gap-4">
+                        <p className="text-sm font-semibold">
+                            Razred:
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                            {event.schoolClass.year}.{event.schoolClass.division}
+                        </p>
+                    </div>
+                    }
                     <div className="gap-4">
                         <p className="text-sm font-semibold">
                             Vrijeme:

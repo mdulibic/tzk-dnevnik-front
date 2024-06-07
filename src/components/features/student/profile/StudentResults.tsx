@@ -1,24 +1,16 @@
-import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {useEffect, useState} from "react";
-import {fetchResultsByClassId} from "@/api/results.tsx";
-import {columns} from "@/components/features/teacher/students/results/columns.tsx";
+import {fetchResultsByClassId, fetchResultsByStudentId} from "@/api/results.tsx";
+import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {ResultsDataTable} from "@/components/shared/table/results-data-table.tsx";
+import {columns} from "@/components/features/teacher/students/results/columns.tsx";
+import {ResultInfo} from "@/components/features/teacher/students/results/Results.tsx";
 import {formatDateTime} from "@/utils.ts";
 
 interface ResultsProps {
-    classId: string;
+    studentId: string;
 }
 
-export interface ResultInfo {
-    student: string;
-    activity: string;
-    subactivity: string;
-    result: number;
-    unit: string;
-    timestamp: string
-}
-
-export const Results: React.FC<ResultsProps> = ({classId}) => {
+export const StudentResults: React.FC<ResultsProps> = ({studentId}) => {
     const [results, setResults] = useState<ResultInfo[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -26,15 +18,16 @@ export const Results: React.FC<ResultsProps> = ({classId}) => {
     useEffect(() => {
         const fetchResults = async () => {
             try {
-                const data = await fetchResultsByClassId(classId);
-                const transformedData: ResultInfo[] = data.map(result => ({
-                    student: `${result.student.name} ${result.student.surname}`,
-                    activity: result.activity.name,
-                    subactivity: result.subactivity ? result.subactivity.name : '',
-                    result: result.result,
-                    unit: result.unit,
-                    timestamp: formatDateTime(result.timestamp),
-                }));
+                const data = await fetchResultsByStudentId(studentId);
+                const transformedData: ResultInfo[] = data
+                    .map(result => ({
+                        student: `${result.student.name} ${result.student.surname}`,
+                        activity: result.activity.name,
+                        subactivity: result.subactivity ? result.subactivity.name : '',
+                        result: result.result,
+                        unit: result.unit,
+                        timestamp: formatDateTime(result.timestamp),
+                    }));
                 setResults(transformedData);
             } catch (error) {
                 setError(true);
@@ -45,7 +38,7 @@ export const Results: React.FC<ResultsProps> = ({classId}) => {
         };
 
         fetchResults();
-    }, [classId]);
+    }, [studentId]);
 
     if (loading) {
         return <div>Učitavanje podataka...</div>;

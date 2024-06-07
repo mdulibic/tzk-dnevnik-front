@@ -2,6 +2,7 @@ import {useState} from "react";
 import {StudentStatistics} from "@/components/features/student/profile/StudentStatistics.tsx";
 import {StudentGeneral} from "@/components/features/student/profile/StudentGeneral";
 import {getUserId} from "@/utils.ts";
+import {StudentResults} from "@/components/features/student/profile/StudentResults.tsx";
 
 export default function StudentProfile() {
     const [activeLink, setActiveLink] = useState('Općenito');
@@ -15,6 +16,10 @@ export default function StudentProfile() {
         switch (activeLink) {
             case 'Općenito':
                 return <StudentGeneral
+                    studentId={getUserId()}
+                />;
+            case 'Rezultati':
+                return <StudentResults
                     studentId={getUserId()}
                 />;
             case 'Statistika':
@@ -37,6 +42,12 @@ export default function StudentProfile() {
                         onClick={() => handleLinkClick('Općenito')}
                     >
                         Općenito
+                    </a>
+                    <a
+                        className={`${activeLink === 'Rezultati' ? 'text-primary font-semibold cursor-pointer' : 'text-muted-foreground cursor-pointer'}`}
+                        onClick={() => handleLinkClick('Rezultati')}
+                    >
+                        Rezultati
                     </a>
                     <a
                         className={`${activeLink === 'Statistika' ? 'text-primary font-semibold cursor-pointer' : 'text-muted-foreground cursor-pointer'}`}

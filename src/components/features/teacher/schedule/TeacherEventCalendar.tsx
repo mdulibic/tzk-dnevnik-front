@@ -22,6 +22,7 @@ import {toast} from "@/components/ui/use-toast.ts";
 import {SchoolEvent, Tag} from "@/model/SchoolEvent.ts";
 import {addEvent, fetchEvents, fetchTags} from "@/api/schedule.tsx";
 import { messages } from "@/constants.tsx";
+import {SchoolEventInfoDialog} from "@/components/shared/dialog/SchoolEventInfoDialog.tsx";
 
 
 const locales = {
@@ -93,6 +94,8 @@ const TeacherEventCalendar = () => {
     const [openDatepickerModal, setOpenDatepickerModal] = useState(false)
     const [openTodoModal, setOpenTodoModal] = useState(false)
     const [currentEvent, setCurrentEvent] = useState<SchoolEvent | null>(null)
+    const [openEventInfo, setOpenEventInfo] = useState<boolean>(false)
+
 
     const [events, setEvents] = useState<SchoolEvent[]>([])
     const [tags, setTags] = useState<Tag[]>([])
@@ -127,6 +130,7 @@ const TeacherEventCalendar = () => {
     }
 
     const handleSelectEvent = (event: SchoolEvent) => {
+        setOpenEventInfo(true);
         setCurrentEvent(event)
     }
 
@@ -213,6 +217,11 @@ const TeacherEventCalendar = () => {
         handleDatePickerClose()
     }
 
+    const handleCloseInfo = () => {
+        setOpenEventInfo(false);
+        setCurrentEvent(null);
+    }
+
     return (
         <Card>
             <CardContent>
@@ -233,6 +242,13 @@ const TeacherEventCalendar = () => {
                     </Button>
                 </div>
                 <Divider sx={{my: 2}}/>
+                {currentEvent &&
+                    <SchoolEventInfoDialog
+                        showClass={true}
+                        event={currentEvent}
+                        handleClose={handleCloseInfo}
+                        open={openEventInfo}/>
+                }
                 <AddEventDialog
                     schoolId={String(getUserSchool()?.id)}
                     open={openSlot}

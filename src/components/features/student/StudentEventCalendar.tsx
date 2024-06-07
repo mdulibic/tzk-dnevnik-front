@@ -63,6 +63,7 @@ export const StudentEventCalendar = () => {
             <CardContent>
                 {currentEvent &&
                     <SchoolEventInfoDialog
+                        showClass={false}
                         event={currentEvent}
                         handleClose={handleCloseInfo}
                         open={openEventInfo}/>
