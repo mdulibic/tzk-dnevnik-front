@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import General from "@/components/features/teacher/settings/General.tsx";
 import Activities from "@/components/features/teacher/settings/Activities.tsx";
-import Schedule from "@/components/features/teacher/settings/Schedule.tsx";
+import ImportSchedule from "@/components/features/teacher/settings/ImportSchedule.tsx";
 
 export default function Settings() {
     const [activeLink, setActiveLink] = useState('Općenito');
@@ -18,7 +18,7 @@ export default function Settings() {
             case 'Nastavne aktivnosti':
                 return <Activities/>;
             case 'Raspored nastave':
-                return <Schedule/>;
+                return <ImportSchedule/>;
         }
     };
 

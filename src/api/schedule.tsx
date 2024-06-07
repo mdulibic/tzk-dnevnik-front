@@ -6,8 +6,10 @@ import {SchoolEvent, Tag} from "@/model/SchoolEvent.ts";
 import {TagInfo} from "@/components/features/teacher/schedule/dialog/AddTagDialog.tsx";
 
 export async function fetchTags(): Promise<Tag[]> {
+    const teacherId = getUserId();
+
     const response = await fetch(
-        `${BASE_API_URL}/api/events/tags`,
+        `${BASE_API_URL}/api/events/tags/${teacherId}`,
         {
             method: 'GET',
             headers: {
@@ -38,8 +40,6 @@ export async function addTag(newTag: TagInfo) {
     if (!response.ok) {
         throw new Error('Failed to add tag');
     }
-
-    return response.json();
 }
 
 
@@ -83,11 +83,11 @@ export async function addEvent(eventDto: EventInfo): Promise<SchoolEvent[]> {
     return data as SchoolEvent[];
 }
 
-export async function importSchedule(file: File, teacherId: string) {
+export async function importSchedule(file: File, teacherId: string, classId: string | undefined) {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(`${BASE_API_URL}/api/events/import/${teacherId}`, {
+    const response = await fetch(`${BASE_API_URL}/api/events/import/${teacherId}/${classId}`, {
         method: 'POST',
         headers: {
             Authorization: authHeader(),
@@ -98,6 +98,4 @@ export async function importSchedule(file: File, teacherId: string) {
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
-
-    return response.json();
 }

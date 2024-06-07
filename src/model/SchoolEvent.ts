@@ -4,9 +4,10 @@ import {SchoolClass} from "@/model/SchoolClass.ts";
 import {Teacher} from "@/model/Teacher.ts";
 
 export interface Tag {
-    id: string
-    title: string
-    color?: string
+    id: string;
+    title: string;
+    color?: string;
+    teacher: Teacher;
 }
 
 export interface SchoolEvent extends Event {

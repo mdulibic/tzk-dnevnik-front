@@ -33,7 +33,7 @@ const Login = () => {
         if (token && userId && role && name && surname && username && email) {
             const userObject = {
                 accessToken: token,
-                userId: userId,
+                id: userId,
                 role: role,
                 name: name,
                 surname: surname,
@@ -45,13 +45,13 @@ const Login = () => {
 
             switch (role) {
                 case UserRole.STUDENT:
-                    navigate('/student');
+                    navigate('/student/schedule');
                     break;
                 case UserRole.TEACHER:
-                    navigate('/teacher');
+                    navigate('/teacher/schedule');
                     break;
                 case UserRole.ADMIN:
-                    navigate('/admin');
+                    navigate('/admin/registration');
                     break;
                 default:
                     navigate('/login');
@@ -75,16 +75,16 @@ const Login = () => {
 
             switch (role) {
                 case UserRole.STUDENT:
-                    navigate('/student')
+                    navigate('/student/schedule');
                     break;
                 case UserRole.TEACHER:
-                    navigate('/teacher')
+                    navigate('/teacher/schedule');
                     break;
                 case UserRole.ADMIN:
-                    navigate('/admin')
+                    navigate('/admin/registration');
                     break;
                 default:
-                    navigate('/login')
+                    navigate('/login');
                     break;
             }
 

@@ -24,6 +24,10 @@ const SchoolClassSelect: React.FC<SchoolClassSelectProps> = ({schoolId, selected
                     data = await getSchoolClasses(schoolId);
                 }
                 setClasses(data);
+                if (data && data.length > 0) {
+                    setClasses(data);
+                    onChange(String(data[0].id));
+                }
             } catch (error) {
             }
         };

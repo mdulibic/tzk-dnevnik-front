@@ -5,13 +5,15 @@ import {Button} from "@/components/ui/button.tsx";
 import React, {ChangeEvent, useState} from "react";
 import {toast} from "@/components/ui/use-toast.ts";
 import {Label} from "@/components/ui/label.tsx";
-import {CsvRow} from "@/pages/admin/settings/ImportUsersDashboard.tsx";
-import {getUserId} from "@/utils.ts";
+import {getUserId, getUserSchool} from "@/utils.ts";
 import {importSchedule} from "@/api/schedule.tsx";
+import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
+import {CsvRow} from "@/components/features/admin/settings/ImportUsersDashboard.tsx";
 
-export default function Schedule() {
+export default function ImportSchedule() {
     const [file, setFile] = useState<File | null>(null);
     const [array, setArray] = useState<CsvRow[]>([]);
+    const [classId, setClassId] = useState<string>();
 
     const fileReader = new FileReader();
 
@@ -65,7 +67,7 @@ export default function Schedule() {
 
         try {
             const teacherId = getUserId();
-            await importSchedule(file, teacherId);
+            await importSchedule(file, teacherId, classId);
 
             toast({
                 title: "Uvoz podataka uspješan!",
@@ -106,11 +108,20 @@ export default function Schedule() {
                                 />
                             </div>
                         </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="email">Razred</Label>
+                            <SchoolClassSelect
+                                schoolId={String(getUserSchool()?.id)}
+                                selectedClass={classId?.toString()}
+                                onChange={setClassId}
+                            />
+                        </div>
                         <form className="flex flex-col items-center mb-4" onSubmit={handleOnSubmit}>
                             <div className="flex w-full justify-between">
                                 <div className="flex">
                                     <Button
                                         type="submit"
+                                        disabled={file === null}
                                         className="py-2 px-4 bg-blue-600 text-white rounded shadow-md hover:bg-blue-500 focus:bg-blue-500"
                                     >
                                         Uvoz rasporeda
@@ -118,6 +129,7 @@ export default function Schedule() {
                                 </div>
                                 <Button
                                     onClick={handleImport}
+                                    disabled={file === null || classId === undefined}
                                     className="py-2 px-4 bg-black text-white rounded shadow-md hover:bg-gray-800 focus:bg-gray-800"
                                 >
                                     Spremi podatke
@@ -126,7 +138,7 @@ export default function Schedule() {
                         </form>
 
                         <table
-                            className="min-w-full divide-y divide-gray-200 shadow-sm border border-gray-300 overflow-hidden">
+                            className="divide-y divide-gray-200 shadow-sm border border-gray-300">
                             <thead className="bg-white-600">
                             <tr>
                                 {headerKeys.map((key) => (

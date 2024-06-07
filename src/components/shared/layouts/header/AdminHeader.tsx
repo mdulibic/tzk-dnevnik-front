@@ -38,7 +38,7 @@ export function AdminHeader() {
             className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur">
             <div className="container md:px-8 flex h-14 items-center">
                 <div className="mr-4 hidden md:flex">
-                    <NavLink to="/admin" className="mr-6 flex items-center space-x-2">
+                    <NavLink to="/admin/registration" className="mr-6 flex items-center space-x-2">
                         <Logo/>
                     </NavLink>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -102,7 +102,7 @@ export function AdminHeader() {
                     </SheetTrigger>
                     <SheetContent side="left" className="pr-0 sm:max-w-xs">
                         <NavLink
-                            to="/admin"
+                            to="/admin/registration"
                             onClick={() => setOpen(false)}
                             className="flex items-center space-x-2">
                             <Logo/>
@@ -165,7 +165,7 @@ export function AdminHeader() {
                         </ScrollArea>
                     </SheetContent>
                 </Sheet>
-                <a href="/admin" className="mr-6 flex items-center space-x-2 md:hidden">
+                <a href="/admin/registration" className="mr-6 flex items-center space-x-2 md:hidden">
                     <Icons.logoLight className="h-6 w-6"/>
                     <span className="font-bold inline-block">{appConfig.appName}</span>
                 </a>

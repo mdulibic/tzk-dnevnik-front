@@ -17,7 +17,7 @@ interface NavItemWithChildren extends NavItem {
 export const teacherMenu: NavItemWithChildren[] = [
     {
         title: 'Raspored',
-        to: '/teacher',
+        to: '/teacher/schedule',
     },
     {
         title: 'Razredi',

@@ -17,7 +17,7 @@ import EventCard from "./EventCard.tsx"
 import AddEventDialog from "@/components/features/teacher/schedule/dialog/AddEventDialog.tsx"
 import {AddTagDialog} from "@/components/features/teacher/schedule/dialog/AddTagDialog.tsx"
 import AddDatePickerEventDialog from "@/components/features/teacher/schedule/dialog/AddDatePickerEventDialog.tsx"
-import {getUserId} from "@/utils.ts";
+import {getUserId, getUserSchool} from "@/utils.ts";
 import {toast} from "@/components/ui/use-toast.ts";
 import {SchoolEvent, Tag} from "@/model/SchoolEvent.ts";
 import {addEvent, fetchEvents, fetchTags} from "@/api/schedule.tsx";
@@ -248,6 +248,7 @@ const EventCalendar = () => {
                 </div>
                 <Divider sx={{my: 2}}/>
                 <AddEventDialog
+                    schoolId={String(getUserSchool()?.id)}
                     open={openSlot}
                     handleClose={handleClose}
                     eventFormData={eventFormData}

@@ -32,7 +32,7 @@ const General = () => {
                         <div className="space-y-4 flex gap-8">
                             <div className="flex-shrink-0">
                                 <Avatar className="w-48 h-48">
-                                    <AvatarImage src="https://i.pravatar.cc/300"/>
+                                    <AvatarImage src={`https://avatar.iran.liara.run/username?username=${teacher.name}+${teacher.surname}`} />
                                     <AvatarFallback>{teacher.name.charAt(0)}{teacher.surname.charAt(0)}</AvatarFallback>
                                 </Avatar>
                             </div>
@@ -40,11 +40,12 @@ const General = () => {
                                 <p><strong>Ime i prezime:</strong> {teacher.name} {teacher.surname}</p>
                                 <p><strong>Korisničko ime:</strong> {teacher.username}</p>
                                 <p><strong>Email:</strong> {teacher.email}</p>
+                                <p><strong>Škola:</strong> {teacher.school.name}, {teacher.school.county}, {teacher.school.city}</p>
                                 <p><strong>Razredi:</strong></p>
                                 <ul>
                                     {teacher.classesTeaching.map((schoolClass) => (
                                         <li key={schoolClass.id}>
-                                            - {schoolClass.year}.{schoolClass.division}
+                                            {schoolClass.year}.{schoolClass.division}
                                         </li>
                                     ))}
                                 </ul>
