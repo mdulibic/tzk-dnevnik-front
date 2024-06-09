@@ -38,11 +38,13 @@ export default function StudentProfile() {
             <div className="flex justify-between gap-2 mx-auto w-full max-w-6xl">
                 <h1 className="text-3xl font-semibold">Moj profi</h1>
                 <div className="space-y-2">
-                    <Label>Školska godina:</Label>
                     {activeLink !== 'Općenito' && (
-                        <SchoolYearSelect
-                            selectedYear={selectedYear}
-                            onChange={setSelectedYear}/>
+                        <div>
+                            <Label>Školska godina:</Label>
+                            <SchoolYearSelect
+                                selectedYear={selectedYear}
+                                onChange={setSelectedYear}/>
+                        </div>
                     )}
                 </div>
             </div>
