@@ -48,3 +48,26 @@ export function formatDateTime(dateString: string): string {
 
     return `${datePart}, ${timePartWithH}`;
 }
+
+export function getCurrentSchoolYear(): string {
+    const today: Date = new Date();
+    const currentYear: number = today.getFullYear();
+    const currentMonth: number = today.getMonth();
+
+    // School year starts in September and ends in August
+    const startYear: number = currentMonth >= 8 ? currentYear : currentYear - 1;
+    const endYear: number = startYear + 1;
+
+    return `${startYear}/${endYear}`;
+}
+
+export function getSchoolYearFromDate(date: Date): string {
+    const providedYear: number = date.getFullYear();
+    const providedMonth: number = date.getMonth(); // 0-indexed
+
+    // School year starts in September and ends in August
+    const startYear: number = providedMonth >= 8 ? providedYear : providedYear - 1;
+    const endYear: number = startYear + 1;
+
+    return `${startYear}/${endYear}`;
+}

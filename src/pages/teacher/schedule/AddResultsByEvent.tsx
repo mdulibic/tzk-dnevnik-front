@@ -13,6 +13,7 @@ import {Label} from "@/components/ui/label.tsx";
 
 export interface AddResultDto {
     studentId: string;
+    classId: string;
     activityId: string;
     subActivityId: string;
     result: number;
@@ -67,6 +68,7 @@ export const AddResultsByEvent = () => {
 
         const dto: AddResultDto = {
             studentId: studentId.toString(),
+            classId: students[studentId].schoolClass.id.toString(),
             activityId: activity ? activity : '',
             subActivityId: subactivity ? subactivity : '',
             result: parseInt(result) || 0,

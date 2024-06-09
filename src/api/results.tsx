@@ -19,8 +19,8 @@ export async function fetchResultsByClassId(classId: string): Promise<ActivityRe
     return response.json();
 }
 
-export async function fetchResultsByStudentId(studentId: string): Promise<ActivityResult[]> {
-    const response = await fetch(`${BASE_API_URL}/api/results/student/${studentId}`, {
+export async function fetchResultsByStudentId(studentId: string, year: string): Promise<ActivityResult[]> {
+    const response = await fetch(`${BASE_API_URL}/api/students/${studentId}/results${year ? `?schoolYear=${year}` : ''}`, {
         method: 'GET',
         headers: {
             Origin: origin,

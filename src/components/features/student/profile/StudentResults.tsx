@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {fetchResultsByClassId, fetchResultsByStudentId} from "@/api/results.tsx";
+import {fetchResultsByStudentId} from "@/api/results.tsx";
 import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {ResultsDataTable} from "@/components/shared/table/results-data-table.tsx";
 import {columns} from "@/components/features/teacher/students/results/columns.tsx";
@@ -8,9 +8,10 @@ import {formatDateTime} from "@/utils.ts";
 
 interface ResultsProps {
     studentId: string;
+    schoolYear: string;
 }
 
-export const StudentResults: React.FC<ResultsProps> = ({studentId}) => {
+export const StudentResults: React.FC<ResultsProps> = ({studentId, schoolYear}) => {
     const [results, setResults] = useState<ResultInfo[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -18,7 +19,7 @@ export const StudentResults: React.FC<ResultsProps> = ({studentId}) => {
     useEffect(() => {
         const fetchResults = async () => {
             try {
-                const data = await fetchResultsByStudentId(studentId);
+                const data = await fetchResultsByStudentId(studentId, schoolYear);
                 const transformedData: ResultInfo[] = data
                     .map(result => ({
                         student: `${result.student.name} ${result.student.surname}`,
@@ -38,7 +39,7 @@ export const StudentResults: React.FC<ResultsProps> = ({studentId}) => {
         };
 
         fetchResults();
-    }, [studentId]);
+    }, [studentId, schoolYear]);
 
     if (loading) {
         return <div>Učitavanje podataka...</div>;

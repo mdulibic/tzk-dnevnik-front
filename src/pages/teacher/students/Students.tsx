@@ -19,7 +19,9 @@ export default function Students() {
             case 'Popis učenika':
                 return <StudentList classId={classId}/>;
             case 'Unos rezultata':
-                return <AddResults classId={classId}/>;
+                return <AddResults
+                    classId={classId}
+                />;
             case 'Rezultati':
                 return <Results classId={classId}/>;
             case 'Statistika':

@@ -200,3 +200,23 @@ export async function getStudent(studentId: string): Promise<Student> {
     const data = await response.json();
     return data as Student;
 }
+
+export async function getSchoolYearsForStudent(studentId: string): Promise<string[]> {
+    const response = await fetch(
+        `${BASE_API_URL}/api/students/${studentId}/school-years`,
+        {
+            method: 'GET',
+            headers: {
+                Origin: origin,
+                Authorization: authHeader(),
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data as string[];
+}

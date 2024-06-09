@@ -4,6 +4,7 @@ import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {Card, CardContent} from "@/components/ui/card.tsx";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Student} from "@/model/Student.ts";
+import {getCurrentSchoolYear} from "@/utils.ts";
 
 interface IProps {
    studentId: string
@@ -43,7 +44,7 @@ export const StudentGeneral = ({studentId}: IProps) => {
                                 <p><strong>Korisničko ime:</strong> {student.username}</p>
                                 <p><strong>Email:</strong> {student.email}</p>
                                 <p><strong>Škola:</strong> {student.schoolClass.school.name}, {student.schoolClass.school.county}, {student.schoolClass.school.city}</p>
-                                <p><strong>Razred:</strong> {student.schoolClass.year}.{student.schoolClass.division}</p>
+                                <p><strong>Razred:</strong> {student.schoolClass.year}.{student.schoolClass.division} ({getCurrentSchoolYear()})</p>
                             </div>
                         </div>
                     ) : (
