@@ -86,6 +86,10 @@ export const AddResultsByEvent = () => {
         }
     };
 
+    const skipStudent = (studentId: number) => {
+        saveResult(studentId.toString());
+    };
+
     return (
         <div className="space-y-4 p-4">
             <ArrowBack onClick={goBack}></ArrowBack>
@@ -110,7 +114,8 @@ export const AddResultsByEvent = () => {
                         onChange={(e) => setUnit(e.target.value)}
                     />
                 </div>
-                <Label className="text-xs text-muted-foreground">(Ovo polje može prihvatiti različite vrijednosti mjerenja, poput ocjena, cm, m, broj ponavljanja i slično..)</Label>
+                <Label className="text-xs text-muted-foreground">(Ovo polje može prihvatiti različite vrijednosti
+                    mjerenja, poput ocjena, cm, m, broj ponavljanja i slično..)</Label>
             </div>
             <table className="min-w-full border border-gray-200 rounded-md p-4">
                 <thead>
@@ -118,37 +123,52 @@ export const AddResultsByEvent = () => {
                     <th className="border-b p-2 text-left">Student</th>
                     <th className="border-b p-2 text-left">Aktivnost</th>
                     <th className="border-b p-2 text-left">Rezultat</th>
-                    <th className="border-b p-2 text-left">Akcija</th>
+                    <th className="border-b p-2 text-left">Akcije</th>
                 </tr>
                 </thead>
                 <tbody>
-                {students.map(student => (
-                    !savedResults.includes(student.id.toString()) && (
-                        <tr key={student.id}>
-                            <td className="border-b p-2">{`${student.name} ${student.surname}`}</td>
-                            <td className="border-b p-2">
-                                <p>
-                                    {state.activity.name} {state?.subActivity && `(${state.subActivity.name})`}
-                                </p>
-                            </td>
-                            <td className="border-b p-2">
-                                <Input
-                                    placeholder="Rezultat"
-                                    value={results[student.id] || ''}
-                                    onChange={(e) => handleResultChange(student.id, e.target.value)}
-                                />
-                            </td>
-                            <td className="border-b p-2">
-                                <Button
-                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-                                    onClick={() => handleSave(student.id)}
-                                >
-                                    Spremi rezultat
-                                </Button>
-                            </td>
-                        </tr>
-                    )
-                ))}
+                {students.filter(student => !savedResults.includes(student.id.toString())).length === 0 ? (
+                    <tr>
+                        <td colSpan={4} className="text-center p-4 justify-center">
+                            Nema više studenata za unos rezultata.
+                        </td>
+                    </tr>
+                ) : (
+                    students.map(student => (
+                        !savedResults.includes(student.id.toString()) && (
+                            <tr key={student.id}>
+                                <td className="border-b p-2">{`${student.name} ${student.surname}`}</td>
+                                <td className="border-b p-2">
+                                    <p>
+                                        {state.activity.name} {state?.subActivity && `(${state.subActivity.name})`}
+                                    </p>
+                                </td>
+                                <td className="border-b p-2">
+                                    <Input
+                                        placeholder="Rezultat"
+                                        value={results[student.id] || ''}
+                                        onChange={(e) => handleResultChange(student.id, e.target.value)}
+                                    />
+                                </td>
+                                <td className="border-b p-2 space-x-4 space-y-4">
+                                    <Button
+                                        disabled={results[student.id] === undefined || results[student.id] === ''}
+                                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                                        onClick={() => handleSave(student.id)}
+                                    >
+                                        Spremi rezultat
+                                    </Button>
+                                    <Button
+                                        className="px-4 py-2 rounded"
+                                        onClick={() => skipStudent(student.id)}
+                                    >
+                                        Preskoči
+                                    </Button>
+                                </td>
+                            </tr>
+                        )
+                    ))
+                )}
                 </tbody>
             </table>
         </div>
