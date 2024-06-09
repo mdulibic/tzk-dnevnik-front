@@ -9,6 +9,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {useLocation, useNavigate} from "react-router-dom";
 import {formatDateTime} from "@/utils.ts";
 import {ArrowBack} from "@mui/icons-material";
+import {Label} from "@/components/ui/label.tsx";
 
 export interface AddResultDto {
     studentId: string;
@@ -24,7 +25,7 @@ export const AddResultsByEvent = () => {
     const [students, setStudents] = useState<Student[]>([]);
     const [savedResults, setSavedResults] = useState<string[]>([]);
     const [results, setResults] = useState<{ [key: number]: string }>({});
-    const [units, setUnits] = useState<{ [key: number]: string }>({});
+    const [unit, setUnit] = useState<string>("");
 
     const navigate = useNavigate();
 
@@ -49,8 +50,6 @@ export const AddResultsByEvent = () => {
     }, [state.schoolClass.id]);
 
     const saveResult = (studentId: string) => {
-        // Call your API to save the result
-        // After saving, update the savedResults state
         setSavedResults(prevState => [...prevState, studentId]);
     };
 
@@ -61,19 +60,10 @@ export const AddResultsByEvent = () => {
         }));
     };
 
-    const handleUnitChange = (studentId: number, value: string) => {
-        setUnits(prevUnits => ({
-            ...prevUnits,
-            [studentId]: value,
-        }));
-    };
-
     const handleSave = async (studentId: number) => {
-        alert(JSON.stringify(state));
         const activity = state.activity.id.toString();
         const subactivity = state.subActivity.id.toString();
         const result = results[studentId];
-        const unit = units[studentId];
 
         const dto: AddResultDto = {
             studentId: studentId.toString(),
@@ -110,6 +100,17 @@ export const AddResultsByEvent = () => {
                 <p className="text-s">
                     <strong>Vrijeme:</strong> {formatDateTime(state.startTimestamp)} - {formatDateTime(state.endTimestamp)}
                 </p>
+                <div className="flex items-center space-x-2">
+                    <p className="text-s">
+                        <strong>Vrsta mjere:</strong>
+                    </p>
+                    <Input
+                        className="w-200"
+                        value={unit}
+                        onChange={(e) => setUnit(e.target.value)}
+                    />
+                </div>
+                <Label className="text-xs text-muted-foreground">(Ovo polje može prihvatiti različite vrijednosti mjerenja, poput ocjena, cm, m, broj ponavljanja i slično..)</Label>
             </div>
             <table className="min-w-full border border-gray-200 rounded-md p-4">
                 <thead>
@@ -117,7 +118,6 @@ export const AddResultsByEvent = () => {
                     <th className="border-b p-2 text-left">Student</th>
                     <th className="border-b p-2 text-left">Aktivnost</th>
                     <th className="border-b p-2 text-left">Rezultat</th>
-                    <th className="border-b p-2 text-left">Mjera</th>
                     <th className="border-b p-2 text-left">Akcija</th>
                 </tr>
                 </thead>
@@ -136,13 +136,6 @@ export const AddResultsByEvent = () => {
                                     placeholder="Rezultat"
                                     value={results[student.id] || ''}
                                     onChange={(e) => handleResultChange(student.id, e.target.value)}
-                                />
-                            </td>
-                            <td className="border-b p-2">
-                                <Input
-                                    placeholder="Mjera"
-                                    value={units[student.id] || ''}
-                                    onChange={(e) => handleUnitChange(student.id, e.target.value)}
                                 />
                             </td>
                             <td className="border-b p-2">

@@ -108,7 +108,7 @@ export function ImportSchoolsDashboard() {
                                         type="submit"
                                         className="py-2 bg-blue-600 text-white rounded shadow-md hover:bg-blue-500 focus:bg-blue-500"
                                     >
-                                        Uvoz korisnika
+                                        Uvoz škola
                                     </Button>
                                 </div>
                                 <Button
