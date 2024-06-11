@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {Chart} from "react-google-charts";
-import {getStatisticsForStudent} from "@/api/statistics";
-import {Statistics} from "@/model/Statistics.ts";
+import {getActivityStatisticsForStudent, getClassStatisticsForStudent} from "@/api/statistics";
+import {ActivityStatistics} from "@/model/ActivityStatistics.ts";
 import {Card, CardContent, CardTitle} from "@/components/ui/card.tsx";
 import {getMonthFromDate} from "@/utils.ts";
 import ActivitySelectMui from "@/components/shared/select/ActivitySelectMui.tsx";
@@ -14,12 +14,16 @@ interface IProps {
 
 const options = {
     chart: {
-        title: "Activity Performance",
-        subtitle: "Average Results for Activities",
+        title: "Rezultati kroz školsku godinu po aktivnosti",
     },
 }
 
-const getResultsByMonth = (statistics: Statistics): (string | number)[][] => {
+export const options3 = {
+    title: "Histogram prosječnih rezultata generacije po aktivnosti",
+    legend: {position: "none"},
+};
+
+const getResultsByMonth = (statistics: ActivityStatistics): (string | number)[][] => {
     const data = [];
     data.push(["Mjesec", statistics.activity.name])
 
@@ -30,7 +34,7 @@ const getResultsByMonth = (statistics: Statistics): (string | number)[][] => {
     return data;
 };
 
-const getActivitiesDistribution = (list: Statistics[]): (string | number)[][] => {
+const getActivitiesDistribution = (list: ActivityStatistics[]): (string | number)[][] => {
     const activityMap = new Map<string, number>();
 
     list.forEach(stat => {
@@ -49,26 +53,27 @@ const getActivitiesDistribution = (list: Statistics[]): (string | number)[][] =>
         data.push([activityName, count]);
     });
 
-    console.log(data);
+    console.log("Activity statistics: " + data);
 
     return data;
 };
 
 
 export const StudentStatistics = ({schoolYear, studentId}: IProps) => {
-    const [statisticsList, setStatisticsList] = useState<Statistics[] | undefined>();
-    const [statistics, setStatistics] = useState<Statistics | undefined>();
+    const [activityStatisticsList, setActivityStatisticsList] = useState<ActivityStatistics[] | undefined>();
+    const [activityStatistics, setActivityStatistics] = useState<ActivityStatistics | undefined>();
     const [data1, setData1] = useState<(string | number)[][]>();
     const [data2, setData2] = useState<(string | number)[][]>();
+    const [data3, setData3] = useState<(string | number)[][]>();
 
     const [selectedActivity, setSelectedActivity] = useState<string>("1");
-    const [selectedSubActivity, setSelectedSubActivity] = useState<string>("");
+    const [selectedSubActivity, setSelectedSubActivity] = useState<string>("1");
 
     useEffect(() => {
         const getStatistics = async () => {
             try {
-                const data = await getStatisticsForStudent(studentId, schoolYear);
-                setStatisticsList(data);
+                const data = await getActivityStatisticsForStudent(studentId, schoolYear);
+                setActivityStatisticsList(data);
             } catch (error) {
                 console.error('Error fetching teacher data:', error);
             }
@@ -80,32 +85,40 @@ export const StudentStatistics = ({schoolYear, studentId}: IProps) => {
     useEffect(() => {
         const getStatistics = async () => {
             try {
-                const filtered = statisticsList?.find(stat => {
+                const filtered = activityStatisticsList?.find(stat => {
                     const activityMatch = stat.activity.id.toString() === selectedActivity;
                     const subactivityMatch = !selectedSubActivity || !stat.subactivity || stat.subactivity.id.toString() === selectedSubActivity;
                     return activityMatch && subactivityMatch;
                 })
-                setStatistics(filtered);
+                setActivityStatistics(filtered);
                 setData1(filtered ? getResultsByMonth(filtered) : []);
-                if (statisticsList) {
-                    setData2(getActivitiesDistribution(statisticsList));
+                if (activityStatisticsList) {
+                    setData2(getActivitiesDistribution(activityStatisticsList));
                 }
+
+                const classStatistics = await getClassStatisticsForStudent(studentId, selectedActivity, selectedSubActivity, schoolYear);
+                console.log("Class statistics:" + JSON.stringify(classStatistics));
+                const data = [
+                    ["Učenik", "Prosječni rezultat"],
+                    ...Object.entries(classStatistics.averageResultsMap).map(([studentId, averageResult]) => [studentId, averageResult])
+                ];
+                setData3(data);
             } catch (error) {
                 console.error('Error fetching teacher data:', error);
             }
         };
 
         getStatistics();
-    }, [statisticsList, selectedActivity, selectedSubActivity]);
+    }, [activityStatisticsList, selectedActivity, selectedSubActivity]);
 
     return (
         <div className="space-y-8">
             <PageHeaderHeading>Statistika</PageHeaderHeading>
             <Card className="p-4 space-x-4">
-                <CardTitle className="p-2">Statistika po aktivnosti</CardTitle>
+                <CardTitle className="p-2">Statistika po aktivnosti ({schoolYear})</CardTitle>
                 <CardContent className="p-4 space-y-4">
                     <div className="grid grid-cols-2 items-center">
-                        <p><strong>Odaberite aktivnost:</strong></p>
+                        <p>Odaberite aktivnost:</p>
                         <ActivitySelectMui
                             selectedActivity={selectedActivity}
                             onActivityChange={setSelectedActivity}
@@ -113,17 +126,29 @@ export const StudentStatistics = ({schoolYear, studentId}: IProps) => {
                         />
                     </div>
                     <hr/>
-                    {statistics ? (
+                    {activityStatistics ? (
                         <div>
-                            <p><strong>Prosječni
-                                rezultat:</strong> {statistics.averageResult} ({statistics.results[0]?.unit})</p>
-                            <p><strong>Rezultati kroz školsku godinu:</strong></p>
+                            <p className="text-lg text-blue-800"><strong>Rezultati kroz školsku godinu</strong></p>
                             <Chart
                                 chartType="ColumnChart"
                                 data={data1}
                                 options={options}
                                 height={"300px"}
                             />
+                            <hr/>
+                            <div className="space-y-4 mt-4">
+                                <p className="text-lg text-blue-800"><strong>Usporedba rezultata u aktivnostima prema razredu</strong></p>
+                                <p><strong>Prosječni
+                                    rezultat:</strong> {activityStatistics.averageResult} ({activityStatistics.results[0]?.unit})
+                                </p>
+                                <Chart
+                                    chartType="Histogram"
+                                    width="100%"
+                                    height="400px"
+                                    data={data3}
+                                    options={options3}
+                                />
+                            </div>
                         </div>
                     ) : (
                         <p>Nema zabilježenih rezultata</p>
@@ -131,7 +156,7 @@ export const StudentStatistics = ({schoolYear, studentId}: IProps) => {
                 </CardContent>
             </Card>
             <Card className="p-4 space-x-4">
-                <CardTitle className="p-2">Moje aktivnosti</CardTitle>
+                <CardTitle className="p-2">Aktivnosti kroz školsku godinu {schoolYear}</CardTitle>
                 <CardContent>
                     <Chart
                         chartType="PieChart"

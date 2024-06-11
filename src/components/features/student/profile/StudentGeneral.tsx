@@ -72,32 +72,32 @@ export const StudentGeneral = ({studentId}: IProps) => {
                 <CardContent className="p-8">
                     {student ? (
                         <div className="space-y-2">
-                            <p><strong>Spol:</strong> {genderToCroatian(student.gender)}</p>
-                            <p><strong>Visina:</strong> {student.height} cm</p>
-                            <p><strong>Težina:</strong> {student.weight} kg</p>
-                            <hr/>
-                            <div className="space-y-2">
-                                <div className="flex flex-row p-2 rounded-sm space-x-4">
+                            <div className="flex flex-row rounded-sm space-x-4">
+                                <div className="space-y-2">
+                                    <p><strong>Spol:</strong> {genderToCroatian(student.gender)}</p>
+                                    <p><strong>Visina:</strong> {student.height} cm</p>
+                                    <p><strong>Težina:</strong> {student.weight} kg</p>
                                     <p><strong>ITM</strong> (Indeks tjelesne mase): {bmi?.toFixed(2)}</p>
-                                    <div className="flex flex-col flex-grow justify-end">
-                                        <div className="mb-4 ml-auto">
-                                            <p className="mr-4"><strong>Legenda:</strong></p>
-                                            <div className="flex items-center mb-2">
-                                                <div className="w-4 h-4 mr-2 bg-red-500"></div>
-                                                <p className="text-red-500">Nedovoljna tjelesna masa (&lt; 18.5)</p>
-                                            </div>
-                                            <div className="flex items-center mb-2">
-                                                <div className="w-4 h-4 mr-2 bg-green-500"></div>
-                                                <p className="text-green-500">Normalna tjelesna masa (18.5 - 24.9)</p>
-                                            </div>
-                                            <div className="flex items-center mb-2">
-                                                <div className="w-4 h-4 mr-2 bg-yellow-500"></div>
-                                                <p className="text-yellow-500">Prekomjerna tjelesna masa (24.9 - 29.9)</p>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <div className="w-4 h-4 mr-2 bg-red-500"></div>
-                                                <p className="text-red-500">Gojaznost (&gt; 30)</p>
-                                            </div>
+                                </div>
+                                <div className="flex flex-col flex-grow justify-end">
+                                    <div className="ml-auto">
+                                        <p><strong>Legenda (ITM):</strong></p>
+                                        <div className="flex items-center mb-2">
+                                            <div className="w-4 h-4 mr-2 bg-red-500"></div>
+                                            <p className="text-red-500">Nedovoljna tjelesna masa (&lt; 18.5)</p>
+                                        </div>
+                                        <div className="flex items-center mb-2">
+                                            <div className="w-4 h-4 mr-2 bg-green-500"></div>
+                                            <p className="text-green-500">Normalna tjelesna masa (18.5 - 24.9)</p>
+                                        </div>
+                                        <div className="flex items-center mb-2">
+                                            <div className="w-4 h-4 mr-2 bg-yellow-500"></div>
+                                            <p className="text-yellow-500">Prekomjerna tjelesna masa (24.9 -
+                                                29.9)</p>
+                                        </div>
+                                        <div className="flex items-center">
+                                            <div className="w-4 h-4 mr-2 bg-red-500"></div>
+                                            <p className="text-red-500">Gojaznost (&gt; 30)</p>
                                         </div>
                                     </div>
                                 </div>
