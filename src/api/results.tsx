@@ -1,7 +1,7 @@
 import {BASE_API_URL} from "@/constants.tsx";
 import authHeader from "@/auth-header.tsx";
 import {ActivityResult} from "@/model/ActivityResult.ts";
-import {AddResultDto} from "@/components/features/teacher/students/add-results/AddResults.tsx";
+import {AddResultDto} from "@/pages/teacher/schedule/AddResultsByEvent.tsx";
 
 export async function fetchResultsByClassId(classId: string): Promise<ActivityResult[]> {
     const response = await fetch(`${BASE_API_URL}/api/results/class/${classId}`, {

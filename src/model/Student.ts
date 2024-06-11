@@ -1,4 +1,5 @@
 import {SchoolClass} from "@/model/SchoolClass.ts";
+import {Gender} from "@/model/Gender.ts";
 
 export type Student = {
     id: number;
@@ -9,4 +10,7 @@ export type Student = {
     email: string;
     role: string;
     schoolClass: SchoolClass;
+    weight: number;
+    height: number;
+    gender: Gender;
 };

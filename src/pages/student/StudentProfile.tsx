@@ -14,7 +14,6 @@ export default function StudentProfile() {
         setActiveLink(link);
     };
 
-    // Function to render content based on the active link
     const renderContent = () => {
         switch (activeLink) {
             case 'Općenito':
@@ -28,6 +27,7 @@ export default function StudentProfile() {
                 />;
             case 'Statistika':
                 return <StudentStatistics
+                    schoolYear={selectedYear}
                     studentId={getUserId()}
                 />;
         }
@@ -36,7 +36,7 @@ export default function StudentProfile() {
     return (
         <main className="flex flex-1 flex-col p-4 md:gap-8 md:p-10">
             <div className="flex justify-between gap-2 mx-auto w-full max-w-6xl">
-                <h1 className="text-3xl font-semibold">Moj profi</h1>
+                <h1 className="text-3xl font-semibold">Moj profil</h1>
                 <div className="space-y-2">
                     {activeLink !== 'Općenito' && (
                         <div>

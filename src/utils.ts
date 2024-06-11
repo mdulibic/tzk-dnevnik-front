@@ -49,6 +49,16 @@ export function formatDateTime(dateString: string): string {
     return `${datePart}, ${timePartWithH}`;
 }
 
+export function getMonthFromDate(dateString: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+        month: 'long',
+    };
+
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('hr-HR', options).format(date);
+}
+
+
 export function getCurrentSchoolYear(): string {
     const today: Date = new Date();
     const currentYear: number = today.getFullYear();
