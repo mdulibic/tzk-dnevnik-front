@@ -13,6 +13,7 @@ import Profile from "./pages/student/StudentProfile.tsx";
 import StudentSchedule from "@/pages/student/StudentSchedule.tsx";
 import AdminSettings from "./pages/admin/settings/AdminSettings";
 import {AddResultsByEvent} from "@/pages/teacher/schedule/AddResultsByEvent.tsx";
+import StudentDetails from "./pages/teacher/students/StudentDetails.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
             {
                 path: "students",
                 element: <TeacherRoute><Students/></TeacherRoute>,
+            },
+            {
+                path: "students/details",
+                element: <TeacherRoute><StudentDetails/></TeacherRoute>,
             },
             {
                 path: "settings",

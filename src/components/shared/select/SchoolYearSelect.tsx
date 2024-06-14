@@ -1,20 +1,20 @@
 import {useEffect, useState} from 'react';
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {getUserId} from "@/utils.ts";
 import {getSchoolYearsForStudent} from "@/api/users.tsx";
 
 interface SchoolYearSelectProps {
+    userId: string,
     selectedYear: string | undefined;
     onChange: (value: string) => void;
 }
 
-export const SchoolYearSelect: React.FC<SchoolYearSelectProps> = ({selectedYear, onChange}) => {
+export const SchoolYearSelect: React.FC<SchoolYearSelectProps> = ({userId, selectedYear, onChange}) => {
     const [years, setYears] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchYears = async () => {
             try {
-                const data = await getSchoolYearsForStudent(getUserId());
+                const data = await getSchoolYearsForStudent(userId);
                 setYears(data);
             } catch (error) {
             }

@@ -15,35 +15,36 @@ import StudentUpdateDialog from "@/components/features/admin/StudentUpdateDialog
 import {BASE_API_URL} from "@/constants.tsx";
 import authHeader from "@/auth-header.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import {ArrowUpDown, MoreHorizontal} from "lucide-react"
 import {Student} from "@/model/Student.ts";
 import {SchoolClass} from "@/model/SchoolClass.ts";
+import {useNavigate} from "react-router-dom";
 
 export const columns: ColumnDef<Student>[] = [
     {
         accessorKey: "name",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Ime
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             )
         },
     },
     {
         accessorKey: "surname",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Prezime
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             )
         },
@@ -54,14 +55,14 @@ export const columns: ColumnDef<Student>[] = [
     },
     {
         accessorKey: "email",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Email
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             )
         },
@@ -78,6 +79,7 @@ export const columns: ColumnDef<Student>[] = [
         id: "actions",
         cell: ({row}) => {
             const student = row.original
+            const navigate = useNavigate();
 
             const handleDelete = async (id: number) => {
                 try {
@@ -119,11 +121,18 @@ export const columns: ColumnDef<Student>[] = [
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
+                                <span className="sr-only">Otvori meni</span>
                                 <MoreHorizontal className="h-4 w-4"/>
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                            <DropdownMenuItem className="text-black-500 focus:text-black-600 focus:text-black-100"
+                                              onClick={() => {
+                                                  navigate('/teacher/students/details', {state: {studentId: student.id}});
+                                              }}
+                            >
+                                Prikaži detalje učenika
+                            </DropdownMenuItem>
                             <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-red-100"
                                               onClick={() => handleDelete(student.id)}
                             >
@@ -136,7 +145,7 @@ export const columns: ColumnDef<Student>[] = [
                             </DialogTrigger>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <StudentUpdateDialog student={student} />
+                    <StudentUpdateDialog student={student}/>
                 </Dialog>
             )
         },

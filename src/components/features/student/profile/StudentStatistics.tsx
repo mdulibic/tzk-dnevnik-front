@@ -15,11 +15,12 @@ interface IProps {
 const options = {
     chart: {
         title: "Rezultati kroz školsku godinu po aktivnosti",
+        legend: {position: "none"},
     },
 }
 
-export const options3 = {
-    title: "Histogram prosječnih rezultata generacije po aktivnosti",
+const options3 = {
+    title: "Histogram prosječnih rezultata generacije/razreda po aktivnosti",
     legend: {position: "none"},
 };
 
