@@ -38,3 +38,39 @@ export async function getClassStatisticsForStudent(studentId: string, activityId
 
     return data as ClassStatistics;
 }
+
+export async function getClassStatistics(classId: string, activityId: string | undefined, subactivityId: string | undefined): Promise<ClassStatistics> {
+    const response = await fetch(`${BASE_API_URL}/api/statistics/class/${classId}${activityId ? `?activityId=${activityId}` : ''}${subactivityId ? `&subactivityId=${subactivityId}` : ''}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: authHeader(),
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`Network response was not ok ${response.body}`);
+    }
+
+    const data = await response.json();
+
+    return data as ClassStatistics;
+}
+
+export async function getStudentResultsByClass(classId: string, activityId: string | undefined, subactivityId: string | undefined): Promise<StudentResult[]> {
+    const response = await fetch(`${BASE_API_URL}/api/statistics/class/${classId}/students${activityId ? `?activityId=${activityId}` : ''}${subactivityId ? `&subactivityId=${subactivityId}` : ''}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: authHeader(),
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`Network response was not ok ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    return data as StudentResult[];
+}

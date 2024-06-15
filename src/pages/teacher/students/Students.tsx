@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {AddResults} from "@/components/features/teacher/students/add-results/AddResults.tsx";
-import {Statistics} from "@/components/features/teacher/students/Statistics.tsx";
+import {Statistics} from "@/components/features/teacher/students/statistics/Statistics.tsx";
 import {Results} from "@/components/features/teacher/students/results/Results.tsx";
 import SchoolClassSelect from "@/components/shared/select/SchoolClassSelect.tsx";
 import {StudentList} from "@/components/features/teacher/students/StudentList.tsx";

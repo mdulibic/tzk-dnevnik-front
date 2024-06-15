@@ -6,6 +6,10 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Student} from "@/model/Student.ts";
 import {getCurrentSchoolYear} from "@/utils.ts";
 import {genderToCroatian} from "@/model/Gender.ts";
+import {Button} from "@/components/ui/button.tsx";
+import {generatePdf} from "@/pages/teacher/students/StudentDetailsPdfGenerator.tsx";
+import {fetchResultsByStudentId} from "@/api/results.tsx";
+import {ActivityResult} from "@/model/ActivityResult.ts";
 
 interface IProps {
     studentId: string
@@ -19,11 +23,15 @@ const calculateBMI = (weight: number, height: number): number => {
 export const StudentGeneral = ({studentId}: IProps) => {
     const [student, setStudent] = useState<Student | null>(null);
     const [bmi, setBmi] = useState<number>();
+    const [resultsData, setResultsData] = useState<ActivityResult[]>();
 
     useEffect(() => {
         const getTeacher = async () => {
             try {
                 const data = await getStudent(studentId);
+                const results = await fetchResultsByStudentId(studentId, "2023/2024");
+                setResultsData(results);
+
                 setStudent(data);
                 const bmiData = data ? calculateBMI(data.weight, data.height) : undefined;
                 setBmi(bmiData);
@@ -37,7 +45,10 @@ export const StudentGeneral = ({studentId}: IProps) => {
 
     return (
         <div className="space-y-8">
-            <PageHeaderHeading>Općenito</PageHeaderHeading>
+            <div className="flex justify-between">
+                <PageHeaderHeading>Općenito</PageHeaderHeading>
+                <Button onClick={() => generatePdf(student, bmi, resultsData)}>Izvoz u PDF</Button>
+            </div>
             <Card>
                 <CardTitle className="p-6">Osnovne informacije</CardTitle>
                 <CardContent className="p-8">
