@@ -6,17 +6,14 @@ import {ActivityResult} from "@/model/ActivityResult.ts";
 import autoTable from "jspdf-autotable";
 
 export const generatePdf = (student: Student | null, bmi: number | undefined, results: ActivityResult[] | undefined) => {
-    const pdf = new jsPDF('p', 'mm', 'a4'); // Orientation: portrait, units: mm, page size: A4
+    const pdf = new jsPDF('p', 'mm', 'a4');
 
-    // Set font and styles
     pdf.setFont('Times', 'normal');
     pdf.setFontSize(12);
 
-    // Add blue header
     pdf.setFillColor(79, 129, 189);
     pdf.rect(0, 0, 210, 20, 'F');
 
-    // Add title in white text
     pdf.setTextColor(255, 255, 255);
     pdf.setFont('Times', 'bold');
     pdf.setFontSize(18);
@@ -26,7 +23,6 @@ export const generatePdf = (student: Student | null, bmi: number | undefined, re
     pdf.setTextColor(0);
     pdf.text(`Osnovne informacije`, 13, 30);
 
-    // Add student information section
     pdf.setFont('Times', 'normal');
     pdf.setFontSize(12);
 
@@ -48,7 +44,6 @@ export const generatePdf = (student: Student | null, bmi: number | undefined, re
     pdf.text(`Težina: ${student?.weight} kg`, 13, 76);
     pdf.text(`ITM (indeks tjelesne mase): ${bmi?.toFixed(2)}`, 13, 84);
 
-    // Add results section
     pdf.setFont('Times', 'bold');
     pdf.setFontSize(14);
 
@@ -78,7 +73,6 @@ export const generatePdf = (student: Student | null, bmi: number | undefined, re
         columnStyles: {0: {fontStyle: 'italic'}},
     });
 
-    // Save PDF file and open in a new tab
     const pdfDataUri = pdf.output('datauristring');
     const newTab = window.open();
     newTab?.document.write(`<iframe width='100%' height='100%' src='${pdfDataUri}'></iframe>`);

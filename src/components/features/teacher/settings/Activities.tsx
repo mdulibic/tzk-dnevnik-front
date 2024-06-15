@@ -19,56 +19,59 @@ export default function Activities() {
     return (
         <div className="space-y-4">
             <PageHeaderHeading>Nastavne aktivnosti</PageHeaderHeading>
-            <Card x-chunk="dashboard-04-chunk-1">
-                <CardHeader>
-                    <CardTitle>Dodaj aktivnost</CardTitle>
-                    <CardDescription>
-                        Dodaj novu nastavnu aktivnost u školski kurikulum.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Input
-                        placeholder="Aktivnost"
-                        onChange={(e) => {
-                            setActivityName(e.target.value);
-                        }}
-                    />
-                </CardContent>
-                <CardFooter className="border-t px-6 py-4">
-                    <Button disabled={activityName === ""} onClick={() => addActivity(activityName)}>Spremi</Button>
-                </CardFooter>
-            </Card>
-            <Card x-chunk="dashboard-04-chunk-2">
-                <CardHeader>
-                    <CardTitle>Dodaj podaktivnost</CardTitle>
-                    <CardDescription>
-                        Dodaj novu podaktivnost za već postojeću nastavnu aktivnost.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
-                        <Label>Odabir aktivnosti</Label>
-                        <ActivitySelect
-                            selectedActivity={selectedActivity}
-                            onActivityChange={handleActivityChange}
-                            onSubActivityChange={(id) => {
-                            }}
-                        ></ActivitySelect>
-                        <Label className="text-xs text-muted-foreground">(Istražite dostupne podaktivnosti prije nego
-                            što dodate nove.)</Label>
+            <div className="space-y-4">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Dodaj aktivnost</CardTitle>
+                        <CardDescription>
+                            Dodaj novu nastavnu aktivnost u školski kurikulum.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
                         <Input
-                            placeholder="Podaktivnost"
+                            placeholder="Aktivnost"
                             onChange={(e) => {
-                                setSubActivityName(e.target.value);
+                                setActivityName(e.target.value);
                             }}
                         />
-                    </div>
-                </CardContent>
-                <CardFooter className="border-t px-6 py-4">
-                    <Button disabled={subActivityName === ""}
-                            onClick={() => addSubActivity(subActivityName, selectedActivity)}>Spremi</Button>
-                </CardFooter>
-            </Card>
+                    </CardContent>
+                    <CardFooter className="border-t px-6 py-4">
+                        <Button disabled={activityName === ""} onClick={() => addActivity(activityName)}>Spremi</Button>
+                    </CardFooter>
+                </Card>
+                <Card x-chunk="dashboard-04-chunk-2">
+                    <CardHeader>
+                        <CardTitle>Dodaj podaktivnost</CardTitle>
+                        <CardDescription>
+                            Dodaj novu podaktivnost za već postojeću nastavnu aktivnost.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-4">
+                            <Label>Odabir aktivnosti</Label>
+                            <ActivitySelect
+                                selectedActivity={selectedActivity}
+                                onActivityChange={handleActivityChange}
+                                onSubActivityChange={(id) => {
+                                }}
+                            ></ActivitySelect>
+                            <Label className="text-xs text-muted-foreground">(Istražite dostupne podaktivnosti prije
+                                nego
+                                što dodate nove.)</Label>
+                            <Input
+                                placeholder="Podaktivnost"
+                                onChange={(e) => {
+                                    setSubActivityName(e.target.value);
+                                }}
+                            />
+                        </div>
+                    </CardContent>
+                    <CardFooter className="border-t px-6 py-4">
+                        <Button disabled={subActivityName === ""}
+                                onClick={() => addSubActivity(subActivityName, selectedActivity)}>Spremi</Button>
+                    </CardFooter>
+                </Card>
+            </div>
         </div>
     )
 }

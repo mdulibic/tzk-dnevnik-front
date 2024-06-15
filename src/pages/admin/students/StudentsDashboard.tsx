@@ -50,7 +50,7 @@ export default function StudentsDashboard() {
 
     return (
         <main className="flex flex-1 flex-col p-4 md:gap-8 md:p-10 space-y-4">
-            <div className="space-y-8">
+            <div className="flex flex-row justify-between items-center">
                 <h1 className="text-3xl font-semibold">Popis učenika</h1>
                 <div className="space-y-2">
                     <Label htmlFor="school">Škola:</Label>

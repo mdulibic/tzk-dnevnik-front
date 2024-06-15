@@ -26,6 +26,8 @@ const StudentUpdateDialog: React.FC<StudentDialogProps> = ({student}) => {
     const [surname, setSurname] = useState(student.surname);
     const [username, setUsername] = useState(student.username);
     const [email, setEmail] = useState(student.email);
+    const [weight, setWeight] = useState(student.weight);
+    const [height, setHeight] = useState(student.height);
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [classId, setClassId] = useState<string>(String(student.schoolClass.id));
@@ -69,6 +71,8 @@ const StudentUpdateDialog: React.FC<StudentDialogProps> = ({student}) => {
                     {
                         name: name,
                         surname: surname,
+                        weight: weight,
+                        height: height,
                         username: username,
                         email: email,
                         password: password,
@@ -167,6 +171,32 @@ const StudentUpdateDialog: React.FC<StudentDialogProps> = ({student}) => {
                         onChange={setClassId}
                     />
                 </div>
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                        <Label htmlFor="email">
+                            Visina (cm)
+                        </Label>
+                        <Input
+                            id="email"
+                            defaultValue={student.height}
+                            onChange={(e) => {
+                                setHeight(Number(e.target.value));
+                            }}
+                        />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="email">
+                            Težina (kg)
+                        </Label>
+                        <Input
+                            id="email"
+                            defaultValue={student.weight}
+                            onChange={(e) => {
+                                setWeight(Number(e.target.value));
+                            }}
+                        />
+                    </div>
+                </div>
                 <div className="space-y-4">
                     <div>
                         <Label htmlFor="password">Nova lozinka</Label>
@@ -205,7 +235,8 @@ const StudentUpdateDialog: React.FC<StudentDialogProps> = ({student}) => {
                 </DialogClose>
             </DialogFooter>
         </DialogContent>
-    );
+    )
+        ;
 };
 
 export default StudentUpdateDialog;

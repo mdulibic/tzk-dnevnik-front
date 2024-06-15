@@ -36,9 +36,9 @@ export function AdminHeader() {
     return (
         <header
             className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur">
-            <div className="container md:px-8 flex h-14 items-center">
+            <div className="md:px-8 flex h-16 items-center">
                 <div className="mr-4 hidden md:flex">
-                    <NavLink to="/admin/registration" className="mr-6 flex items-center space-x-2">
+                    <NavLink to="/admin/registration" className="mr-6 flex space-x-2">
                         <Logo/>
                     </NavLink>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -80,7 +80,7 @@ export function AdminHeader() {
                                     key={index}
                                     to={menu.to ?? ""}
                                     className={({isActive}) => cn(
-                                        "text-sm font-medium transition-colors hover:text-primary",
+                                        "text-m font-medium transition-colors hover:text-primary",
                                         isActive ? "text-foreground" : "text-foreground/60"
                                     )}>
                                     {menu.title}

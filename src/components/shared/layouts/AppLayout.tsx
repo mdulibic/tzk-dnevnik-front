@@ -27,14 +27,12 @@ export function AppLayout() {
     return (
         <div className="flex flex-col min-h-screen bg-muted/30">
             <HeaderComponent/>
-            <div className="flex-grow flex flex-col">
-                <div className="container px-4 md:px-8 flex-grow flex flex-col pt-8">
-                    <Outlet/>
-                    <Toaster/>
-                </div>
+            <div className="flex-1">
+                <Outlet/>
+                <Toaster/>
             </div>
-            <div className="container bottom-0 left-0 w-full">
-                <div className="container px-4 md:px-8">
+            <div className="container w-full">
+                <div className="container py-4 md:px-8">
                     <Footer/>
                 </div>
             </div>
