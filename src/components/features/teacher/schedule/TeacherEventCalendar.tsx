@@ -21,7 +21,7 @@ import {getUserId, getUserSchool} from "@/utils.ts";
 import {toast} from "@/components/ui/use-toast.ts";
 import {SchoolEvent, Tag} from "@/model/SchoolEvent.ts";
 import {addEvent, fetchEvents, fetchTags} from "@/api/schedule.tsx";
-import { messages } from "@/constants.tsx";
+import {messages} from "@/constants.tsx";
 import {SchoolEventInfoDialog} from "@/components/shared/dialog/SchoolEventInfoDialog.tsx";
 
 
@@ -247,6 +247,7 @@ const TeacherEventCalendar = () => {
                         showClass={true}
                         event={currentEvent}
                         handleClose={handleCloseInfo}
+                        setOpen={setOpenEventInfo}
                         open={openEventInfo}/>
                 }
                 <AddEventDialog

@@ -5,7 +5,9 @@ import {Chart} from "react-google-charts";
 import {useEffect, useState} from "react";
 import {getClassStatistics, getStudentResultsByClass} from "@/api/statistics.tsx";
 import {StatisticsDataTable} from "@/components/shared/table/statistics-data-table.tsx";
-import { columns } from "./columns";
+import {columns} from "./columns";
+import {Label} from "@/components/ui/label.tsx";
+import {StudentResult} from "@/model/StudentResult.ts";
 
 interface StatisticsProps {
     classId: string;
@@ -70,23 +72,14 @@ export const Statistics: React.FC<StatisticsProps> = ({classId}) => {
                                 data={classStatistics}
                                 options={options}
                             />
+                            <p className="text-lg text-blue-800"><strong>Rezultati učenika</strong></p>
+                            <Label className="text-s text-muted-foreground">(Poredani po uspješnosti)</Label>
                             <StatisticsDataTable columns={columns} data={studentResults}/>
                         </div>
                         <hr/>
                     </div>
                 </CardContent>
             </Card>
-            {/*<Card className="p-4 space-x-4">*/}
-            {/*    <CardTitle className="p-2">Aktivnosti kroz školsku godinu {schoolYear}</CardTitle>*/}
-            {/*    <CardContent>*/}
-            {/*        <Chart*/}
-            {/*            chartType="PieChart"*/}
-            {/*            data={data2}*/}
-            {/*            options={options}*/}
-            {/*            height={"300px"}*/}
-            {/*        />*/}
-            {/*    </CardContent>*/}
-            {/*</Card>*/}
         </div>
     );
 };

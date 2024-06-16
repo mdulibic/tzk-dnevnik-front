@@ -41,18 +41,13 @@ const SchoolClassMultiSelect: React.FC<SchoolClassesSelectProps> = ({schoolId, s
         fetchClasses();
     }, []);
 
-    const handleChange = (value: string[]) => {
-        onChange(value);
-    };
-
-
     return (
         <Select className="w-[280px]"
                 getPopupContainer={triggerNode => triggerNode.parentElement}
                 mode="tags"
                 placeholder="Odaberite razrede"
                 defaultValue={selectedClassIds.map(decodeClassId)}
-                onChange={handleChange}
+                onChange={onChange}
                 options={classOptions}
         />
     );

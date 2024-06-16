@@ -78,3 +78,33 @@ export const downloadExcel = async (studentId: string) => {
         console.error('Error fetching Excel file:', error);
     }
 };
+
+
+export const downloadClassResults = async (classId: string) => {
+    try {
+        const response = await fetch(`${BASE_API_URL}/api/report/student/excel/results/class/${classId}`, {
+            method: 'GET',
+            headers: {
+                Authorization: authHeader(),
+            },
+        });
+
+        if (!response.ok) {
+            alert('Network response was not ok');
+            throw new Error('Network response was not ok');
+        }
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.style.display = 'none';
+        link.href = blobUrl;
+        link.download = 'rezultati.xlsx';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+        console.error('Error fetching Excel file:', error);
+    }
+};

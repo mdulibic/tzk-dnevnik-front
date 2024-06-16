@@ -80,6 +80,41 @@ export function ResultsDataTable<TData, TValue>({
         });
     };
 
+    const getPaginationRange = () => {
+        const range = [];
+        const dots = '...';
+        const rangeSize = 4;
+
+        if (totalPages <= rangeSize + 1) {
+            for (let i = 1; i <= totalPages; i++) {
+                range.push(i);
+            }
+        } else {
+            if (currentPage <= rangeSize) {
+                for (let i = 1; i <= rangeSize + 1; i++) {
+                    range.push(i);
+                }
+                range.push(dots);
+                range.push(totalPages);
+            } else if (currentPage > totalPages - rangeSize) {
+                range.push(1);
+                range.push(dots);
+                for (let i = totalPages - rangeSize; i <= totalPages; i++) {
+                    range.push(i);
+                }
+            } else {
+                range.push(1);
+                range.push(dots);
+                for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                    range.push(i);
+                }
+                range.push(dots);
+                range.push(totalPages);
+            }
+        }
+        return range;
+    };
+
     return (
         <div>
             <div className="flex items-center justify-between py-4">
@@ -106,21 +141,25 @@ export function ResultsDataTable<TData, TValue>({
                                 </Button>
                             </li>
                         )}
-                        {Array.from({length: totalPages}, (_, i) => (
-                            <li key={i + 1}>
-                                <Button
-                                    className={`px-4 py-2 border rounded focus:outline-none ${
-                                        currentPage === i + 1
-                                            ? 'bg-blue-500 text-white'
-                                            : 'bg-white border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white'
-                                    }`}
-                                    onClick={() => {
-                                        changePage(i + 1)
-                                        table.setPageIndex(i)
-                                    }}
-                                >
-                                    {i + 1}
-                                </Button>
+                        {getPaginationRange().map((page, index) => (
+                            <li key={index}>
+                                {page === '...' ? (
+                                    <span className="px-4 py-2">...</span>
+                                ) : (
+                                    <Button
+                                        className={`px-4 py-2 border rounded focus:outline-none ${
+                                            currentPage === page
+                                                ? 'bg-blue-500 text-white'
+                                                : 'bg-white border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white'
+                                        }`}
+                                        onClick={() => {
+                                            changePage(Number(page))
+                                            table.setPageIndex(Number(page) - 1)
+                                        }}
+                                    >
+                                        {page}
+                                    </Button>
+                                )}
                             </li>
                         ))}
                         {currentPage < totalPages && (

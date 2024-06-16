@@ -66,6 +66,7 @@ export const StudentEventCalendar = () => {
                         showClass={false}
                         event={currentEvent}
                         handleClose={handleCloseInfo}
+                        setOpen={setOpenEventInfo}
                         open={openEventInfo}/>
                 }
                 <Calendar

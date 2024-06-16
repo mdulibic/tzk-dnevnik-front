@@ -1,9 +1,10 @@
 import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {useEffect, useState} from "react";
-import {fetchResultsByClassId} from "@/api/results.tsx";
+import {downloadClassResults, fetchResultsByClassId} from "@/api/results.tsx";
 import {columns} from "@/components/features/teacher/students/results/columns.tsx";
 import {ResultsDataTable} from "@/components/shared/table/results-data-table.tsx";
 import {formatDateTime} from "@/utils.ts";
+import {Button} from "@/components/ui/button.tsx";
 
 interface ResultsProps {
     classId: string;
@@ -57,7 +58,10 @@ export const Results: React.FC<ResultsProps> = ({classId}) => {
 
     return (
         <div className="space-y-4">
-            <PageHeaderHeading>Rezultati</PageHeaderHeading>
+            <div className="flex justify-between">
+                <PageHeaderHeading>Rezultati</PageHeaderHeading>
+                <Button onClick={() => downloadClassResults(classId)}>Izvoz u PDF</Button>
+            </div>
             <ResultsDataTable columns={columns} data={results}/>
         </div>
     );
