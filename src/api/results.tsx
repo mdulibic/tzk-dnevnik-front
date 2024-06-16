@@ -69,11 +69,11 @@ export const downloadExcel = async (studentId: string) => {
         const link = document.createElement('a');
         link.style.display = 'none';
         link.href = blobUrl;
-        link.download = 'sample.xlsx'; // Set the desired file name with .xls extension
+        link.download = 'rezultati.xlsx';
         document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link); // Clean up the link element
-        window.URL.revokeObjectURL(blobUrl); // Release the resources
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
         console.error('Error fetching Excel file:', error);
     }
