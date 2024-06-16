@@ -27,7 +27,7 @@ export function AppLayout() {
     return (
         <div className="flex flex-col min-h-screen bg-muted/30">
             <HeaderComponent/>
-            <div className="flex-1">
+            <div className="flex-1 p-16 sm:p-8 md:p-4">
                 <Outlet/>
                 <Toaster/>
             </div>

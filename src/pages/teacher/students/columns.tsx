@@ -18,6 +18,7 @@ import {toast} from "@/components/ui/use-toast.ts";
 import {ArrowUpDown, MoreHorizontal} from "lucide-react"
 import {Student} from "@/model/Student.ts";
 import {SchoolClass} from "@/model/SchoolClass.ts";
+import {useNavigate} from "react-router-dom";
 
 export const columns: ColumnDef<Student>[] = [
     {
@@ -78,6 +79,8 @@ export const columns: ColumnDef<Student>[] = [
         id: "actions",
         cell: ({row}) => {
             const student = row.original
+            const navigate = useNavigate();
+
             const handleDelete = async (id: number) => {
                 try {
                     const response = await fetch(`${BASE_API_URL}/api/students/delete/${id}`, {
@@ -123,6 +126,13 @@ export const columns: ColumnDef<Student>[] = [
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                            <DropdownMenuItem className="text-black-500 focus:text-black-600 focus:text-black-100"
+                                              onClick={() => {
+                                                  navigate('/teacher/students/details', {state: {studentId: student.id}});
+                                              }}
+                            >
+                                Prikaži detalje učenika
+                            </DropdownMenuItem>
                             <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-red-100"
                                               onClick={() => handleDelete(student.id)}
                             >

@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
-import {fetchResultsByStudentId} from "@/api/results.tsx";
+import {downloadExcel, fetchResultsByStudentId} from "@/api/results.tsx";
 import {PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {ResultsDataTable} from "@/components/shared/table/results-data-table.tsx";
-import {columns} from "@/components/features/teacher/students/results/columns.tsx";
 import {ResultInfo} from "@/components/features/teacher/students/results/Results.tsx";
 import {formatDateTime} from "@/utils.ts";
+import { columns } from "./columns";
+import {Button} from "@/components/ui/button.tsx";
 
 interface ResultsProps {
     studentId: string;
@@ -51,7 +52,10 @@ export const StudentResults: React.FC<ResultsProps> = ({studentId, schoolYear}) 
 
     return (
         <div className="space-y-4">
-            <PageHeaderHeading>Rezultati</PageHeaderHeading>
+            <div className="flex justify-between">
+                <PageHeaderHeading>Rezultati</PageHeaderHeading>
+                <Button onClick={() => downloadExcel(studentId)}>Izvoz u Excel</Button>
+            </div>
             <ResultsDataTable columns={columns} data={results}/>
         </div>
     );

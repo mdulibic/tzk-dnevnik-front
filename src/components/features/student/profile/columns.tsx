@@ -3,10 +3,6 @@ import {ResultInfo} from "@/components/features/teacher/students/results/Results
 
 export const columns: ColumnDef<ResultInfo>[] = [
     {
-        accessorKey: "student",
-        header: "Učenik",
-    },
-    {
         accessorKey: "activity",
         header: "Aktivnost",
     },

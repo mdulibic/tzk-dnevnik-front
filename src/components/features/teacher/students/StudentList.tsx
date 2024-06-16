@@ -1,10 +1,10 @@
 import {PageHeader, PageHeaderHeading} from "@/components/core/PageHeader.tsx";
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {useEffect, useState} from "react";
-import {columns} from "@/pages/admin/students/columns.tsx";
 import {DataTable} from "@/components/shared/table/data-table.tsx";
 import {getStudentsById} from "@/api/users.tsx";
 import {Student} from "@/model/Student.ts";
+import {columns} from "@/pages/teacher/students/columns.tsx";
 
 interface StudentListProps {
     classId: string;

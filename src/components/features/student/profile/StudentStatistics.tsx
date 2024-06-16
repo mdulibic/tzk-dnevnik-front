@@ -19,6 +19,35 @@ const options = {
     },
 }
 
+const options2 = {
+    pieSliceTextStyle: {
+        fontSize: 14,
+        color: '#fff',
+    },
+    legend: {
+        position: 'bottom',
+        alignment: 'center',
+        textStyle: {
+            color: 'black',
+            fontSize: 18,
+        },
+    },
+    pieSliceText: "percentage",
+    slices: {
+        0: { color: '#3366CC' },
+        1: { color: '#DC3912' },
+        2: { color: '#FF9900' },
+        3: { color: '#109618' },
+        4: { color: '#990099' },
+    },
+    chartArea: {
+        left: 20,
+        top: 20,
+        width: '100%',
+        height: '75%',
+    },
+};
+
 const options3 = {
     title: "Histogram prosječnih rezultata generacije/razreda po aktivnosti",
     legend: {position: "none"},
@@ -162,8 +191,9 @@ export const StudentStatistics = ({schoolYear, studentId}: IProps) => {
                     <Chart
                         chartType="PieChart"
                         data={data2}
-                        options={options}
-                        height={"300px"}
+                        options={options2}
+                        height={"400px"}
+                        width="100%"
                     />
                 </CardContent>
             </Card>

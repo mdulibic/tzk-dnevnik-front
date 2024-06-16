@@ -49,3 +49,32 @@ export async function addResultForStudent(dto: AddResultDto) {
         throw new Error('Network response was not ok');
     }
 }
+
+export const downloadExcel = async (studentId: string) => {
+    try {
+        const response = await fetch(`${BASE_API_URL}/api/report/student/excel/results/${studentId}`, {
+            method: 'GET',
+            headers: {
+                Authorization: authHeader(),
+            },
+        });
+
+        if (!response.ok) {
+            alert('Network response was not ok');
+            throw new Error('Network response was not ok');
+        }
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.style.display = 'none';
+        link.href = blobUrl;
+        link.download = 'sample.xlsx'; // Set the desired file name with .xls extension
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link); // Clean up the link element
+        window.URL.revokeObjectURL(blobUrl); // Release the resources
+    } catch (error) {
+        console.error('Error fetching Excel file:', error);
+    }
+};

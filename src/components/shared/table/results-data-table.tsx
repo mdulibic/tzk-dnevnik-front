@@ -20,9 +20,10 @@ import {
 
 import {Button} from "@/components/ui/button.tsx"
 import {useState} from "react";
-import { Input } from "@/components/ui/input.tsx"
+import {Input} from "@/components/ui/input.tsx"
 import FilterDropdown from "@/components/shared/table/filter-dropdown.tsx";
 import {FilterPair} from "@/pages/admin/students/StudentsDashboard.tsx";
+import {ArrowBack, ArrowForward} from "@mui/icons-material";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -30,14 +31,21 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function ResultsDataTable<TData, TValue>({
-                                             columns,
-                                             data,
-                                         }: DataTableProps<TData, TValue>) {
+                                                    columns,
+                                                    data,
+                                                }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
     )
     const [checkedFilters, setCheckedFilters] = useState<string[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const changePage = (page: number) => {
+        setCurrentPage(page);
+    };
+
+    const totalPages = Math.ceil(data.length / 10);
 
     const table = useReactTable({
         data,
@@ -55,9 +63,9 @@ export function ResultsDataTable<TData, TValue>({
     })
 
     const filterOptions: FilterPair[] = [
-        { key: 'student', value: 'Učenik' },
-        { key: 'activity', value: 'Aktivnost' },
-        { key: 'subactivity', value: 'Podaktivnost' },
+        {key: 'student', value: 'Učenik'},
+        {key: 'activity', value: 'Aktivnost'},
+        {key: 'subactivity', value: 'Podaktivnost'},
     ];
 
     const handleFilter = (checkboxes: string[]) => {
@@ -72,17 +80,64 @@ export function ResultsDataTable<TData, TValue>({
         });
     };
 
-
     return (
         <div>
-            <div className="flex items-center justify-end py-4">
+            <div className="flex items-center justify-between py-4">
                 <div className="flex items-center">
-                    <FilterDropdown options={filterOptions} onFilter={handleFilter} />
+                    <FilterDropdown options={filterOptions} onFilter={handleFilter}/>
                     <Input
                         placeholder="Filtriraj..."
                         onChange={handleInputChange}
                         className="max-w-sm ml-4 h-10" // Adjusted height and spacing
                     />
+                </div>
+                <div className="flex items-center justify-end space-x-2 py-4">
+                    <ul className="flex space-x-2">
+                        {currentPage > 1 && (
+                            <li>
+                                <Button
+                                    className="px-2 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none"
+                                    onClick={() => {
+                                        changePage(currentPage - 1)
+                                        table.setPageIndex(currentPage - 1)
+                                    }}
+                                >
+                                    <ArrowBack className="w-24 h-24"/>
+                                </Button>
+                            </li>
+                        )}
+                        {Array.from({length: totalPages}, (_, i) => (
+                            <li key={i + 1}>
+                                <Button
+                                    className={`px-4 py-2 border rounded focus:outline-none ${
+                                        currentPage === i + 1
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-white border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white'
+                                    }`}
+                                    onClick={() => {
+                                        changePage(i + 1)
+                                        table.setPageIndex(i)
+                                    }}
+                                >
+                                    {i + 1}
+                                </Button>
+                            </li>
+                        ))}
+                        {currentPage < totalPages && (
+                            <li>
+                                <Button
+                                    className="px-2 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none"
+                                    onClick={() => {
+                                        changePage(currentPage + 1)
+                                        table.setPageIndex(currentPage + 1)
+                                    }}
+                                >
+                                    <ArrowForward className="w-24 h-24"/>
+                                </Button>
+                            </li>
+                        )}
+                    </ul>
+                    <p className="text-s text-muted-foreground">({data.length} rezultat/a)</p>
                 </div>
             </div>
             <div className="rounded-md border">
@@ -128,24 +183,6 @@ export function ResultsDataTable<TData, TValue>({
                         )}
                     </TableBody>
                 </Table>
-            </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
-                <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
-                >
-                    Prethodni
-                </Button>
-                <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
-                >
-                    Sljedeći
-                </Button>
             </div>
         </div>
     )

@@ -34,8 +34,8 @@ export default function StudentProfile() {
     };
 
     return (
-        <main className="flex flex-1 flex-col p-4 md:gap-8 md:p-10">
-            <div className="flex justify-between gap-2 mx-auto w-full max-w-6xl">
+        <main className="flex flex-col p-4 md:gap-8 md:p-10">
+            <div className="flex justify-between gap-2">
                 <h1 className="text-3xl font-semibold">Moj profil</h1>
                 <div className="space-y-2">
                     {activeLink !== 'Općenito' && (
@@ -50,8 +50,8 @@ export default function StudentProfile() {
                 </div>
             </div>
             <div
-                className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-                <nav className="grid gap-4 text-md text-muted-foreground mt-16">
+                className="grid w-full items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+                <nav className="grid gap-4 text-lg text-muted-foreground mt-16">
                     <a
                         className={`${activeLink === 'Općenito' ? 'text-primary font-semibold cursor-pointer' : 'text-muted-foreground cursor-pointer'}`}
                         onClick={() => handleLinkClick('Općenito')}
@@ -71,9 +71,9 @@ export default function StudentProfile() {
                         Statistika
                     </a>
                 </nav>
-                <main className="grid gap-6">
+                <div className="flex-grow">
                     {renderContent()}
-                </main>
+                </div>
             </div>
         </main>
     );
