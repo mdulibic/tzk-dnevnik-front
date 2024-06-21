@@ -144,7 +144,7 @@ const Login = () => {
                                 required
                                 onChange={(e) => {
                                     setPassword(e.target.value);
-                                    setInvalidCredentials(false); // Reset invalidCredentials state
+                                    setInvalidCredentials(false);
                                 }}
                                 autoComplete="new-password"
                             />

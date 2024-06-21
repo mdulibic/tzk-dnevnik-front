@@ -11,7 +11,7 @@ import {StudentResult} from "@/model/StudentResult.ts";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
-import {downloadClusteringDataCsv} from "@/api/results";
+import {downloadClusteringDataCsv, generateDataClusteringReport} from "@/api/results";
 
 interface StatisticsProps {
     classId: string;
@@ -77,30 +77,7 @@ export const Statistics: React.FC<StatisticsProps> = ({classId}) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        try {
-            const response = await fetch(`http://localhost:5000/generate-pdf`, {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = 'output.pdf';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            alert('PDF file generated successfully!');
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Failed to generate PDF');
-        }
+        await generateDataClusteringReport(formData);
     };
 
     return (
@@ -163,7 +140,7 @@ export const Statistics: React.FC<StatisticsProps> = ({classId}) => {
                                     disabled={classId === undefined}
                                     className="w-48 bg-black text-white rounded shadow-md hover:bg-gray-800 focus:bg-gray-800"
                                 >
-                                    Preuzmi ažurirani CSV
+                                    Preuzmi ažurni CSV
                                 </Button>
                             </div>
                             <Button

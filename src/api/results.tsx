@@ -1,4 +1,4 @@
-import {BASE_API_URL} from "@/constants.tsx";
+import {BASE_API_URL, DATA_CLUSTERING_API_URL} from "@/constants.tsx";
 import authHeader from "@/auth-header.tsx";
 import {ActivityResult} from "@/model/ActivityResult.ts";
 import {AddResultDto} from "@/pages/teacher/schedule/AddResultsByEvent.tsx";
@@ -139,3 +139,31 @@ export const downloadClusteringDataCsv = async (classId: string) => {
         console.error('Error fetching CSV file:', error);
     }
 };
+
+export async function generateDataClusteringReport(formData: FormData) {
+    try {
+        const response = await fetch(`${DATA_CLUSTERING_API_URL}/data-clustering/generate-pdf`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        alert('PDF file generated successfully!');
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to generate PDF');
+    }
+}
+

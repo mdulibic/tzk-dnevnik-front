@@ -133,11 +133,6 @@ export const columns: ColumnDef<Student>[] = [
                             >
                                 Prikaži detalje učenika
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-red-100"
-                                              onClick={() => handleDelete(student.id)}
-                            >
-                                Izbriši korisnika
-                            </DropdownMenuItem>
                             <DialogTrigger asChild>
                                 <DropdownMenuItem className="text-blue-600 focus:text-blue-600 focus:bg-blue-100">
                                     Ažuriraj podatke

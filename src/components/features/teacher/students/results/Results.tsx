@@ -60,7 +60,7 @@ export const Results: React.FC<ResultsProps> = ({classId}) => {
         <div className="space-y-4">
             <div className="flex justify-between">
                 <PageHeaderHeading>Rezultati</PageHeaderHeading>
-                <Button onClick={() => downloadClassResults(classId)}>Izvoz u PDF</Button>
+                <Button onClick={() => downloadClassResults(classId)}>Izvoz u Excel</Button>
             </div>
             <ResultsDataTable columns={columns} data={results}/>
         </div>

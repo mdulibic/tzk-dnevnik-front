@@ -15,7 +15,7 @@ import {messages} from "@/constants.tsx";
 import {fetchEventsForStudent} from "@/api/schedule.tsx";
 import {getUserId} from "@/utils.ts";
 import EventCard from "../teacher/schedule/EventCard";
-import {SchoolEventInfoDialog} from "@/components/shared/dialog/SchoolEventInfoDialog.tsx";
+import {StudentSchoolEventInfoDialog} from "@/components/shared/dialog/StudentSchoolEventInfoDialog.tsx";
 
 
 const locales = {
@@ -53,19 +53,13 @@ export const StudentEventCalendar = () => {
         setCurrentEvent(event);
     }
 
-    const handleCloseInfo = () => {
-        setOpenEventInfo(false);
-        setCurrentEvent(null);
-    }
-
     return (
         <Card>
             <CardContent>
                 {currentEvent &&
-                    <SchoolEventInfoDialog
+                    <StudentSchoolEventInfoDialog
                         showClass={false}
                         event={currentEvent}
-                        handleClose={handleCloseInfo}
                         setOpen={setOpenEventInfo}
                         open={openEventInfo}/>
                 }
